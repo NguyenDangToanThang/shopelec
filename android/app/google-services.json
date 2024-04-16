@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "652344936365",
+    "project_id": "shopelec-d93e6",
+    "storage_bucket": "shopelec-d93e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652344936365:android:fedde12f05b0f874d94324",
+        "android_client_info": {
+          "package_name": "com.example.shopelec"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOCCNQKCk7XEoUVK_M8R8iQ-JKt5zGEPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
