@@ -244,7 +244,7 @@ class _SignUpViewState extends State<SignUpView> {
                             'name' : name,
                             'phone_number' : phoneNumber
                           };
-                          // authViewModel.signUpApi(data, context);
+                          // authViewModel.signUp(data, context);
                           // authViewModel.signUpFirebase(email, password, context);
                         } else {
                           Utils.flushBarErrorMessage("You cannot register if you do not agree to our terms", context);
