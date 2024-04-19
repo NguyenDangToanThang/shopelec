@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopelec/view/components/tabs/home_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,11 +9,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   int _currentIndex = 0;
+  late PageController _pageController; // Thêm PageController
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pageController = PageController(initialPage: _currentIndex);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
   final tabs = [
+    HomeView(),
     Container(
       child: Center(
-        child: Text("HOME" , style: TextStyle(fontSize: 30),),
+        child: Text("ORDER" , style: TextStyle(fontSize: 30),),
       ),
     ),
     Container(
@@ -22,12 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     Container(
       child: Center(
-        child: Text("SETTING" , style: TextStyle(fontSize: 30),),
+        child: Text("Favorite" , style: TextStyle(fontSize: 30),),
       ),
     ),
     Container(
       child: Center(
-        child: Text("SETTING" , style: TextStyle(fontSize: 30),),
+        child: Text("PROFILE" , style: TextStyle(fontSize: 30),),
       ),
     ),
   ];
@@ -36,46 +54,69 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Welcome back"),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               // Handle search button tap
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              // Handle cart button tap
+            },
+          ),
         ],
       ),
-      body: tabs[_currentIndex],
+      body: PageView(
+        controller: _pageController,
+        children: tabs,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          unselectedItemColor: Colors.blue[200],
+          selectedItemColor: Colors.blue,
           items: const [
             BottomNavigationBarItem(
                 label: "Home",
-                icon: Icon(Icons.home),
-                backgroundColor: Colors.black
+                icon: Icon(Icons.home_filled),
+            ),
+            BottomNavigationBarItem(
+                label: "Order",
+                icon: Icon(Icons.content_paste_search_sharp),
             ),
             BottomNavigationBarItem(
                 label: "Cart",
-                icon: Icon(Icons.shopping_cart),
-                backgroundColor: Colors.black
+                icon: Icon(Icons.shopping_cart_rounded),
             ),
             BottomNavigationBarItem(
-                label: "Setting",
-                icon: Icon(Icons.person),
-                backgroundColor: Colors.black
+                label: "Favorite",
+                icon: Icon(Icons.favorite),
             ),
             BottomNavigationBarItem(
                 label: "Profile",
                 icon: Icon(Icons.person),
-                backgroundColor: Colors.black
             ),
           ],
           currentIndex: _currentIndex,
           onTap: (index) {
             setState(() {
               _currentIndex = index;
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              );
             });
           },
       ),
