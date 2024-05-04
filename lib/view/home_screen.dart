@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shopelec/view/components/tabs/home_view.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+import 'package:shopelec/view/tabs/home/home_view.dart';
+import 'package:shopelec/view_model/auth_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,19 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+    String username = authViewModel.getUserCurrent();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome back"),
+        title: Text(username),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Handle search button tap
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.announcement),
             onPressed: () {
               // Handle cart button tap
             },
@@ -89,23 +88,23 @@ class _HomeScreenState extends State<HomeScreen> {
           items: const [
             BottomNavigationBarItem(
                 label: "Home",
-                icon: Icon(Icons.home_filled),
+                icon: Icon(Iconsax.home),
             ),
             BottomNavigationBarItem(
                 label: "Order",
-                icon: Icon(Icons.content_paste_search_sharp),
+                icon: Icon(Iconsax.shop),
             ),
             BottomNavigationBarItem(
                 label: "Cart",
-                icon: Icon(Icons.shopping_cart_rounded),
+                icon: Icon(Iconsax.shopping_cart),
             ),
             BottomNavigationBarItem(
                 label: "Favorite",
-                icon: Icon(Icons.favorite),
+                icon: Icon(Iconsax.favorite_chart),
             ),
             BottomNavigationBarItem(
                 label: "Profile",
-                icon: Icon(Icons.person),
+                icon: Icon(Iconsax.profile_2user),
             ),
           ],
           currentIndex: _currentIndex,

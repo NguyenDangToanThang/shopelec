@@ -24,6 +24,24 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  String getUserCurrent() {
+    var user = FirebaseAuth.instance.currentUser?.email;
+    if(user!=null) {
+      return user.toString();
+    }
+    return "";
+  }
+
+  Future<void> forgotPasswordFirebase(dynamic data , BuildContext context) async {
+    try {
+      final String email = data['email'];
+
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      Utils.flushBarErrorMessage(e.toString(), context);
+    }
+  }
+
   Future<void> loginFirebase(dynamic data , BuildContext context) async {
     setLoading(true);
     try {
@@ -46,9 +64,9 @@ class AuthViewModel with ChangeNotifier {
 
   Future<void> signUp(dynamic data , BuildContext context) async {
     setSignUpLoading(true);
-    try {
-      _myRepo.registerApi(data);
       try {
+        // _myRepo.registerApi(data);
+
         final String email = data['email'];
         final String password = data['password'];
 
@@ -60,16 +78,11 @@ class AuthViewModel with ChangeNotifier {
         Utils.flushBarSuccessMessage("Register Successfully", context);
       } on FirebaseAuthException catch(e) {
         setSignUpLoading(false);
-        if(e.code == 'weak-password') {
-          Utils.flushBarErrorMessage("Password provided is too weak", context);
-        } else if(e.code == 'email-already-in-use') {
-          Utils.flushBarErrorMessage("Account already exists", context);
-        }
+        Utils.flushBarErrorMessage(e.toString(), context);
+      } on Exception catch(e) {
+        setSignUpLoading(false);
+        Utils.flushBarErrorMessage(e.toString(), context);
       }
-    } catch (error) {
-      setSignUpLoading(false);
-      Utils.flushBarErrorMessage(error.toString(), context);
-    }
 
     // _myRepo.registerApi(data).then((value) {
     //   setSignUpLoading(false);

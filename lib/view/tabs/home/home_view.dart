@@ -1,28 +1,26 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shopelec/model/product.dart';
-import 'package:shopelec/view/components/tabs/components/grid_product.dart';
-import 'package:shopelec/view/components/tabs/components/item_categories.dart';
+import 'package:shopelec/view/tabs/home/components/grid_product.dart';
+import 'package:shopelec/view/tabs/home/components/list_view_categories.dart';
+import 'package:shopelec/view/tabs/home/components/search_product.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
-
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
-
 class _HomeViewState extends State<HomeView> {
   List<Map<String, dynamic>> categories = [
-    {'title': 'Laptop', 'image': 'assets/images/laptop.png'},
-    {'title': 'Phone', 'image': 'assets/images/phone.png'},
-    {'title': 'Laptop', 'image': 'assets/images/laptop.png'},
-    {'title': 'Phone', 'image': 'assets/images/phone.png'},
-    {'title': 'Laptop', 'image': 'assets/images/laptop.png'},
-    {'title': 'Phone', 'image': 'assets/images/phone.png'},
-    {'title': 'Laptop', 'image': 'assets/images/laptop.png'},
-    {'title': 'Phone', 'image': 'assets/images/phone.png'},
+    {'title': 'Laptop', 'image': 'assets/images/categories/laptop.png'},
+    {'title': 'Phone', 'image': 'assets/images/categories/iphone.png'},
+    {'title': 'Headphone', 'image': 'assets/images/categories/headphones.png'},
+    {'title': 'Camera', 'image': 'assets/images/categories/camera.png'},
+    {'title': 'Keyboard', 'image': 'assets/images/categories/keyboard.png'},
+    {'title': 'Mouse', 'image': 'assets/images/categories/mouse.png'},
   ];
 
   List<Product> products = const [
@@ -30,21 +28,25 @@ class _HomeViewState extends State<HomeView> {
       imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
       title: 'Apple MacBook Pro Core i9 9th Gen',
       price: 224900,
+      isFavorited: true
     ),
     Product(
       imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
       title: 'JBL T450BT Extra Bass Bluetooth Headset',
       price: 2799,
+      isFavorited: false
     ),
     Product(
       imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
       title: 'Canon EOS 90D DSLR Camera Body with...',
       price: 113990,
+      isFavorited: false
     ),
     Product(
       imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
       title: 'Samsung Galaxy M11 (Black, 32 GB)',
       price: 11270,
+      isFavorited: true
     ),
   ];
 
@@ -56,7 +58,20 @@ class _HomeViewState extends State<HomeView> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              const Text(
+                  'Find your product',
+                  style: TextStyle(
+                      color: Colors.black,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 24
+                  ),
+              ),
+              SizedBox(height: height * 0.02,),
+              const SearchProduct(),
+              SizedBox(height: height * 0.02,),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -93,25 +108,7 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
               SizedBox(height: height * 0.003,),
-
-              SizedBox(
-                height: 80,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: categories.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context,index) {
-                      final category = categories[index];
-                      return item_categories(
-                        height: height,
-                        title: category['title'] as String,
-                        image: category['image'] as String,
-                        onTap: () {},
-                      );
-                    }
-                ),
-              ),
-
+              ListViewCategories(categories: categories, height: height),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -152,3 +149,4 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
+

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopelec/res/color.dart';
 
 class RoundButton extends StatelessWidget {
 
@@ -21,13 +20,13 @@ class RoundButton extends StatelessWidget {
         height: 60,
         width: 295,
         decoration: BoxDecoration(
-          color: AppColors.buttonColor,
+          color: Colors.black,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
             child:loading ?
             CircularProgressIndicator(color: Colors.white) :
-            Text(title, style: const TextStyle(color: AppColors.whiteColor),)
+            Text(title, style: const TextStyle(color: Colors.white),)
         ),
       ),
     );

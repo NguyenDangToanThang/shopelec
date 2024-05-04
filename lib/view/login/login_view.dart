@@ -169,7 +169,7 @@ class _LoginViewState extends State<LoginView> {
                         'email' : _emailController.text.toString(),
                         'password' : _passwordController.text.toString()
                       };
-                      // authViewModel.loginApi(data , context);
+                      authViewModel.loginFirebase(data , context);
                       Navigator.pushReplacementNamed(context, RoutesName.home);
                     }
               }),

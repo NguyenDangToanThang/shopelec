@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class item_categories extends StatelessWidget {
-  const item_categories({
+class ItemCategories extends StatelessWidget {
+  const ItemCategories({
     super.key,
     required this.height,
     required this.image,
@@ -28,7 +28,7 @@ class item_categories extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   color: Colors.grey,
-                  borderRadius: BorderRadius.circular(100)
+                  borderRadius: BorderRadius.circular(10)
               ),
               child: Center(
                 child: Image.asset(
