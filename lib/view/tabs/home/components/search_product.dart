@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class SearchProduct extends StatelessWidget{
   const SearchProduct({
@@ -20,7 +21,7 @@ class SearchProduct extends StatelessWidget{
               child: TextField(
                 decoration: const InputDecoration(
                     border: InputBorder.none,
-                    prefixIcon: Icon(Icons.search , color: Colors.grey,),
+                    prefixIcon: Icon(Iconsax.search_favorite , color: Colors.grey,),
                     hintText: 'Search product'
                 ),
                 onSubmitted: (String value) {
@@ -38,7 +39,7 @@ class SearchProduct extends StatelessWidget{
                 height: 50,
                 width: 50,
                 alignment: Alignment.center,
-                child: const Icon(Icons.search, color: Colors.black),
+                child: const Icon(Iconsax.search_favorite, color: Colors.black),
               ),
             ),
           )

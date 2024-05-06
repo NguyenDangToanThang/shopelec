@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
 import 'package:shopelec/view/tabs/home/components/list_view_categories.dart';
@@ -54,21 +55,34 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Hi, NguyenThang"),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Iconsax.notification),
+            onPressed: () {
+              // Handle cart button tap
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                  'Find your product',
-                  style: TextStyle(
-                      color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 24
-                  ),
-              ),
-              SizedBox(height: height * 0.02,),
+              // const Text(
+              //     'Find your product',
+              //     style: TextStyle(
+              //         color: Colors.black,
+              //       fontWeight: FontWeight.w900,
+              //       fontSize: 24
+              //     ),
+              // ),
+              // SizedBox(height: height * 0.02,),
               const SearchProduct(),
               SizedBox(height: height * 0.02,),
 

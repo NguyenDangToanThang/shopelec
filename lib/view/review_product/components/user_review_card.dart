@@ -47,7 +47,10 @@ class _UserReviewCardState extends State<UserReviewCard> {
               ],
             ),
             const Spacer(),
-            const Icon(Iconsax.like_1),
+            const Icon(
+                Iconsax.like_tag,
+              size: 32,
+            ),
             const Text(" 101"),
             InkWell(
               onTapDown: getPosition,
@@ -103,6 +106,7 @@ class _UserReviewCardState extends State<UserReviewCard> {
       ],
     );
   }
+
   RelativeRect get relRectSize => RelativeRect.fromSize(tapXY! & const Size(40,40), overlay!.size);
 
   // ↓ get the tap position Offset

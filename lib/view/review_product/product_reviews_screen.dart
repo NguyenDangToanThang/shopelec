@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:shopelec/view/detail_product/components/RatingProgressIndicator.dart';
 import 'package:shopelec/view/detail_product/components/rating_bar_star_indicator.dart';
-import 'package:shopelec/view/detail_product/components/user_review_card.dart';
+import 'package:shopelec/view/review_product/components/user_review_card.dart';
 
 class ProductReviewsScreen extends StatefulWidget {
   const ProductReviewsScreen({super.key});
@@ -17,6 +18,13 @@ class _ProductReviewsScreenState extends State<ProductReviewsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reviews & Ratings'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: ()
+            {},
+            icon: const Icon(Iconsax.notification))
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

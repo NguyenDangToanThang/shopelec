@@ -36,7 +36,9 @@ class AuthViewModel with ChangeNotifier {
     try {
       final String email = data['email'];
 
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: email
+      );
     } on FirebaseAuthException catch (e) {
       Utils.flushBarErrorMessage(e.toString(), context);
     }
@@ -55,10 +57,17 @@ class AuthViewModel with ChangeNotifier {
 
       setLoading(false);
       Utils.flushBarSuccessMessage("Login Successfully", context);
-      Navigator.pushNamed(context, RoutesName.home);
-    } catch (error) {
+      Navigator.pushReplacementNamed(context, RoutesName.home);
+    } on FirebaseAuthException catch (e) {
       setLoading(false);
-      Utils.flushBarErrorMessage(error.toString(), context);
+      // Utils.flushBarErrorMessage(error.message.toString(), context);
+      if(e.code == "invalid-credential") {
+        Utils.flushBarErrorMessage("Invalid email or password", context);
+      }
+      else {
+        Utils.flushBarErrorMessage(e.code.toString(), context);
+
+      }
     }
   }
 
@@ -66,7 +75,6 @@ class AuthViewModel with ChangeNotifier {
     setSignUpLoading(true);
       try {
         // _myRepo.registerApi(data);
-
         final String email = data['email'];
         final String password = data['password'];
 
@@ -78,7 +86,10 @@ class AuthViewModel with ChangeNotifier {
         Utils.flushBarSuccessMessage("Register Successfully", context);
       } on FirebaseAuthException catch(e) {
         setSignUpLoading(false);
-        Utils.flushBarErrorMessage(e.toString(), context);
+        // Utils.flushBarErrorMessage(e.toString(), context);
+        if(e.code == "email-already-in-use") {
+          Utils.flushBarSuccessMessage("Email already exists", context);
+        }
       } on Exception catch(e) {
         setSignUpLoading(false);
         Utils.flushBarErrorMessage(e.toString(), context);

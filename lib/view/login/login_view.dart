@@ -79,7 +79,7 @@ class _LoginViewState extends State<LoginView> {
                         focusNode: emailFocusNode,
                         decoration: const InputDecoration(
                             hintText: 'E-mail',
-                            labelText: 'Email',
+                            labelText: 'E-mail',
                             border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.email)
                         ),
@@ -88,9 +88,9 @@ class _LoginViewState extends State<LoginView> {
                         },
                         validator: (value) {
                           if(value == null || value.isEmpty) {
-                            return "Please enter email";
+                            return "Please enter E-mail";
                           } else if(!EmailValidator.validate(value)) {
-                            return "Invalid email";
+                            return "Invalid E-mail";
                           }
                           return null;
                         },
@@ -170,7 +170,6 @@ class _LoginViewState extends State<LoginView> {
                         'password' : _passwordController.text.toString()
                       };
                       authViewModel.loginFirebase(data , context);
-                      Navigator.pushReplacementNamed(context, RoutesName.home);
                     }
               }),
               SizedBox(height: height * 0.02,),

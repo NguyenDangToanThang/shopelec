@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
@@ -29,8 +30,9 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
       bottomNavigationBar: const BottomAddToCart(),
       appBar: AppBar(
         title: const Text("Details Product"),
+        centerTitle: true,
         actions: [
-          IconButton(icon: const Icon(Icons.announcement) ,onPressed: (){},)
+          IconButton(icon: const Icon(Iconsax.notification) ,onPressed: (){},)
         ],
       ),
       body: SingleChildScrollView(
@@ -57,9 +59,11 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('99' + ' remaining' , style: TextStyle(
-                    fontSize: 16
-                  ),),
+                  const Text('99' + ' remaining' ,
+                    style: TextStyle(
+                      fontSize: 16
+                    ),
+                  ),
                   const Spacer(),
                   const Text(
                     '(90 Ratings)',
@@ -104,8 +108,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     '\$2000',
                     style: TextStyle(
                       decoration: TextDecoration.lineThrough,
-                      color: Colors.black,
-                      fontSize: 22,
+                      color: Colors.black54,
+                      fontSize: 20,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -154,7 +158,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  SizedBox(height: 8,),
+                  SizedBox(height: 10,),
                   ReadMoreText("Shine to the world with the powerful ASUS Vivobook 14/15"
                       " OLED, a laptop that integrates many features with a brilliant "
                       "OLED screen and cinematic DCI-P3 color gamut. Everything "
@@ -165,8 +169,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       " with ASUS Vivobook 14/15 OLED!",
                       trimLines: 3,
                       trimMode: TrimMode.Line,
-                      trimExpandedText: ' less',
-                      trimCollapsedText: 'more',
+                      trimExpandedText: ' Less',
+                      trimCollapsedText: 'More',
                       moreStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
                       lessStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
                       textAlign: TextAlign.left,
@@ -176,6 +180,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   )
                 ],
               ),
+              const SizedBox(height: 12,),
+
               const Divider(
                 color: Colors.black54,
                 thickness: 0.5,
@@ -202,7 +208,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       return Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Text(
-                          specification['title']! + ": " + specification['value']!,
+                          specification['title']!+ " " + specification['value']!,
                           style: const TextStyle(
                             fontSize: 16
                           ),
@@ -236,6 +242,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     IconButton(
                       icon: const Icon(Icons.keyboard_arrow_right_outlined),
                       onPressed: () {
+                        Navigator.pushNamed(context, RoutesName.productReviews);
                       },
                     )
                   ],

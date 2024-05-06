@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
-import 'package:shopelec/view/detail_product_screen.dart';
+import 'package:shopelec/view/detail_product/detail_product_screen.dart';
 import 'package:shopelec/view/home_screen.dart';
 import 'package:shopelec/view/login/forgot_password_view.dart';
 import 'package:shopelec/view/login/login_view.dart';
 import 'package:shopelec/view/login/signup_view.dart';
-import 'package:shopelec/view/product_reviews_screen.dart';
+import 'package:shopelec/view/review_product/product_reviews_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {

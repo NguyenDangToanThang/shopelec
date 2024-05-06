@@ -52,16 +52,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
-                    hintText: 'Email',
-                    labelText: 'Email',
+                    hintText: 'E-mail',
+                    labelText: 'E-mail',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email)
                 ),
                 validator: (value) {
                   if(value == null || value.isEmpty) {
-                    return "Please enter email";
+                    return "Please enter E-mail";
                   } else if(!EmailValidator.validate(value)) {
-                    return "Invalid email";
+                    return "Invalid E-mail";
                   }
                   return null;
                 },

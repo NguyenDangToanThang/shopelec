@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:shopelec/view/tabs/cart/cart_view.dart';
 import 'package:shopelec/view/tabs/home/home_view.dart';
+import 'package:shopelec/view/tabs/profile/profile_view.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,27 +32,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final tabs = [
-    HomeView(),
+    const HomeView(),
     Container(
       child: Center(
         child: Text("ORDER" , style: TextStyle(fontSize: 30),),
       ),
     ),
-    Container(
-      child: Center(
-        child: Text("CART" , style: TextStyle(fontSize: 30),),
-      ),
-    ),
+    const CartView(),
     Container(
       child: Center(
         child: Text("Favorite" , style: TextStyle(fontSize: 30),),
       ),
     ),
-    Container(
-      child: Center(
-        child: Text("PROFILE" , style: TextStyle(fontSize: 30),),
-      ),
-    ),
+    const ProfileView()
   ];
 
   @override
@@ -58,18 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final authViewModel = Provider.of<AuthViewModel>(context);
     String username = authViewModel.getUserCurrent();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(username),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.announcement),
-            onPressed: () {
-              // Handle cart button tap
-            },
-          ),
-        ],
-      ),
       body: PageView(
         controller: _pageController,
         children: tabs,
