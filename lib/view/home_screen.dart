@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
 import 'package:shopelec/view/tabs/cart/cart_view.dart';
 import 'package:shopelec/view/tabs/home/home_view.dart';
-import 'package:shopelec/view/tabs/profile/profile_view.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:shopelec/view/tabs/setting/setting_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _pageController = PageController(initialPage: _currentIndex);
+    _pageController = PageController(initialPage: _currentIndex, viewportFraction: 0.999);
   }
 
   @override
@@ -44,20 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text("Favorite" , style: TextStyle(fontSize: 30),),
       ),
     ),
-    const ProfileView()
+    const SettingView()
   ];
 
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthViewModel>(context);
-    String username = authViewModel.getUserCurrent();
     return Scaffold(
       body: PageView(
         controller: _pageController,
         children: tabs,
-        onPageChanged: (index) {
+        onPageChanged: (newIndex) {
           setState(() {
-            _currentIndex = index;
+            _currentIndex = newIndex;
           });
         },
       ),
@@ -95,8 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
               _currentIndex = index;
               _pageController.animateToPage(
                 index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.easeInOut,
               );
             });
           },

@@ -1,11 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
 import 'package:shopelec/view/tabs/home/components/list_view_categories.dart';
 import 'package:shopelec/view/tabs/home/components/search_product.dart';
+import 'package:shopelec/view_model/auth_view_model.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -53,10 +54,12 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     final height = MediaQuery.of(context).size.height * 1;
+    String name = authViewModel.infoUserCurrent['name'];
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hi, NguyenThang"),
+        title: Text(name),
         automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
@@ -90,13 +93,13 @@ class _HomeViewState extends State<HomeView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   const Text(
-                    'Popular Categories',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis
+                      'Popular Categories',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis
                   ),
                   const Spacer(),
                   TextButton(
@@ -161,6 +164,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+
   }
 }
 

@@ -242,7 +242,7 @@ class _SignUpViewState extends State<SignUpView> {
                             'email' : email,
                             'password' : password,
                             'name' : name,
-                            'phone_number' : phoneNumber
+                            'phoneNumber' : phoneNumber
                           };
                           authViewModel.signUp(data, context);
                           // authViewModel.signUpFirebase(email, password, context);

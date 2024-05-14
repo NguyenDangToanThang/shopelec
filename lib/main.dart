@@ -5,12 +5,14 @@ import 'package:shopelec/firebase_options.dart';
 import 'package:shopelec/utils/routes/routes.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform
   );
+  await Hive.initFlutter();
   runApp(const MyApp());
 }
 

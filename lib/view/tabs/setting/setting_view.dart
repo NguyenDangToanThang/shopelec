@@ -1,18 +1,30 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shopelec/view/tabs/profile/components/list_tile_account_setting.dart';
+import 'package:provider/provider.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
+import 'package:shopelec/view/tabs/setting/components/list_tile_account_setting.dart';
+import 'package:shopelec/view_model/auth_view_model.dart';
 
-class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
+class SettingView extends StatefulWidget {
+  const SettingView({super.key});
 
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  State<SettingView> createState() => _SettingViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _SettingViewState extends State<SettingView> {
+
+
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
+    Map data = authViewModel.infoUserCurrent;
+    String name = data['name'] ?? "";
+    String email = data['email'] ?? "";
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -47,16 +59,16 @@ class _ProfileViewState extends State<ProfileView> {
                 ) ,
               ),
               title: Text(
-                "Nguyen Dang Toan Thang",
+                name,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               subtitle: Text(
-                "nvbb802@gmail.com",
+                email,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               trailing: IconButton(
                 onPressed: () {
-
+                  Navigator.pushNamed(context, RoutesName.profile);
                 },
                 icon: const Icon(Iconsax.edit, color: Colors.black,),
               ),
@@ -107,10 +119,12 @@ class _ProfileViewState extends State<ProfileView> {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await authViewModel.logout(context);
+                      },
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0), // Điều chỉnh giá trị để có góc bo tròn hợp lý
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                         side: const BorderSide(width: 1.0, color: Colors.black),
                       ),

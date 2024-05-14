@@ -2,6 +2,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:another_flushbar/flushbar_route.dart';
+import 'package:iconsax/iconsax.dart';
 
 class Utils {
 
@@ -40,7 +41,25 @@ class Utils {
           duration: const Duration(seconds: 3),
           reverseAnimationCurve: Curves.easeInOut,
           positionOffset: 20,
-          icon: const Icon(Icons.error , size: 28 , color: Colors.white,),
+          icon: const Icon(Iconsax.check , size: 28 , color: Colors.white,),
+        )..show(context)
+    );
+  }
+
+  static void flushBarCopyMessage(String message , BuildContext context) {
+    showFlushbar(
+        context: context,
+        flushbar: Flushbar(
+          borderRadius: BorderRadius.circular(10),
+          forwardAnimationCurve: Curves.decelerate,
+          margin: const EdgeInsets.symmetric(horizontal: 20 , vertical: 10),
+          padding: const EdgeInsets.all(15),
+          message: message,
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 3),
+          reverseAnimationCurve: Curves.easeInOut,
+          positionOffset: 20,
+          icon: const Icon(Iconsax.copy_success , size: 28 , color: Colors.white,),
         )..show(context)
     );
   }

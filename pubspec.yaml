@@ -45,6 +45,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   iconsax: ^0.0.8
   readmore: ^3.0.0
+  hive:
+  hive_flutter:
 
 dev_dependencies:
   flutter_test:

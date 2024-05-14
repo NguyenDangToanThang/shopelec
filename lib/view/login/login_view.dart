@@ -8,6 +8,8 @@ import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -18,18 +20,40 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
 
-  ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
 
   final _formKey = GlobalKey<FormState>();
 
   bool _rememberMe = false;
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
+  late Box box;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    createBox();
+  }
+
+  void createBox() async {
+    box = await Hive.openBox("loginData");
+    getData();
+  }
+
+  void getData() async {
+    if(box.get("email") != null ) {
+      _emailController.text = box.get("email");
+    }
+    if(box.get("password") != null ) {
+      _passwordController.text = box.get("password");
+    }
+  }
 
   @override
   void dispose() {
@@ -170,6 +194,10 @@ class _LoginViewState extends State<LoginView> {
                         'password' : _passwordController.text.toString()
                       };
                       authViewModel.loginFirebase(data , context);
+                      if(_rememberMe) {
+                        box.put("email", data['email']);
+                        box.put("password", data['password']);
+                      }
                     }
               }),
               SizedBox(height: height * 0.02,),
