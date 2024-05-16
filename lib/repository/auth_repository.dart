@@ -1,11 +1,10 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:shopelec/data/network/BaseApiServices.dart';
 import 'package:shopelec/data/network/NetworkApiService.dart';
 import 'package:shopelec/res/app_url.dart';
 
 class AuthRepository {
-  BaseApiServices _apiServices = NetworkApiService();
+  final BaseApiServices _apiServices = NetworkApiService();
 
   Future<dynamic> registerApi (dynamic data) async {
     try {

@@ -58,7 +58,7 @@ class _UserReviewCardState extends State<UserReviewCard> {
                 icon: const Icon(
                     Icons.more_vert),
                 onPressed: () {
-                  final popupMenu = PopupMenuButton(
+                  PopupMenuButton(
                     onSelected: (item) {
 
                     },

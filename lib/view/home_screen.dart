@@ -18,7 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _pageController = PageController(initialPage: _currentIndex, viewportFraction: 0.999);
   }
@@ -31,16 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final tabs = [
     const HomeView(),
-    Container(
-      child: Center(
-        child: Text("ORDER" , style: TextStyle(fontSize: 30),),
-      ),
+    const Center(
+      child: Text("ORDER" , style: TextStyle(fontSize: 30),),
     ),
     const CartView(),
-    Container(
-      child: Center(
-        child: Text("Favorite" , style: TextStyle(fontSize: 30),),
-      ),
+    const Center(
+      child: Text("Favorite" , style: TextStyle(fontSize: 30),),
     ),
     const SettingView()
   ];
