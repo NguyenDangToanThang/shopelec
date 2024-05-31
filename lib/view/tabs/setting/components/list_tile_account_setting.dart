@@ -6,28 +6,33 @@ class ListTileAccountSetting extends StatelessWidget {
     required this.text,
     required this.subText,
     required this.iconsax,
+    this.onTap
   });
 
   final String text;
   final String subText;
   final Icon iconsax;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(8)
-      ),
-      child: ListTile(
-        leading: iconsax,
-        title: Text(
-          text,
-          style: Theme.of(context).textTheme.titleSmall,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(8)
         ),
-        subtitle: Text(
-            subText,
-            style: Theme.of(context).textTheme.bodySmall
+        child: ListTile(
+          leading: iconsax,
+          title: Text(
+            text,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          subtitle: Text(
+              subText,
+              style: Theme.of(context).textTheme.bodySmall
+          ),
         ),
       ),
     );

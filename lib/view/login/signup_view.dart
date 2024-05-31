@@ -16,14 +16,14 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
 
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();

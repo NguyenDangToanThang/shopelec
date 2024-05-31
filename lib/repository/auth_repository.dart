@@ -20,7 +20,7 @@ class AuthRepository {
       dynamic response = await _apiServices.getPostApiResponse(AppUrl.getMyInfoEndPoint, data);
       return response;
     } catch(e) {
-      rethrow;
+      rethrow; 
     }
   }
 

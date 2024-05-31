@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
@@ -85,16 +84,20 @@ class _SettingViewState extends State<SettingView> {
                       style: Theme.of(context).textTheme.titleMedium
                   ),
                   const SizedBox(height: 12,),
-                  const ListTileAccountSetting(
+                  ListTileAccountSetting(
                       text: "My Addresses",
                       subText: "Set shopping delivery address",
-                      iconsax: Icon(Iconsax.home),
+                      iconsax: const Icon(Iconsax.home),
+                      onTap: () => Navigator.pushNamed(context, RoutesName.address),
                   ),
                   const SizedBox(height: 12,),
-                  const ListTileAccountSetting(
+                  ListTileAccountSetting(
                       text: "My Cart",
                       subText: "Add, remove products and move to checkout",
-                      iconsax: Icon(Iconsax.shopping_cart),
+                      iconsax: const Icon(Iconsax.shopping_cart),
+                      onTap: () => {
+                        
+                      },
                   ),
                   const SizedBox(height: 12,),
                   const ListTileAccountSetting(

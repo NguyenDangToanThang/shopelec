@@ -32,7 +32,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
         title: const Text("Details Product"),
         centerTitle: true,
         actions: [
-          IconButton(icon: const Icon(Iconsax.notification) ,onPressed: (){},)
+          IconButton(icon: const Icon(Iconsax.notification) , onPressed: (){},)
         ],
       ),
       body: SingleChildScrollView(
@@ -42,7 +42,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Image.network(
-                widget.product.imageUrl,
+                widget.product.image_url,
                 fit: BoxFit.cover,
                 height: 230,
                 width: double.infinity,
@@ -59,7 +59,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('99' + ' remaining' ,
+                  const Text('99' ' remaining' ,
                     style: TextStyle(
                       fontSize: 16
                     ),
@@ -104,9 +104,9 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
-                    '\$2000',
-                    style: TextStyle(
+                  Text(
+                    '\$${widget.product.price}',
+                    style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.black54,
                       fontSize: 20,
@@ -114,9 +114,9 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     ),
                   ),
                   const SizedBox(width: 8,),
-                  const Text(
-                    '\$1800',
-                    style: TextStyle(
+                  Text(
+                    '\$${widget.product.price * widget.product.discount / 100}',
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   const SizedBox(width: 8,),
                   const Icon(Icons.discount , color: Colors.blue, size: 22,),
                   Text(
-                    '10%',
+                    '${widget.product.discount}%',
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                   const Spacer(),
@@ -148,33 +148,26 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               ),
               const SizedBox(height: 12,),
 
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Description',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  SizedBox(height: 10,),
-                  ReadMoreText("Shine to the world with the powerful ASUS Vivobook 14/15"
-                      " OLED, a laptop that integrates many features with a brilliant "
-                      "OLED screen and cinematic DCI-P3 color gamut. Everything "
-                      "is made easier thanks to user-friendly amenities including a "
-                      "180° flush-opening hinge, physical webcam cover, and dedicated "
-                      "function keys. Protect your health with ASUS antibacterial Guard"
-                      " Plus on frequently touched surfaces. Start your day with excitement"
-                      " with ASUS Vivobook 14/15 OLED!",
+                  const SizedBox(height: 10,),
+                  ReadMoreText(widget.product.description,
                       trimLines: 3,
                       trimMode: TrimMode.Line,
                       trimExpandedText: ' Less',
                       trimCollapsedText: 'More',
-                      moreStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
-                      lessStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                      moreStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
+                      lessStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),
                       textAlign: TextAlign.left,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16
                       ),
                   )
@@ -208,7 +201,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       return Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Text(
-                          specification['title']!+ " " + specification['value']!,
+                          "${specification['title']!} ${specification['value']!}",
                           style: const TextStyle(
                             fontSize: 16
                           ),

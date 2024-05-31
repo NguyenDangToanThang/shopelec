@@ -6,6 +6,7 @@ import 'package:shopelec/utils/routes/routes.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shopelec/view_model/product_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => AuthViewModel())
+          ChangeNotifierProvider(create: (_) => AuthViewModel()),
+          ChangeNotifierProvider(create: (_) => ProductViewModel())
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

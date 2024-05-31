@@ -149,7 +149,7 @@ class _ProfileViewState extends State<ProfileView> {
     String phoneNumber = data['phoneNumber'] ?? "";
     String email = data['email'];
     String dateCreated = data['date_created'];
-    String gender = data['gender'];
+    String gender = data['gender'] ?? "";
     String dob = data['dob'] ?? "";
     return Scaffold(
       appBar: AppBar(

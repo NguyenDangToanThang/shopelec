@@ -1,7 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:shopelec/model/brand.dart';
+import 'package:shopelec/model/category.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
+import 'package:shopelec/view/address/address_add_new.dart';
+import 'package:shopelec/view/address/address_view.dart';
 import 'package:shopelec/view/detail_product/detail_product_screen.dart';
 import 'package:shopelec/view/home_screen.dart';
 import 'package:shopelec/view/login/forgot_password_view.dart';
@@ -26,8 +30,16 @@ class Routes {
         return MaterialPageRoute(builder: (BuildContext context) => const ProductReviewsScreen());
       case RoutesName.profile:
         return MaterialPageRoute(builder: (BuildContext context) => const ProfileView());
+      case RoutesName.address:
+        return MaterialPageRoute(builder: (BuildContext context) => const AddressView());
+      case RoutesName.addressAddNew:
+        return MaterialPageRoute(builder: (BuildContext context) => const AddressAddNew());
       case RoutesName.detailProduct:
-        Product product = arg is Product ? arg : const Product(imageUrl: "", title: "", price: 0, isFavorited: false);
+        Product product = arg is Product ? arg : Product(
+          id: 0, name: "", price: 0, brand: const Brand(id: 0, name: "name"),
+          category: Category(id: 0, name: "0"), description: "", discount: 0,
+          image_url: "",quantity: 0,status: "",specifications: List.empty()
+          );
         return MaterialPageRoute(builder: (BuildContext context) => DetailProductScreen(product: product));
       default:
         return MaterialPageRoute(builder: (_) {

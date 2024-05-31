@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:shopelec/view/tabs/home/components/grid_product.dart';
 import 'package:shopelec/view/tabs/home/components/list_view_categories.dart';
 import 'package:shopelec/view/tabs/home/components/search_product.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:shopelec/view_model/product_view_model.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -25,32 +27,14 @@ class _HomeViewState extends State<HomeView> {
     {'title': 'Mouse', 'image': 'assets/images/categories/mouse.png'},
   ];
 
-  List<Product> products = const [
-    Product(
-      imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
-      title: 'Apple MacBook Pro Core i9 9th Gen',
-      price: 224900,
-      isFavorited: true
-    ),
-    Product(
-      imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
-      title: 'JBL T450BT Extra Bass Bluetooth Headset',
-      price: 2799,
-      isFavorited: false
-    ),
-    Product(
-      imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
-      title: 'Canon EOS 90D DSLR Camera Body with...',
-      price: 113990,
-      isFavorited: false
-    ),
-    Product(
-      imageUrl: 'https://hanoicomputercdn.com/media/product/81430_laptop_lenovo_yoga_9_14imh9__83ac000svn_.jpg',
-      title: 'Samsung Galaxy M11 (Black, 32 GB)',
-      price: 11270,
-      isFavorited: true
-    ),
-  ];
+  late Future<List<Product>> _products;
+
+  @override
+  void initState() {
+    super.initState();
+    final productViewModel = Provider.of<ProductViewModel>(context, listen: false);
+    _products = productViewModel.getAllProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,30 +61,18 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // const Text(
-              //     'Find your product',
-              //     style: TextStyle(
-              //         color: Colors.black,
-              //       fontWeight: FontWeight.w900,
-              //       fontSize: 24
-              //     ),
-              // ),
-              // SizedBox(height: height * 0.02,),
               const SearchProduct(),
-              SizedBox(height: height * 0.02,),
-
+              SizedBox(
+                height: height * 0.02,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text(
-                      'Popular Categories',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
-                      ),
+                  const Text('Popular Categories',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis
-                  ),
+                      overflow: TextOverflow.ellipsis),
                   const Spacer(),
                   TextButton(
                     onPressed: () {},
@@ -113,7 +85,6 @@ class _HomeViewState extends State<HomeView> {
                             fontSize: 14.0,
                           ),
                         ),
-
                         Icon(
                           Icons.navigate_next,
                           color: Colors.black,
@@ -124,17 +95,16 @@ class _HomeViewState extends State<HomeView> {
                   )
                 ],
               ),
-              SizedBox(height: height * 0.003,),
+              SizedBox(
+                height: height * 0.003,
+              ),
               ListViewCategories(categories: categories, height: height),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   const Text(
                     'Top Deals on Electronics',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   TextButton(
                     onPressed: () {},
@@ -147,7 +117,6 @@ class _HomeViewState extends State<HomeView> {
                             fontSize: 14.0,
                           ),
                         ),
-
                         Icon(
                           Icons.navigate_next,
                           color: Colors.black,
@@ -158,13 +127,23 @@ class _HomeViewState extends State<HomeView> {
                   )
                 ],
               ),
-              GridProduct(products: products)
+              FutureBuilder<List<Product>>(
+                  future: _products,
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Product> products = snapshot.data!;
+                      return GridProduct(products: products);
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString()); // display error
+                    } else {
+                      // ignore: prefer_const_constructors
+                      return CircularProgressIndicator(); // loader animation
+                    }
+                  }))
             ],
           ),
         ),
       ),
     );
-
   }
 }
-

@@ -6,4 +6,6 @@ class RoutesName {
   static const String detailProduct = 'detail_product_screen';
   static const String productReviews = 'product_reviews_screen';
   static const String profile = 'profile_view';
+  static const String address = 'address_view';
+  static const String addressAddNew = 'address_add_new';
 }

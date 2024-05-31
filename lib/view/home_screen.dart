@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shopelec/view/tabs/cart/cart_view.dart';
+import 'package:shopelec/view/tabs/favorite/favorite_view.dart';
 import 'package:shopelec/view/tabs/home/home_view.dart';
 import 'package:shopelec/view/tabs/setting/setting_view.dart';
+import 'package:shopelec/view/tabs/store/store_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,13 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final tabs = [
     const HomeView(),
-    const Center(
-      child: Text("ORDER" , style: TextStyle(fontSize: 30),),
-    ),
+    const StoreView(),
     const CartView(),
-    const Center(
-      child: Text("Favorite" , style: TextStyle(fontSize: 30),),
-    ),
+    const FavoriteView(),
     const SettingView()
   ];
 
@@ -64,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Iconsax.home),
             ),
             BottomNavigationBarItem(
-                label: "Order",
+                label: "Store",
                 icon: Icon(Iconsax.shop),
             ),
             BottomNavigationBarItem(

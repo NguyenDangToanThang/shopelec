@@ -7,7 +7,6 @@ import 'package:shopelec/utils/utils.dart';
 
 class AuthViewModel with ChangeNotifier {
   final _myRepo = AuthRepository();
-
   final logger = Logger();
 
   bool _loading = false;
@@ -38,7 +37,7 @@ class AuthViewModel with ChangeNotifier {
     await _myRepo
         .updateUserApi(data)
         .whenComplete(() => setInfoUserCurrent(data))
-        .onError((error, stackTrace) => logger.w(error));
+        .onError((error, stackTrace) => logger.e(error));
   }
 
   Future<dynamic> getInfoUserCurrent(String email) async {
@@ -67,9 +66,9 @@ class AuthViewModel with ChangeNotifier {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      dynamic response = await _myRepo.getMyInfoApi(email);
+      dynamic response = await _myRepo.getMyInfoApi(email).timeout(const Duration(seconds: 10));
+
       logger.i(response);
-      // print(response);
 
       setInfoUserCurrent(response);
       Navigator.pushReplacementNamed(context, RoutesName.home);
@@ -88,7 +87,7 @@ class AuthViewModel with ChangeNotifier {
   Future<void> signUp(dynamic data, BuildContext context) async {
     setSignUpLoading(true);
     try {
-      _myRepo.registerApi(data);
+      _myRepo.registerApi(data).onError((error, stackTrace) => logger.e(error));
       final String email = data['email'];
       final String password = data['password'];
 
@@ -108,8 +107,10 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> logout(BuildContext context) async {
-    setInfoUserCurrent({});
-    await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance
+        .signOut()
+        .whenComplete(() => setInfoUserCurrent({}))
+        .onError((error, stackTrace) => logger.e(error));
     Navigator.pushReplacementNamed(context, RoutesName.login);
   }
 }
