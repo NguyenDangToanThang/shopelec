@@ -18,7 +18,7 @@ class NetworkApiService extends BaseApiServices {
       responseJson = returnResponse(response);
 
     } on SocketException {
-      throw FetchDataException("No Internet Connection");
+      throw FetchDataException("Mất kết nối");
     }
     return responseJson;
   }
@@ -31,7 +31,7 @@ class NetworkApiService extends BaseApiServices {
       responseJson = returnResponse(response);
 
     } on SocketException {
-      throw FetchDataException("No Internet Connection");
+      throw FetchDataException("Mất kết nối");
     }
     return responseJson;
   }
@@ -48,7 +48,7 @@ class NetworkApiService extends BaseApiServices {
       case 404:
         throw UnauthorisedException(response.body.toString());
       default:
-        throw FetchDataException("Error accured while communicating with server with status code: ${response.statusCode}");
+        throw FetchDataException("Lỗi khi liên lạc với máy chủ bằng mã trạng thái: ${response.statusCode}");
     }
   }
 

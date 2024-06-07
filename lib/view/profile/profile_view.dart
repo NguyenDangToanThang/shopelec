@@ -44,7 +44,7 @@ class _ProfileViewState extends State<ProfileView> {
                     shape: const RoundedRectangleBorder(
                         side: BorderSide(color: Colors.white38))),
                 child: const Text(
-                  "Cancel",
+                  "Đóng",
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () => Navigator.pop(context),
@@ -55,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
                     shape: const RoundedRectangleBorder(
                         side: BorderSide(color: Colors.white38))),
                 child: const Text(
-                  'OK',
+                  'Lưu',
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
@@ -76,9 +76,9 @@ class _ProfileViewState extends State<ProfileView> {
     final logger = Logger();
 
     var items = [
-      'Male',
-      'Female',
-      'Other',
+      'Nam',
+      'Nữ',
+      'Khác',
     ];
     return showDialog(
         context: context,
@@ -107,7 +107,7 @@ class _ProfileViewState extends State<ProfileView> {
                 });
               },
               decoration: const InputDecoration(
-                  labelText: "Select your gender",
+                  labelText: "Chọn giới tính",
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey))),
             ),
@@ -118,7 +118,7 @@ class _ProfileViewState extends State<ProfileView> {
                     shape: const RoundedRectangleBorder(
                         side: BorderSide(color: Colors.white38))),
                 child: const Text(
-                  "Cancel",
+                  "Đóng",
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () => Navigator.pop(context),
@@ -129,7 +129,7 @@ class _ProfileViewState extends State<ProfileView> {
                     shape: const RoundedRectangleBorder(
                         side: BorderSide(color: Colors.white38))),
                 child: const Text(
-                  'OK',
+                  'Lưu',
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () =>
@@ -153,7 +153,7 @@ class _ProfileViewState extends State<ProfileView> {
     String dob = data['dob'] ?? "";
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: const Text("Hồ sơ"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -163,7 +163,7 @@ class _ProfileViewState extends State<ProfileView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Profile Information",
+                "Thông tin hồ sơ",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -195,7 +195,7 @@ class _ProfileViewState extends State<ProfileView> {
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: email)).then((_) {
                           Utils.flushBarCopyMessage(
-                              "Your email address has been copied to clipboard ",
+                              "Địa chỉ email của bạn đã được sao chép vào bộ nhớ tạm",
                               context);
                         });
                       },
@@ -207,7 +207,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Name",
+                    "Tên người dùng",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w400,
@@ -228,7 +228,7 @@ class _ProfileViewState extends State<ProfileView> {
                   InkWell(
                       onTap: () async {
                         String? result = await _showTextInputDialog(
-                            context, "Adjust name", name, email);
+                            context, "Thay đổi tên người dùng", name, email);
                         _textFieldController.value =
                             TextEditingValue(text: result ?? "");
                         if (result != null) {
@@ -248,7 +248,7 @@ class _ProfileViewState extends State<ProfileView> {
                               name = result;
                             });
                             Utils.flushBarSuccessMessage(
-                                "Update completed", context);
+                                "Cập nhật thành công tên người dùng thành công", context);
                           }).onError((error, stackTrace) =>
                                   Utils.flushBarErrorMessage(
                                       error.toString(), context));
@@ -262,7 +262,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Date created",
+                    "Ngày đăng ký",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w400,
@@ -291,7 +291,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               const SizedBox(height: 16),
               const Text(
-                "Personal Information",
+                "Thông tin người dùng",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -302,7 +302,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "User ID",
+                    "Mã người dùng",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w400,
@@ -324,7 +324,7 @@ class _ProfileViewState extends State<ProfileView> {
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: id)).then((_) {
                           Utils.flushBarCopyMessage(
-                              "Your id has been copied to clipboard ", context);
+                              "Mã người dùng đã được sao chép vào bộ nhớ tạm", context);
                         });
                       },
                       child: const Icon(Iconsax.copy))
@@ -335,7 +335,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Phone",
+                    "Số điện thoại",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w400,
@@ -357,7 +357,7 @@ class _ProfileViewState extends State<ProfileView> {
                         // await _showTextInputDialog(context,"Adjust phone number", phoneNumber,email);
 
                         String? result = await _showTextInputDialog(
-                            context, "Adjust Phone Number", phoneNumber, email);
+                            context, "Thay đổi số điện thoại", phoneNumber, email);
                         if (result != null) {
                           Map dataUpdate = {
                             'id': id,
@@ -375,7 +375,7 @@ class _ProfileViewState extends State<ProfileView> {
                               phoneNumber = result;
                             });
                             Utils.flushBarSuccessMessage(
-                                "Update completed", context);
+                                "Cập nhật số điện thoại thành công", context);
                           }).onError((error, stackTrace) =>
                                   Utils.flushBarErrorMessage(
                                       error.toString(), context));
@@ -389,7 +389,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Gender",
+                    "Giới tính",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w400,
@@ -411,7 +411,7 @@ class _ProfileViewState extends State<ProfileView> {
                       onTap: () async {
                         // await _showTextInputDialog(context, "Select your gender", gender);
                         String? result = await _showTextInputDialogDropDown(
-                            context, "Select your gender", gender);
+                            context, "Chọn giới tính", gender);
                         if (result != null) {
                           Map dataUpdate = {
                             'id': id,
@@ -429,7 +429,7 @@ class _ProfileViewState extends State<ProfileView> {
                               gender = result;
                             });
                             Utils.flushBarSuccessMessage(
-                                "Update completed", context);
+                                "Cập nhật giới tính thành công", context);
                           }).onError((error, stackTrace) =>
                                   Utils.flushBarErrorMessage(
                                       error.toString(), context));
@@ -443,7 +443,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Date of birth",
+                    "Ngày sinh",
                     style: TextStyle(
                         color: Colors.grey[500],
                         fontWeight: FontWeight.w400,
@@ -481,7 +481,7 @@ class _ProfileViewState extends State<ProfileView> {
                     borderRadius: BorderRadius.circular(8)),
                 child: const Center(
                   child: Text(
-                    "Close Account",
+                    "Khóa tài khoản",
                     style: TextStyle(color: Colors.red),
                   ),
                 ),

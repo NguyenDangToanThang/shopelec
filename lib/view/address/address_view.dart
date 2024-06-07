@@ -11,7 +11,7 @@ class AddressView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Addresses",
+            "Danh sách địa chỉ",
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),

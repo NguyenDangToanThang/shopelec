@@ -8,7 +8,7 @@ class AddressAddNew extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add New Address"),
+        title: const Text("Thêm địa chỉ mới"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -18,11 +18,11 @@ class AddressAddNew extends StatelessWidget {
             children: [
               TextFormField(
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Iconsax.user), labelText: "Name")),
+                      prefixIcon: Icon(Iconsax.user), labelText: "Tên người nhận")),
               const SizedBox(height: 16),
               TextFormField(
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Iconsax.user), labelText: "Phone Number")),
+                      prefixIcon: Icon(Iconsax.user), labelText: "Số điện thoại")),
             ],
           )),
         ),

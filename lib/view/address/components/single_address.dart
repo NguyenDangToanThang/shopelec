@@ -49,7 +49,7 @@ class SingleAddress extends StatelessWidget {
                   height: 4,
                 ),
                 const Text(
-                  "82356 Timmy Coves, South Liana, Maine, 87665, USA",
+                  "KHC 8, Liên Bảo , TP Vĩnh Yên , Vĩnh Phúc",
                   softWrap: true,
                 ),
               ],

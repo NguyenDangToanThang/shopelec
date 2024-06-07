@@ -22,7 +22,7 @@ class BagTotalCheckout extends StatelessWidget {
             height: 12,
           ),
           Text(
-            "Bag total",
+            "Tổng tiền",
             style: Theme.of(context)
                 .textTheme
                 .titleMedium!
@@ -34,7 +34,7 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Total MRP",
+                "Tổng tiền gốc",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
@@ -42,7 +42,7 @@ class BagTotalCheckout extends StatelessWidget {
               ),
               const Spacer(),
               const Text(
-                "\$22000.0",
+                "22000.0 VNĐ",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -56,7 +56,7 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Total Discount",
+                "Tổng tiền giảm giá",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
@@ -64,7 +64,7 @@ class BagTotalCheckout extends StatelessWidget {
               ),
               const Spacer(),
               const Text(
-                "-" "\$2200.0",
+                "-" "2200.0 VNĐ",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -78,7 +78,7 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Selling Price",
+                "Giá bán gốc",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
@@ -100,7 +100,7 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Shipping Fee",
+                "Phí vận chuyển",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
@@ -108,7 +108,7 @@ class BagTotalCheckout extends StatelessWidget {
               ),
               const Spacer(),
               const Text(
-                "Free",
+                "Miễn phí",
                 style: TextStyle(
                     color: Colors.green,
                     fontSize: 16,
@@ -130,7 +130,7 @@ class BagTotalCheckout extends StatelessWidget {
           const Row(
             children: [
               Text(
-                "Amount Payable",
+                "Số tiền phải trả",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -161,7 +161,7 @@ class BagTotalCheckout extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5)),
               child: const Center(
                   child: Text(
-                "Checkout",
+                "Đặt hàng",
                 style: TextStyle(color: Colors.white),
               )),
             ),

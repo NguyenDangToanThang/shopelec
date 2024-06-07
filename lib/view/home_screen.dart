@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shopelec/view/tabs/cart/cart_view.dart';
 import 'package:shopelec/view/tabs/favorite/favorite_view.dart';
 import 'package:shopelec/view/tabs/home/home_view.dart';
 import 'package:shopelec/view/tabs/setting/setting_view.dart';
@@ -33,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final tabs = [
     const HomeView(),
     const StoreView(),
-    const CartView(),
+    // const CartView(),
     const FavoriteView(),
     const SettingView()
   ];
@@ -58,23 +57,23 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedItemColor: Colors.blue,
           items: const [
             BottomNavigationBarItem(
-                label: "Home",
+                label: "Trang chủ",
                 icon: Icon(Iconsax.home),
             ),
             BottomNavigationBarItem(
-                label: "Store",
+                label: "Cửa hàng",
                 icon: Icon(Iconsax.shop),
             ),
+            // BottomNavigationBarItem(
+            //     label: "Giỏ hàng",
+            //     icon: Icon(Iconsax.shopping_cart),
+            // ),
             BottomNavigationBarItem(
-                label: "Cart",
-                icon: Icon(Iconsax.shopping_cart),
-            ),
-            BottomNavigationBarItem(
-                label: "Favorite",
+                label: "Yêu thích",
                 icon: Icon(Iconsax.favorite_chart),
             ),
             BottomNavigationBarItem(
-                label: "Profile",
+                label: "Hồ sơ",
                 icon: Icon(Iconsax.profile_2user),
             ),
           ],

@@ -66,7 +66,9 @@ class AuthViewModel with ChangeNotifier {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      dynamic response = await _myRepo.getMyInfoApi(email).timeout(const Duration(seconds: 10));
+      dynamic response = await _myRepo
+          .getMyInfoApi(email)
+          .timeout(const Duration(seconds: 10));
 
       logger.i(response);
 
@@ -77,7 +79,8 @@ class AuthViewModel with ChangeNotifier {
       setLoading(false);
       // Utils.flushBarErrorMessage(error.message.toString(), context);
       if (e.code == "invalid-credential") {
-        Utils.flushBarErrorMessage("Invalid email or password", context);
+        Utils.flushBarErrorMessage(
+            "Tài khoản hoặc mật khẩu không chính xác", context);
       } else {
         Utils.flushBarErrorMessage(e.code.toString(), context);
       }
@@ -94,15 +97,15 @@ class AuthViewModel with ChangeNotifier {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       setSignUpLoading(false);
-      Utils.flushBarSuccessMessage("Register Successfully", context);
+      Utils.flushBarSuccessMessage("Đăng ký thành công", context);
     } on FirebaseAuthException catch (e) {
       setSignUpLoading(false);
       if (e.code == "email-already-in-use") {
-        Utils.flushBarErrorMessage("Email already exists", context);
+        Utils.flushBarErrorMessage("Tài khoản đã tồn tại", context);
       }
     } on Exception catch (e) {
       setSignUpLoading(false);
-      Utils.flushBarErrorMessage(e.toString(), context);
+      Utils.flushBarErrorMessage("Tài khoản đã tồn tại", context);
     }
   }
 

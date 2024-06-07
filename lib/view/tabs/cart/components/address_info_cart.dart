@@ -28,7 +28,7 @@ class AddressInfoCart extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text("Shipping Address",
+                    Text("Địa chỉ giao hàng",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
@@ -41,7 +41,7 @@ class AddressInfoCart extends StatelessWidget {
                         Navigator.pushNamed(context, RoutesName.address);
                       },
                       child: const Text(
-                        "Change",
+                        "Thay đổi",
                         style: TextStyle(color: Colors.blueAccent),
                       ),
                     ),
@@ -51,7 +51,7 @@ class AddressInfoCart extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Deliver to Atomic",
+                  "Vận chuyển tới Nguyễn Thắng",
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -87,7 +87,7 @@ class AddressInfoCart extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        "F8/2, Islamabad, Federal 48000, Pakistan, F8/2, Islamabad, Federal 48000, Pakistan",
+                        "KHC 8 , phường Liên Bảo , TP Vĩnh Yên , Tỉnh Vĩnh Phúc",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

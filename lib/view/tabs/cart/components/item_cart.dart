@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:shopelec/model/cart.dart';
+import 'package:input_quantity/input_quantity.dart';
 
-class ItemCart extends StatelessWidget {
+class ItemCart extends StatefulWidget {
   const ItemCart({super.key, required this.cart, this.onTap});
 
   final Cart cart;
   final void Function()? onTap;
 
   @override
+  State<ItemCart> createState() => _ItemCartState();
+}
+
+class _ItemCartState extends State<ItemCart> {
+  @override
   Widget build(BuildContext context) {
-    double priceDiscount = cart.price - cart.price * cart.discount / 100;
-    double price = cart.price;
-    int discount = cart.discount;
-    int stock = cart.stock;
+    double priceDiscount = widget.cart.product.price -
+        widget.cart.product.price * widget.cart.product.discount / 100;
+    double price = widget.cart.product.price;
+    int discount = widget.cart.product.discount;
+    int stock = widget.cart.product.quantity;
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -23,7 +29,7 @@ class ItemCart extends StatelessWidget {
             height: 180,
             child: Center(
               child: Image.network(
-                cart.imageUrl,
+                widget.cart.product.image_url,
                 fit: BoxFit.cover,
                 height: 130,
                 width: 140,
@@ -38,7 +44,7 @@ class ItemCart extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    cart.title,
+                    widget.cart.product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -51,18 +57,18 @@ class ItemCart extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "\$$priceDiscount",
+                        "$priceDiscount",
                         style: const TextStyle(
-                            fontSize: 15,
+                            fontSize: 13,
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "\$$price",
+                        "$price",
                         style: TextStyle(
                           decoration: TextDecoration.lineThrough,
-                          fontSize: 14,
+                          fontSize: 11,
                           color: Colors.grey[500],
                           fontWeight: FontWeight.w400,
                         ),
@@ -86,7 +92,7 @@ class ItemCart extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "Only $stock left",
+                    "Còn $stock",
                     style: const TextStyle(
                         color: Colors.redAccent,
                         fontWeight: FontWeight.w400,
@@ -97,42 +103,13 @@ class ItemCart extends StatelessWidget {
                     height: 35,
                     child: Row(
                       children: [
-                        Container(
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey)),
-                          child: const Row(
-                            children: [
-                              SizedBox(
-                                width: 4,
-                              ),
-                              SizedBox(
-                                  width: 35,
-                                  child: Icon(
-                                    Iconsax.minus,
-                                    color: Colors.grey,
-                                    size: 20,
-                                  )),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Text("1"),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              SizedBox(
-                                  width: 35,
-                                  child: Icon(
-                                    Iconsax.add,
-                                    color: Colors.grey,
-                                    size: 20,
-                                  )),
-                              SizedBox(
-                                width: 4,
-                              ),
-                            ],
+                        Expanded(
+                          child: InputQty(
+                            maxVal: widget.cart.product.quantity,
+                            initVal: widget.cart.quantity,
+                            steps: 1,
+                            onQtyChanged: (val) {},
+                            
                           ),
                         ),
                         const SizedBox(
@@ -172,7 +149,6 @@ class ItemCart extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );

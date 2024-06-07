@@ -19,7 +19,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
   }
@@ -30,7 +29,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Forgot Password',
+          'Quên mật khẩu',
         ),
         centerTitle: true,
       ),
@@ -40,8 +39,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Don't worry sometimes people can forget too, enter your email "
-                  "and we will send you a password reset link.",
+              "Đừng lo lắng đôi khi mọi người có thể quên, hãy nhập email của bạn " 
+              "và chúng tôi sẽ gửi cho bạn liên kết đặt lại mật khẩu.",
               style: Theme.of(context).textTheme.labelLarge,
             ),
             SizedBox(height: height * 0.03),
@@ -59,9 +58,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 ),
                 validator: (value) {
                   if(value == null || value.isEmpty) {
-                    return "Please enter E-mail";
+                    return "Hãy nhập E-mail";
                   } else if(!EmailValidator.validate(value)) {
-                    return "Invalid E-mail";
+                    return "E-mail không hợp lệ";
                   }
                   return null;
                 },
@@ -69,7 +68,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             ),
             SizedBox(height: height * 0.02),
             RoundButton(
-                title: 'Submit',
+                title: 'Gửi',
                 onPress: () {
                   if(_formKey.currentState!.validate()) {
                     Map data = {
@@ -93,7 +92,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     }
                   },
                   child: const Text(
-                    'Resend Email',
+                    'Gửi lại',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 14

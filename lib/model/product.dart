@@ -30,8 +30,6 @@ class Product {
     required this.category,
     required this.specifications,
   });
-  
-  
 
   Product copyWith({
     int? id,
@@ -63,7 +61,7 @@ class Product {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id ,
+      'id': id,
       'name': name,
       'description': description,
       'price': price,
@@ -87,15 +85,21 @@ class Product {
       quantity: map['quantity'] as int,
       image_url: map['image_url'] as String,
       status: map['status'] as String,
-      brand: Brand.fromMap(map['brand'] as Map<String,dynamic>),
-      category: shopelec_category.Category.fromMap(map['category'] as Map<String,dynamic>),
-      specifications: List<ProductSpecification>.from((map['specifications'] as List<dynamic>).map<ProductSpecification>((x) => ProductSpecification.fromMap(x as Map<String,dynamic>),),),
+      brand: Brand.fromMap(map['brand'] as Map<String, dynamic>),
+      category: shopelec_category.Category.fromMap(
+          map['category'] as Map<String, dynamic>),
+      specifications: List<ProductSpecification>.from(
+        (map['specifications'] as List<dynamic>).map<ProductSpecification>(
+          (x) => ProductSpecification.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Product.fromJson(String source) => Product.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Product.fromJson(String source) =>
+      Product.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -105,33 +109,32 @@ class Product {
   @override
   bool operator ==(covariant Product other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.name == name &&
-      other.description == description &&
-      other.price == price &&
-      other.discount == discount &&
-      other.quantity == quantity &&
-      other.image_url == image_url &&
-      other.status == status &&
-      other.brand == brand &&
-      other.category == category &&
-      listEquals(other.specifications, specifications);
+
+    return other.id == id &&
+        other.name == name &&
+        other.description == description &&
+        other.price == price &&
+        other.discount == discount &&
+        other.quantity == quantity &&
+        other.image_url == image_url &&
+        other.status == status &&
+        other.brand == brand &&
+        other.category == category &&
+        listEquals(other.specifications, specifications);
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      name.hashCode ^
-      description.hashCode ^
-      price.hashCode ^
-      discount.hashCode ^
-      quantity.hashCode ^
-      image_url.hashCode ^
-      status.hashCode ^
-      brand.hashCode ^
-      category.hashCode ^
-      specifications.hashCode;
+        name.hashCode ^
+        description.hashCode ^
+        price.hashCode ^
+        discount.hashCode ^
+        quantity.hashCode ^
+        image_url.hashCode ^
+        status.hashCode ^
+        brand.hashCode ^
+        category.hashCode ^
+        specifications.hashCode;
   }
 }

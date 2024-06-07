@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
 import 'package:shopelec/view/tabs/home/components/list_view_categories.dart';
 import 'package:shopelec/view/tabs/home/components/search_product.dart';
@@ -20,11 +19,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   List<Map<String, dynamic>> categories = [
     {'title': 'Laptop', 'image': 'assets/images/categories/laptop.png'},
-    {'title': 'Phone', 'image': 'assets/images/categories/iphone.png'},
-    {'title': 'Headphone', 'image': 'assets/images/categories/headphones.png'},
-    {'title': 'Camera', 'image': 'assets/images/categories/camera.png'},
-    {'title': 'Keyboard', 'image': 'assets/images/categories/keyboard.png'},
-    {'title': 'Mouse', 'image': 'assets/images/categories/mouse.png'},
+    {'title': 'Điện thoại', 'image': 'assets/images/categories/iphone.png'},
+    {'title': 'Tai nghe', 'image': 'assets/images/categories/headphones.png'},
+    {'title': 'Máy ảnh', 'image': 'assets/images/categories/camera.png'},
+    {'title': 'Bàn phím', 'image': 'assets/images/categories/keyboard.png'},
+    {'title': 'Chuột', 'image': 'assets/images/categories/mouse.png'},
   ];
 
   late Future<List<Product>> _products;
@@ -32,7 +31,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    final productViewModel = Provider.of<ProductViewModel>(context, listen: false);
+    final productViewModel =
+        Provider.of<ProductViewModel>(context, listen: false);
     _products = productViewModel.getAllProducts();
   }
 
@@ -68,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text('Popular Categories',
+                  const Text('Danh mục nổi bật',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       maxLines: 1,
@@ -79,7 +79,7 @@ class _HomeViewState extends State<HomeView> {
                     child: const Row(
                       children: [
                         Text(
-                          'More',
+                          'Tất cả',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.0,
@@ -103,15 +103,17 @@ class _HomeViewState extends State<HomeView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   const Text(
-                    'Top Deals on Electronics',
+                    'Sản phẩm nổi bật',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, RoutesName.products);
+                    },
                     child: const Row(
                       children: [
                         Text(
-                          'More',
+                          'Tất cả',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.0,
@@ -132,7 +134,7 @@ class _HomeViewState extends State<HomeView> {
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
                       List<Product> products = snapshot.data!;
-                      return GridProduct(products: products);
+                      return GridProduct(products: products, length: 4);
                     } else if (snapshot.hasError) {
                       return Text(snapshot.error.toString()); // display error
                     } else {

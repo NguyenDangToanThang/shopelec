@@ -8,4 +8,6 @@ class RoutesName {
   static const String profile = 'profile_view';
   static const String address = 'address_view';
   static const String addressAddNew = 'address_add_new';
+  static const String products = 'products_view';
+  static const String cart = 'cart_view';
 }

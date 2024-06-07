@@ -109,9 +109,9 @@ class _LoginViewState extends State<LoginView> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please enter E-mail";
+                          return "Hãy nhập E-mail";
                         } else if (!EmailValidator.validate(value)) {
-                          return "Invalid E-mail";
+                          return "E-mail không hợp lệ";
                         }
                         return null;
                       },
@@ -129,8 +129,8 @@ class _LoginViewState extends State<LoginView> {
                             obscureText: _obsecurePassword.value,
                             obscuringCharacter: "*",
                             decoration: InputDecoration(
-                                hintText: 'Password',
-                                labelText: 'Password',
+                                hintText: 'Mật khẩu',
+                                labelText: 'Mật khẩu',
                                 border: const OutlineInputBorder(),
                                 prefixIcon: const Icon(Icons.lock),
                                 suffixIcon: InkWell(
@@ -145,9 +145,9 @@ class _LoginViewState extends State<LoginView> {
                                 )),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Please enter password";
+                                return "Hãy nhập mật khẩu";
                               } else if (value.length < 6) {
-                                return "Please enter 6 digit password";
+                                return "Mật khẩu phải có ít nhất 6 ký tự";
                               }
                               return null;
                             },
@@ -164,7 +164,7 @@ class _LoginViewState extends State<LoginView> {
                             });
                           },
                         ),
-                        const Text('Remember Me'),
+                        const Text('Lưu đăng nhập'),
                         const Spacer(),
                         InkWell(
                           onTap: () {
@@ -172,7 +172,7 @@ class _LoginViewState extends State<LoginView> {
                                 context, RoutesName.forgotPassword);
                           },
                           child: const Text(
-                            'Forgot Password?',
+                            'Quên mật khẩu?',
                             style:
                                 TextStyle(color: Colors.black54, fontSize: 12),
                           ),
@@ -184,7 +184,7 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
             RoundButton(
-                title: "Login",
+                title: "Đăng nhập",
                 loading: authViewModel.loading,
                 onPress: () {
                   if (_formKey.currentState!.validate()) {
@@ -205,10 +205,10 @@ class _LoginViewState extends State<LoginView> {
             RichText(
                 text: TextSpan(children: [
               const TextSpan(
-                  text: "Don't have an account? ",
+                  text: "Bạn chưa có tài khoản? ",
                   style: TextStyle(color: Colors.black)),
               TextSpan(
-                text: "Sign up",
+                text: "Đăng ký",
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     Navigator.pushReplacementNamed(context, RoutesName.signup);

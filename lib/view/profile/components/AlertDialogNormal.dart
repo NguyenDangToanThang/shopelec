@@ -39,7 +39,7 @@ class AlertDialogNormal extends StatelessWidget {
               shape: const RoundedRectangleBorder(
                   side: BorderSide(color: Colors.white38))
           ),
-          child: const Text("Cancel",style: TextStyle(color: Colors.white),),
+          child: const Text("Đóng",style: TextStyle(color: Colors.white),),
           onPressed: () => Navigator.pop(context),
         ),
 
@@ -49,7 +49,7 @@ class AlertDialogNormal extends StatelessWidget {
               shape: const RoundedRectangleBorder(
                   side: BorderSide(color: Colors.white38))
           ),
-          child: const Text('OK', style: TextStyle(color: Colors.white),),
+          child: const Text('Lưu', style: TextStyle(color: Colors.white),),
           onPressed: () => Navigator.pop(context, _textFieldController.text),
         ),
       ],

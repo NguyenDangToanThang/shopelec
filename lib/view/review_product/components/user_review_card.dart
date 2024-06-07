@@ -31,7 +31,7 @@ class _UserReviewCardState extends State<UserReviewCard> {
     final myMenuItems = [
       const PopupMenuItem<int>(
         value: 1,
-        child: Text('Report'),
+        child: Text('Báo cáo'),
       ),
     ];
     return Column(
@@ -94,8 +94,8 @@ class _UserReviewCardState extends State<UserReviewCard> {
                 widget.review,
                 trimLines: 1,
                 trimMode: TrimMode.Line,
-                trimExpandedText: ' less',
-                trimCollapsedText: 'more',
+                trimExpandedText: ' Rút gọn',
+                trimCollapsedText: 'Thêm',
                 moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
                 lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
                 textAlign: TextAlign.left,

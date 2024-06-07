@@ -35,7 +35,6 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -66,7 +65,7 @@ class _SignUpViewState extends State<SignUpView> {
                     fit: BoxFit.cover),
                 SizedBox(height: height * 0.01,),
                 const Text(
-                  "Create an account",
+                  "Tạo tài khoản",
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold
@@ -84,7 +83,7 @@ class _SignUpViewState extends State<SignUpView> {
                             keyboardType: TextInputType.text,
                             focusNode: nameFocusNode,
                             decoration: const InputDecoration(
-                                labelText: 'Name',
+                                labelText: 'Tên người dùng',
                                 border: OutlineInputBorder(),
                                 prefixIcon: Icon(Icons.person_2)
                             ),
@@ -93,7 +92,7 @@ class _SignUpViewState extends State<SignUpView> {
                             },
                             validator: (value) {
                               if(value == null || value.isEmpty) {
-                                return "Please enter name";
+                                return "Hãy nhập tên người dùng";
                               }
                               return null;
                             },
@@ -113,9 +112,9 @@ class _SignUpViewState extends State<SignUpView> {
                             },
                             validator: (value) {
                               if(value == null || value.isEmpty) {
-                                return "Please enter email";
+                                return "Hãy nhập E-mail";
                               } else if(!EmailValidator.validate(value)) {
-                                return "Invalid email";
+                                return "E-mail không hợp lệ";
                               }
                               return null;
                             },
@@ -131,7 +130,7 @@ class _SignUpViewState extends State<SignUpView> {
                                   obscureText: _obsecurePassword.value,
                                   obscuringCharacter: "*",
                                   decoration: InputDecoration(
-                                      labelText: 'Password',
+                                      labelText: 'Mật khẩu',
                                       prefixIcon: const Icon(Icons.lock),
                                       border: const OutlineInputBorder(),
                                       suffixIcon: InkWell(
@@ -148,9 +147,9 @@ class _SignUpViewState extends State<SignUpView> {
                                   },
                                   validator: (value) {
                                     if(value == null || value.isEmpty) {
-                                      return "Please enter password";
+                                      return "Hãy nhập mật khẩu";
                                     } else if(value.length < 6) {
-                                      return "Please enter 6 digit password";
+                                      return "Mật khẩu phải có ít nhất 6 ký tự";
                                     }
                                     return null;
                                   },
@@ -162,13 +161,13 @@ class _SignUpViewState extends State<SignUpView> {
                             keyboardType: TextInputType.number,
                             focusNode: phoneNumberFocusNode,
                             decoration: const InputDecoration(
-                                labelText: 'Phone number',
+                                labelText: 'Số điện thoại',
                                 border: OutlineInputBorder(),
                                 prefixIcon: Icon(Icons.phone)
                             ),
                             validator: (value) {
                               if(value == null || value.isEmpty) {
-                                return "Please enter number";
+                                return "Hãy nhập số điện thoại";
                               }
                               return null;
                             },
@@ -188,14 +187,14 @@ class _SignUpViewState extends State<SignUpView> {
                                   text: TextSpan(
                                       children: [
                                         const TextSpan(
-                                            text: "I agree to the ",
+                                            text: "Tôi đồng ý với ",
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 13
                                             )
                                         ),
                                         TextSpan(
-                                          text: "Terms ",
+                                          text: "Điều khoản ",
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {},
                                           style: const TextStyle(
@@ -204,14 +203,14 @@ class _SignUpViewState extends State<SignUpView> {
                                           ),
                                         ),
                                         const TextSpan(
-                                            text: "and ",
+                                            text: "và ",
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 13
                                             )
                                         ),
                                         TextSpan(
-                                          text: "Privacy Policy",
+                                          text: "Chính sách",
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {},
                                           style: const TextStyle(
@@ -229,7 +228,7 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                 ),
                 RoundButton(
-                    title: "Sign Up",
+                    title: "Đăng ký",
                     loading: authViewModel.signUploading,
                     onPress: () {
                       if(_formKey.currentState!.validate()) {
@@ -247,7 +246,7 @@ class _SignUpViewState extends State<SignUpView> {
                           authViewModel.signUp(data, context);
                           // authViewModel.signUpFirebase(email, password, context);
                         } else {
-                          Utils.flushBarErrorMessage("You cannot register if you do not agree to our terms", context);
+                          Utils.flushBarErrorMessage("Bạn không thể đăng ký nếu bạn không đồng ý với các điều khoản của chúng tôi", context);
                         }
                       }
                     }),
@@ -256,13 +255,13 @@ class _SignUpViewState extends State<SignUpView> {
                     text: TextSpan(
                         children: [
                           const TextSpan(
-                            text: "Already have an account? ",
+                            text: "Đã có tài khoản? ",
                             style: TextStyle(
                               color: Colors.black
                             )
                           ),
                           TextSpan(
-                            text: "Login",
+                            text: "Đăng nhập",
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushReplacementNamed(context, RoutesName.login);

@@ -30,7 +30,7 @@ class _SettingViewState extends State<SettingView> {
         title: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text(
-              "Account",
+              "Tài khoản",
             style: Theme.of(context).textTheme.headlineSmall!.apply(color: Colors.black),
           ),
         ),
@@ -80,41 +80,39 @@ class _SettingViewState extends State<SettingView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      'Account setting',
+                      'Thiết lập tài khoản',
                       style: Theme.of(context).textTheme.titleMedium
                   ),
                   const SizedBox(height: 12,),
                   ListTileAccountSetting(
-                      text: "My Addresses",
-                      subText: "Set shopping delivery address",
+                      text: "Danh sách địa chỉ",
+                      subText: "Thiết lập địa chỉ nhận hàng",
                       iconsax: const Icon(Iconsax.home),
                       onTap: () => Navigator.pushNamed(context, RoutesName.address),
                   ),
                   const SizedBox(height: 12,),
                   ListTileAccountSetting(
-                      text: "My Cart",
-                      subText: "Add, remove products and move to checkout",
+                      text: "Giỏ hàng",
+                      subText: "Thêm, xóa sản phẩm vào giỏ hàng và đặt hàng",
                       iconsax: const Icon(Iconsax.shopping_cart),
-                      onTap: () => {
-                        
-                      },
+                      onTap: () => Navigator.pushNamed(context, RoutesName.cart),
                   ),
                   const SizedBox(height: 12,),
                   const ListTileAccountSetting(
-                      text: "My Orders",
-                      subText: "In-progress and Completed Orders",
+                      text: "Hóa đơn",
+                      subText: "Danh sách đơn hàng đang thực hiện và đã hoàn thành",
                       iconsax: Icon(Iconsax.bag_tick),
                   ),
                   const SizedBox(height: 12,),
                   const ListTileAccountSetting(
-                    text: "My Favorites",
-                    subText: "Save favorite products",
+                    text: "Yêu thích",
+                    subText: "Lưu các sản phẩm yêu thích",
                     iconsax: Icon(Iconsax.favorite_chart),
                   ),
                   const SizedBox(height: 12,),
                   const ListTileAccountSetting(
-                    text: "Term and policy",
-                    subText: "A Terms and Conditions agreement",
+                    text: "Điều khoản và chính sách",
+                    subText: "Thỏa thuận về điều khoản và chính sách",
                     iconsax: Icon(Iconsax.pen_tool),
                   ),
                   const SizedBox(height: 12,),
@@ -132,7 +130,7 @@ class _SettingViewState extends State<SettingView> {
                         side: const BorderSide(width: 1.0, color: Colors.black),
                       ),
                       child: Text(
-                          'Logout',
+                          'Đăng xuất',
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),

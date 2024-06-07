@@ -17,7 +17,7 @@ class _ProductReviewsScreenState extends State<ProductReviewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reviews & Ratings'),
+        title: const Text('Đánh giá & xếp hạng'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -32,8 +32,8 @@ class _ProductReviewsScreenState extends State<ProductReviewsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Ratings and reviews are verified and are from people who use'
-                  ' the same type of device that you use'),
+              const Text('Xếp hạng và đánh giá được xác minh và đến từ những '
+              'người sử dụng cùng loại thiết bị mà bạn sử dụng'),
               const SizedBox(height: 8),
               //Remember extract to widget ok?
               Row(

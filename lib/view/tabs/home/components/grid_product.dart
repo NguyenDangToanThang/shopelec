@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
+import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:shopelec/view_model/cart_view_model.dart';
 
 class GridProduct extends StatefulWidget {
-  const GridProduct({super.key, required this.products});
+  const GridProduct({super.key, required this.products, required this.length});
 
   final List<Product> products;
+  final int length;
 
   @override
   State<GridProduct> createState() => _GridProductState();
 }
 
 class _GridProductState extends State<GridProduct> {
+  final logger = Logger();
+
   @override
   Widget build(BuildContext context) {
+    final cartViewModel = Provider.of<CartViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return GridView.builder(
-        itemCount: widget.products.length,
+        itemCount: widget.length,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,10 +50,10 @@ class _GridProductState extends State<GridProduct> {
                     ),
                     Center(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(120),
+                        borderRadius: BorderRadius.circular(10),
                         child: Image.network(
                           product.image_url,
-                          width: 120,
+                          width: 100,
                           height: 120,
                           fit: BoxFit.cover,
                         ),
@@ -102,7 +111,7 @@ class _GridProductState extends State<GridProduct> {
                           ),
                           const Spacer(),
                           Text(
-                            "${product.quantity} left",
+                            "Còn ${product.quantity}",
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                         ],
@@ -138,7 +147,7 @@ class _GridProductState extends State<GridProduct> {
                     Padding(
                       padding: const EdgeInsets.only(left: 16),
                       child: Text(
-                        '\$${product.price * product.discount / 100}',
+                        '${product.price - product.price * product.discount / 100}',
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -148,36 +157,53 @@ class _GridProductState extends State<GridProduct> {
                     ),
                   ],
                 ),
-                // Positioned(
-                //     top: 12,
-                //     right: 12,
-                //     child: GestureDetector(
-                //       onTap: () {
-                //         setState(() {});
-                //       },
-                //       child: Row(
-                //         children: [
-                //           product.isFavorited
-                //               ? const Icon(
-                //                   Icons.favorite_border,
-                //                   color: Colors.grey,
-                //                 )
-                //               : const Icon(
-                //                   Icons.favorite,
-                //                   color: Colors.redAccent,
-                //                 )
-                //         ],
-                //       ),
-                //     )),
-                const Align(
+                Positioned(
+                    top: 8,
+                    right: 6,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {});
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.favorite_border,
+                            color: Colors.grey,
+                          )
+                          // product.isFavorited
+                          //     ? const Icon(
+                          //         Icons.favorite_border,
+                          //         color: Colors.grey,
+                          //       )
+                          //     : const Icon(
+                          //         Icons.favorite,
+                          //         color: Colors.redAccent,
+                          //       )
+                        ],
+                      ),
+                    )),
+                Align(
                     alignment: Alignment.bottomRight,
                     child: Material(
                       color: Colors.black,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(16),
                           bottomRight: Radius.circular(16)),
                       child: InkWell(
-                        child: Padding(
+                        onTap: () {
+                          // Cart cart = Cart(
+                          //     email: authViewModel.infoUserCurrent['email'],
+                          //     product: product,
+                          //     quantity: 1);
+                          Map<String, dynamic> cart = {
+                            'email': authViewModel.infoUserCurrent['email'],
+                            'product_id': product.id.toString(),
+                            'quantity': '1'
+                          };
+                          logger.i(cart);
+                          cartViewModel.addToCart(cart, context);
+                        },
+                        child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.add,

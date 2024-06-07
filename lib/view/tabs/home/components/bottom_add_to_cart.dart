@@ -28,7 +28,7 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
                 ),
                 child:  const Center(
                   child: Text(
-                    'Buy Now',
+                    'Mua ngay',
                     style: TextStyle(
                         color: Colors.white
                     ),
@@ -46,7 +46,7 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
               ),
               child:  const Center(
                 child: Text(
-                  'Add to Cart',
+                  'Thêm vào giỏ hàng',
                   style: TextStyle(
                       color: Colors.white
                   ),

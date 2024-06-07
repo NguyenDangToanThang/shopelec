@@ -6,6 +6,7 @@ import 'package:shopelec/utils/routes/routes.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shopelec/view_model/cart_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 void main() async {
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AuthViewModel()),
-          ChangeNotifierProvider(create: (_) => ProductViewModel())
+          ChangeNotifierProvider(create: (_) => ProductViewModel()),
+          ChangeNotifierProvider(create: (_) => CartViewModel()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

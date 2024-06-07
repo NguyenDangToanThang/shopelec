@@ -22,7 +22,7 @@ class SearchProduct extends StatelessWidget{
                 decoration: const InputDecoration(
                     border: InputBorder.none,
                     prefixIcon: Icon(Iconsax.search_favorite , color: Colors.grey,),
-                    hintText: 'Search product'
+                    hintText: 'Tìm kiếm sản phẩm'
                 ),
                 onSubmitted: (String value) {
 
