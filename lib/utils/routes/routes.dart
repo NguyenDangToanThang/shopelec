@@ -62,6 +62,7 @@ class Routes {
                 discount: 0,
                 image_url: "",
                 quantity: 0,
+                favorite: false,
                 status: "",
                 specifications: List.empty());
         return MaterialPageRoute(

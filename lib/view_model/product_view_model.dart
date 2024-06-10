@@ -25,25 +25,47 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteFavorite(int userId, int productId) async {
+    try {
+      await _myRepo.deleteFavorite(userId, productId);
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  Future<void> saveFavorite(int userId, int productId) async {
+    try {
+      Map<String, dynamic> data = {
+        "user_id": userId.toString(),
+        "product_id": productId.toString()
+      };
+      await _myRepo.saveFavorite(data);
+    } catch (e) {
+      logger.e(e);
+    }
+  }
 
   Future<List<Product>> getAllProducts(
       {int? categoryId,
+      int? userId,
       int? brandId,
       int page = 0,
       int size = 4,
       List<String>? sort}) async {
     try {
+      // ignore: prefer_typing_uninitialized_variables
       final jsonList;
       if (categoryId != null && brandId != null) {
         jsonList = await _myRepo.getAllProduct(
+            userId: userId,
             page: page,
             size: size,
             sort: ["id", "desc"],
             categoryId: categoryId,
             brandId: brandId);
       } else if (categoryId != null) {
-        logger.i("Hello");
         jsonList = await _myRepo.getAllProduct(
+            userId: userId,
             page: page,
             size: size,
             sort: ["id", "desc"],
@@ -51,22 +73,40 @@ class ProductViewModel with ChangeNotifier {
         logger.i("Json: $jsonList");
       } else if (brandId != null) {
         jsonList = await _myRepo.getAllProduct(
-            page: page, size: size, sort: ["id", "desc"], brandId: brandId);
+            userId: userId,
+            page: page,
+            size: size,
+            sort: ["id", "desc"],
+            brandId: brandId);
       } else {
-        jsonList = await _myRepo
-            .getAllProduct(page: page, size: size, sort: ["id", "desc"]);
+        jsonList = await _myRepo.getAllProduct(
+            userId: userId, page: page, size: size, sort: ["id", "desc"]);
       }
       List<Product> products = parseProducts(jsonList['products']);
-      if (products.isNotEmpty) {
-        // setproducts(products);
-      }
-      logger.i("Total products: ${jsonList['totalItems']}");
-      logger.i("Total pages: ${jsonList['totalPages']}");
-      logger.i("Current page: ${jsonList['currentPage']}");
+
+      // logger.i("Total products: ${jsonList['totalItems']}");
+      // logger.i("Total pages: ${jsonList['totalPages']}");
+      // logger.i("Current page: ${jsonList['currentPage']}");
+
       return products;
     } catch (e) {
       logger.e(e);
       throw Exception("Failed to fetch products: $e");
+    }
+  }
+
+  Future<List<Product>> getAllFavoriteProductByUserId(int userId) async {
+    try {
+      final jsonList = await _myRepo.getAllFavoriteByUserId(userId);
+      logger.i(jsonList[0]);
+      List<Product> productList = [];
+      for (var json in jsonList) {
+        productList.add(Product.fromMap(json['productResponse']));
+      }
+      // logger.i(productList);
+      return productList;
+    } catch (e) {
+      rethrow;
     }
   }
 

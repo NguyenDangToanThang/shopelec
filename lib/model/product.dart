@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shopelec/model/brand.dart';
@@ -14,6 +13,7 @@ class Product {
   final int quantity;
   final String image_url;
   final String status;
+  final bool favorite;
   final Brand brand;
   final shopelec_category.Category category;
   final List<ProductSpecification> specifications;
@@ -26,6 +26,7 @@ class Product {
     required this.quantity,
     required this.image_url,
     required this.status,
+    required this.favorite,
     required this.brand,
     required this.category,
     required this.specifications,
@@ -40,6 +41,7 @@ class Product {
     int? quantity,
     String? image_url,
     String? status,
+    bool? favorite,
     Brand? brand,
     shopelec_category.Category? category,
     List<ProductSpecification>? specifications,
@@ -53,6 +55,7 @@ class Product {
       quantity: quantity ?? this.quantity,
       image_url: image_url ?? this.image_url,
       status: status ?? this.status,
+      favorite: favorite ?? this.favorite,
       brand: brand ?? this.brand,
       category: category ?? this.category,
       specifications: specifications ?? this.specifications,
@@ -69,6 +72,7 @@ class Product {
       'quantity': quantity,
       'image_url': image_url,
       'status': status,
+      'favorite': favorite,
       'brand': brand.toMap(),
       'category': category.toMap(),
       'specifications': specifications.map((x) => x.toMap()).toList(),
@@ -85,6 +89,7 @@ class Product {
       quantity: map['quantity'] as int,
       image_url: map['image_url'] as String,
       status: map['status'] as String,
+      favorite: map['favorite'] as bool,
       brand: Brand.fromMap(map['brand'] as Map<String, dynamic>),
       category: shopelec_category.Category.fromMap(
           map['category'] as Map<String, dynamic>),
@@ -120,6 +125,7 @@ class Product {
         other.status == status &&
         other.brand == brand &&
         other.category == category &&
+        other.favorite == favorite &&
         listEquals(other.specifications, specifications);
   }
 
@@ -133,6 +139,7 @@ class Product {
         quantity.hashCode ^
         image_url.hashCode ^
         status.hashCode ^
+        favorite.hashCode ^
         brand.hashCode ^
         category.hashCode ^
         specifications.hashCode;

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shopelec/firebase_options.dart';
 import 'package:shopelec/utils/routes/routes.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
+import 'package:shopelec/view_model/address_view_model.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => AuthViewModel()),
           ChangeNotifierProvider(create: (_) => ProductViewModel()),
           ChangeNotifierProvider(create: (_) => CartViewModel()),
+          ChangeNotifierProvider(create: (_) => AddressViewModel())
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

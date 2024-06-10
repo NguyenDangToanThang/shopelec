@@ -1,8 +1,13 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopelec/model/product.dart';
+import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:shopelec/view_model/cart_view_model.dart';
 
 class BottomAddToCart extends StatefulWidget {
-  const BottomAddToCart({super.key});
+  const BottomAddToCart({super.key, required this.product});
+
+  final Product product;
 
   @override
   State<BottomAddToCart> createState() => _BottomAddToCartState();
@@ -11,6 +16,8 @@ class BottomAddToCart extends StatefulWidget {
 class _BottomAddToCartState extends State<BottomAddToCart> {
   @override
   Widget build(BuildContext context) {
+    final cartViewModel = Provider.of<CartViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -26,32 +33,35 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
                 decoration: const BoxDecoration(
                   color: Colors.blue,
                 ),
-                child:  const Center(
+                child: const Center(
                   child: Text(
                     'Mua ngay',
-                    style: TextStyle(
-                        color: Colors.white
-                    ),
+                    style: TextStyle(color: Colors.white),
                   ),
-                )
-            ),
+                )),
           ),
-
           Expanded(
             flex: 1,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                  color: Colors.black,
-              ),
-              child:  const Center(
-                child: Text(
-                  'Thêm vào giỏ hàng',
-                  style: TextStyle(
-                      color: Colors.white
+            child: GestureDetector(
+              onTap: () {
+                Map<String, dynamic> cart = {
+                  "product_id": widget.product.id,
+                  "user_id": authViewModel.infoUserCurrent['id'],
+                  "quantity": '1'
+                };
+                cartViewModel.addToCart(cart,context);
+              },
+              child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
                   ),
-                ),
-              )
+                  child: const Center(
+                    child: Text(
+                      'Thêm vào giỏ hàng',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )),
             ),
           )
         ],

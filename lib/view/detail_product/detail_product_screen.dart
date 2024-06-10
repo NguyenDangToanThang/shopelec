@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
+import 'package:shopelec/utils/utils.dart';
 import 'package:shopelec/view/tabs/home/components/bottom_add_to_cart.dart';
+import 'package:shopelec/view_model/auth_view_model.dart';
+import 'package:shopelec/view_model/product_view_model.dart';
 
 class DetailProductScreen extends StatefulWidget {
   const DetailProductScreen({super.key, required this.product});
@@ -16,8 +21,11 @@ class DetailProductScreen extends StatefulWidget {
 class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
+    final productViewModel = Provider.of<ProductViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
+    bool favorite = widget.product.favorite;
     return Scaffold(
-      bottomNavigationBar: const BottomAddToCart(),
+      bottomNavigationBar: BottomAddToCart(product: widget.product),
       appBar: AppBar(
         title: const Text("Chi tiết sản phẩm"),
         centerTitle: true,
@@ -129,14 +137,34 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                   const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(30)),
-                    child: const Icon(
-                      Icons.favorite_border,
-                      color: Colors.black,
+                  GestureDetector(
+                    onTap: () { 
+                      setState(() {
+                        if (favorite) {
+                        _dialogBuilder(context);
+                      } else {
+                        productViewModel
+                            .saveFavorite(authViewModel.infoUserCurrent['id'],
+                                widget.product.id)
+                            .then((_) => Utils.flushBarSuccessMessage("Đã thêm vào yêu thích", context));
+                      }
+                        favorite = !favorite;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(30)),
+                      child: favorite
+                          ? const Icon(
+                              Icons.favorite_outlined,
+                              color: Colors.redAccent,
+                            )
+                          : const Icon(
+                              Icons.favorite_border,
+                              color: Colors.black,
+                            ),
                     ),
                   )
                 ],
@@ -166,8 +194,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     widget.product.description,
                     trimLines: 3,
                     trimMode: TrimMode.Line,
-                    trimExpandedText: ' Less',
-                    trimCollapsedText: 'More',
+                    trimExpandedText: ' Rút gọn',
+                    trimCollapsedText: 'Xem thêm',
                     moreStyle: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -256,6 +284,44 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    final productViewModel =
+        Provider.of<ProductViewModel>(context, listen: false);
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Xác nhận'),
+          content: const Text('Xóa sản phẩm khỏi mục yêu thích ?'),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Hủy'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Xác nhận'),
+              onPressed: () {
+                productViewModel.deleteFavorite(
+                    authViewModel.infoUserCurrent['id'], widget.product.id);
+                // print(authViewModel.infoUserCurrent['id']);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

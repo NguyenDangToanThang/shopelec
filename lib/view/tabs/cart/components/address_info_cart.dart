@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:shopelec/model/address.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 
 class AddressInfoCart extends StatelessWidget {
   const AddressInfoCart({
     super.key,
+    required this.address,
   });
+
+  final Address address;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,8 @@ class AddressInfoCart extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.fromBorderSide(
-              BorderSide(color: Colors.grey.shade300))),
+          border:
+              Border.fromBorderSide(BorderSide(color: Colors.grey.shade300))),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,7 +55,7 @@ class AddressInfoCart extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Vận chuyển tới Nguyễn Thắng",
+                  "Vận chuyển tới ${address.name}",
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
@@ -68,9 +72,8 @@ class AddressInfoCart extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      "0387185045",
-                      style: TextStyle(
-                          color: Colors.grey[800], fontSize: 15),
+                      address.phone,
+                      style: TextStyle(color: Colors.grey[800], fontSize: 15),
                     )
                   ],
                 ),
@@ -87,11 +90,10 @@ class AddressInfoCart extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        "KHC 8 , phường Liên Bảo , TP Vĩnh Yên , Tỉnh Vĩnh Phúc",
+                        address.address,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Colors.grey[800], fontSize: 15),
+                        style: TextStyle(color: Colors.grey[800], fontSize: 15),
                       ),
                     )
                   ],

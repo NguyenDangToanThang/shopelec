@@ -33,7 +33,10 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    _products = productViewModel.getAllProducts();
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    int userId = authViewModel.infoUserCurrent['id'];
+    print(userId);
+    _products = productViewModel.getAllProducts(userId: userId);
   }
 
   @override

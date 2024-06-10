@@ -1,5 +1,5 @@
 class AppUrl {
-  static var baseUrl = 'http://192.168.238.189:8080/v1/api';
+  static var baseUrl = 'http://192.168.222.189:8080/v1/api';
   static var registerApiEndPoint = '$baseUrl/register';
   static var getMyInfoEndPoint = '$baseUrl/getInfo';
   static var updateUserEndPoint = '$baseUrl/update';
@@ -9,6 +9,8 @@ class AppUrl {
   static var getAllCartByUserId = '$baseUrl/cart';
   static var addToCartEndPoint = '$baseUrl/cart/addToCart';
   static var addressEndPoint = '$baseUrl/address';
-  static var updateAddressEndpoint = '$baseUrl/address/update';
+  static var setActiveAddressEndpoint = '$baseUrl/address/setActive';
   static var deleteAddressEndpoint = '$baseUrl/address/delete';
+  static var favoriteEndpoint = '$baseUrl/favorite';
+  static var deleteFavoriteEndPoint = '$baseUrl/favorite/delete';
 }
