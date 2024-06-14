@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
 
 class BottomAddToCart extends StatefulWidget {
@@ -17,7 +17,6 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
   @override
   Widget build(BuildContext context) {
     final cartViewModel = Provider.of<CartViewModel>(context);
-    final authViewModel = Provider.of<AuthViewModel>(context);
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -46,10 +45,10 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
               onTap: () {
                 Map<String, dynamic> cart = {
                   "product_id": widget.product.id,
-                  "user_id": authViewModel.infoUserCurrent['id'],
+                  "email": FirebaseAuth.instance.currentUser!.email,
                   "quantity": '1'
                 };
-                cartViewModel.addToCart(cart,context);
+                cartViewModel.addToCart(cart, context);
               },
               child: Container(
                   padding: const EdgeInsets.all(10),

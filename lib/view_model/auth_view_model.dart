@@ -15,8 +15,14 @@ class AuthViewModel with ChangeNotifier {
   bool get loading => _loading;
   bool get signUploading => _signUpLoading;
 
-  Map _infoUserCurrent = {};
-  Map get infoUserCurrent => _infoUserCurrent;
+  var _user = FirebaseAuth.instance.currentUser;
+
+  get user => _user;
+
+  setUser(FirebaseAuth firebaseAuth) {
+    _user = firebaseAuth.currentUser;
+    notifyListeners();
+  }
 
   setLoading(bool value) {
     _loading = value;
@@ -28,23 +34,21 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  setInfoUserCurrent(Map data) {
-    _infoUserCurrent = data;
-    notifyListeners();
-  }
-
   Future<void> updateUser(dynamic data) async {
+    if (data['name'] != null) {
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(data['name']);
+    }
     await _myRepo
         .updateUserApi(data)
-        .whenComplete(() => setInfoUserCurrent(data))
         .onError((error, stackTrace) => logger.e(error));
   }
 
-  Future<dynamic> getInfoUserCurrent(String email) async {
-    dynamic response = await _myRepo.getMyInfoApi(email);
-    logger.i(response);
-    setInfoUserCurrent(response);
-    return response;
+  Future<dynamic> getInfomation(String? id) {
+    final json = _myRepo
+        .getMyInfoApi(id!)
+        .onError((error, stackTrace) => logger.e(error));
+    logger.i(json);
+    return json;
   }
 
   Future<void> forgotPasswordFirebase(
@@ -64,15 +68,12 @@ class AuthViewModel with ChangeNotifier {
       final String password = data['password'];
 
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        setUser(FirebaseAuth.instance);
+      });
 
-      dynamic response = await _myRepo
-          .getMyInfoApi(email)
-          .timeout(const Duration(seconds: 10));
-
-      logger.i(response);
-
-      setInfoUserCurrent(response);
+      // logger.i(FirebaseAuth.instance.currentUser?.displayName);
       Navigator.pushReplacementNamed(context, RoutesName.home);
       setLoading(false);
     } on FirebaseAuthException catch (e) {
@@ -90,12 +91,21 @@ class AuthViewModel with ChangeNotifier {
   Future<void> signUp(dynamic data, BuildContext context) async {
     setSignUpLoading(true);
     try {
-      _myRepo.registerApi(data).onError((error, stackTrace) => logger.e(error));
       final String email = data['email'];
       final String password = data['password'];
+      final String name = data['name'];
 
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        final user = value.user;
+        user!.updateDisplayName(name);
+        data['id'] = user.uid;
+        _myRepo
+            .registerApi(data)
+            .onError((error, stackTrace) => logger.e(error));
+      });
+
       setSignUpLoading(false);
       Utils.flushBarSuccessMessage("Đăng ký thành công", context);
     } on FirebaseAuthException catch (e) {
@@ -103,7 +113,7 @@ class AuthViewModel with ChangeNotifier {
       if (e.code == "email-already-in-use") {
         Utils.flushBarErrorMessage("Tài khoản đã tồn tại", context);
       }
-    } on Exception catch (e) {
+    } on Exception {
       setSignUpLoading(false);
       Utils.flushBarErrorMessage("Tài khoản đã tồn tại", context);
     }
@@ -112,7 +122,6 @@ class AuthViewModel with ChangeNotifier {
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance
         .signOut()
-        .whenComplete(() => setInfoUserCurrent({}))
         .onError((error, stackTrace) => logger.e(error));
     Navigator.pushReplacementNamed(context, RoutesName.login);
   }

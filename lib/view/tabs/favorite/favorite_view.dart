@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 class FavoriteView extends StatefulWidget {
@@ -21,14 +21,12 @@ class _FavoriteViewState extends State<FavoriteView> {
 
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    int userId = authViewModel.infoUserCurrent['id'];
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     _products = productViewModel.getAllFavoriteProductByUserId(userId);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sản phẩm yêu thích'),
@@ -39,9 +37,14 @@ class _FavoriteViewState extends State<FavoriteView> {
         child: FutureBuilder(
             future: _products,
             builder: ((context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
                 List<Product> list = snapshot.data!;
                 return GridProduct(products: list, length: list.length);
+              } else if (snapshot.data == null) {
+                return const Center(
+                  child: Text("Không có sản phẩm yêu thích nào"),
+                );
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),

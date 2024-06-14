@@ -1,13 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/utils/utils.dart';
 import 'package:shopelec/view/tabs/home/components/bottom_add_to_cart.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 class DetailProductScreen extends StatefulWidget {
@@ -19,11 +19,19 @@ class DetailProductScreen extends StatefulWidget {
 }
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
+  bool favorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    favorite = widget.product.favorite;
+  }
+
   @override
   Widget build(BuildContext context) {
     final productViewModel = Provider.of<ProductViewModel>(context);
-    final authViewModel = Provider.of<AuthViewModel>(context);
-    bool favorite = widget.product.favorite;
+    // bool favorite = widget.product.favorite;
     return Scaffold(
       bottomNavigationBar: BottomAddToCart(product: widget.product),
       appBar: AppBar(
@@ -50,9 +58,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                 width: double.infinity,
               ),
               const SizedBox(height: 12),
-              const Text(
-                'Apple MacBook Pro Core i9 9th Gen',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              Text(
+                widget.product.name,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
               const SizedBox(
                 height: 4,
@@ -60,19 +69,6 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Còn ${widget.product.quantity}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const Spacer(),
-                  const Text(
-                    '(90 đánh giá)',
-                    style: TextStyle(
-                      fontSize: 12.0, // Adjust font size as needed
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(width: 8.0),
                   Container(
                     padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
                     decoration: BoxDecoration(
@@ -82,6 +78,13 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     child: const Row(
                       mainAxisSize: MainAxisSize.min, // Constrain width
                       children: [
+                        SizedBox(width: 2.0),
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                          size: 16.0, // Adjust icon size as needed
+                        ),
+                        SizedBox(width: 4.0),
                         Text(
                           '4.9',
                           style: TextStyle(
@@ -89,15 +92,27 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                             fontSize: 12.0, // Adjust font size as needed
                           ),
                         ),
-                        SizedBox(width: 4.0),
-                        Icon(
-                          Icons.star,
-                          color: Colors.white,
-                          size: 16.0, // Adjust icon size as needed
-                        ),
+                        SizedBox(width: 2.0),
                       ],
                     ),
                   ),
+                  const SizedBox(width: 8.0),
+                  const Text(
+                    '(90 đánh giá)',
+                    style: TextStyle(
+                      fontSize: 12.0, // Adjust font size as needed
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Còn ${widget.product.quantity}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
                 ],
               ),
               const SizedBox(height: 4),
@@ -105,11 +120,16 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    '\$${widget.product.price}',
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(
+                        (widget.product.price -
+                                widget.product.price *
+                                    widget.product.discount /
+                                    100)
+                            .toInt()),
                     style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.black54,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -117,37 +137,49 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     width: 8,
                   ),
                   Text(
-                    '\$${widget.product.price - widget.product.price * widget.product.discount / 100}',
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format((widget.product.price).toInt()),
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 22,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(
-                    width: 8,
+                    width: 20,
                   ),
-                  const Icon(
-                    Icons.discount,
-                    color: Colors.blue,
-                    size: 22,
-                  ),
-                  Text(
-                    '${widget.product.discount}%',
-                    style: TextStyle(color: Colors.grey[600]),
+                  Container(
+                    width: 42,
+                    height: 20,
+                    decoration: BoxDecoration(
+                        color: Colors.red[100],
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Center(
+                      child: Text(
+                        '-${widget.product.discount}%',
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
                   ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () { 
+                    onTap: () {
                       setState(() {
                         if (favorite) {
-                        _dialogBuilder(context);
-                      } else {
-                        productViewModel
-                            .saveFavorite(authViewModel.infoUserCurrent['id'],
-                                widget.product.id)
-                            .then((_) => Utils.flushBarSuccessMessage("Đã thêm vào yêu thích", context));
-                      }
+                          _dialogBuilder(context);
+                        } else {
+                          productViewModel
+                              .saveFavorite(
+                                  FirebaseAuth.instance.currentUser!.uid,
+                                  widget.product.id)
+                              .then((_) {
+                            Utils.flushBarSuccessMessage(
+                                "Đã thêm vào yêu thích", context);
+                          });
+                        }
                         favorite = !favorite;
                       });
                     },
@@ -290,7 +322,6 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   Future<void> _dialogBuilder(BuildContext context) {
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -314,7 +345,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               child: const Text('Xác nhận'),
               onPressed: () {
                 productViewModel.deleteFavorite(
-                    authViewModel.infoUserCurrent['id'], widget.product.id);
+                    FirebaseAuth.instance.currentUser!.uid, widget.product.id);
                 // print(authViewModel.infoUserCurrent['id']);
                 Navigator.of(context).pop();
               },

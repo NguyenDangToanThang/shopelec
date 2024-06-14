@@ -5,7 +5,7 @@ import 'package:shopelec/res/app_url.dart';
 class ProductRespository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<dynamic> getAllFavoriteByUserId(int userId) async {
+  Future<dynamic> getAllFavoriteByUserId(String userId) async {
     try {
       String url = "${AppUrl.favoriteEndpoint}?user_id=$userId";
       dynamic response = await _apiServices.getGetApiResponse(url);
@@ -15,7 +15,7 @@ class ProductRespository {
     }
   }
 
-  Future<dynamic> deleteFavorite(int userId, int productId) async {
+  Future<dynamic> deleteFavorite(String userId, int productId) async {
     try {
       String url = "${AppUrl.deleteFavoriteEndPoint}?user_id=$userId&product_id=$productId";
       dynamic response = await _apiServices.getGetApiResponse(url);
@@ -35,7 +35,7 @@ class ProductRespository {
   }
 
   Future<dynamic> getAllProduct(
-      {int? userId,
+      {String? userId,
       int? categoryId,
       int? brandId,
       int? page,

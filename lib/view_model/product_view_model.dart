@@ -25,7 +25,7 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteFavorite(int userId, int productId) async {
+  Future<void> deleteFavorite(String userId, int productId) async {
     try {
       await _myRepo.deleteFavorite(userId, productId);
     } catch (e) {
@@ -33,7 +33,7 @@ class ProductViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> saveFavorite(int userId, int productId) async {
+  Future<void> saveFavorite(String userId, int productId) async {
     try {
       Map<String, dynamic> data = {
         "user_id": userId.toString(),
@@ -43,11 +43,12 @@ class ProductViewModel with ChangeNotifier {
     } catch (e) {
       logger.e(e);
     }
+    notifyListeners();
   }
 
   Future<List<Product>> getAllProducts(
       {int? categoryId,
-      int? userId,
+      String? userId,
       int? brandId,
       int page = 0,
       int size = 4,
@@ -95,7 +96,7 @@ class ProductViewModel with ChangeNotifier {
     }
   }
 
-  Future<List<Product>> getAllFavoriteProductByUserId(int userId) async {
+  Future<List<Product>> getAllFavoriteProductByUserId(String userId) async {
     try {
       final jsonList = await _myRepo.getAllFavoriteByUserId(userId);
       logger.i(jsonList[0]);

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -7,29 +6,33 @@ import 'package:shopelec/data/app_exeptions.dart';
 import 'package:shopelec/data/network/BaseApiServices.dart';
 
 class NetworkApiService extends BaseApiServices {
+  final headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Accept-Charset': 'UTF-8',
+  };
   @override
-  Future getPostApiResponse(String url , dynamic data) async {
+  Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
-    try{
+    try {
       Response response = await post(
         Uri.parse(url),
-        body: data
+        body: jsonEncode(data),
+        headers: headers,
       ).timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
-
     } on SocketException {
       throw FetchDataException("Mất kết nối");
     }
     return responseJson;
   }
+
   @override
-  Future getGetApiResponse(String url) async{
+  Future getGetApiResponse(String url) async {
     dynamic responseJson;
-    try{
-
-      final response = await get(Uri.parse(url)).timeout(const Duration(seconds: 10));
+    try {
+      final response = await get(Uri.parse(url), headers: headers)
+          .timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
-
     } on SocketException {
       throw FetchDataException("Mất kết nối");
     }
@@ -37,10 +40,10 @@ class NetworkApiService extends BaseApiServices {
   }
 
   dynamic returnResponse(Response response) {
-    switch(response.statusCode) {
+    switch (response.statusCode) {
       case 200:
-        if(response.body.isNotEmpty) {
-          dynamic responseJson = jsonDecode(response.body);
+        if (response.body.isNotEmpty) {
+          dynamic responseJson = jsonDecode(utf8.decode(response.bodyBytes));
           return responseJson;
         }
       case 400:
@@ -48,10 +51,8 @@ class NetworkApiService extends BaseApiServices {
       case 404:
         throw UnauthorisedException(response.body.toString());
       default:
-        throw FetchDataException("Lỗi khi liên lạc với máy chủ bằng mã trạng thái: ${response.statusCode}");
+        throw FetchDataException(
+            "Lỗi khi liên lạc với máy chủ bằng mã trạng thái: ${response.statusCode}");
     }
   }
-
-
-
 }

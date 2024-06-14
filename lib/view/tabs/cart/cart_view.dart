@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +9,6 @@ import 'package:shopelec/view/tabs/cart/components/address_info_cart.dart';
 import 'package:shopelec/view/tabs/cart/components/bag_total_checkout.dart';
 import 'package:shopelec/view/tabs/cart/components/listview_product.dart';
 import 'package:shopelec/view_model/address_view_model.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
 
 class CartView extends StatefulWidget {
@@ -28,12 +27,11 @@ class _CartViewState extends State<CartView> {
   void initState() {
     super.initState();
     final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final addressViewModel =
         Provider.of<AddressViewModel>(context, listen: false);
 
-    int userId = authViewModel.infoUserCurrent['id'];
-    logger.i(authViewModel.infoUserCurrent['id']);
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    logger.i(userId);
     _carts = cartViewModel.getAllCartByUserId(userId, context);
     _address = addressViewModel.getAddressActive(userId);
   }
@@ -67,22 +65,6 @@ class _CartViewState extends State<CartView> {
                     return const Center(child: CircularProgressIndicator());
                   }
                 })),
-            const SizedBox(height: 8),
-            Divider(
-              color: Colors.grey[200],
-              thickness: 1,
-              height: 2,
-            ),
-            Container(
-              height: 8,
-              width: double.infinity,
-              color: Colors.grey[200],
-            ),
-            Divider(
-              color: Colors.grey[200],
-              thickness: 1,
-              height: 2,
-            ),
             const SizedBox(
               height: 12,
             ),
@@ -98,21 +80,6 @@ class _CartViewState extends State<CartView> {
                 }),
             const SizedBox(
               height: 12,
-            ),
-            Divider(
-              color: Colors.grey[200],
-              thickness: 1,
-              height: 2,
-            ),
-            Container(
-              height: 8,
-              width: double.infinity,
-              color: Colors.grey[200],
-            ),
-            Divider(
-              color: Colors.grey[200],
-              thickness: 1,
-              height: 2,
             ),
             const BagTotalCheckout()
           ],

@@ -1,4 +1,4 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
@@ -14,15 +14,13 @@ class SettingView extends StatefulWidget {
 }
 
 class _SettingViewState extends State<SettingView> {
-
-
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
 
-    Map data = authViewModel.infoUserCurrent;
-    String name = data['name'] ?? "";
-    String email = data['email'] ?? "";
+    final data = FirebaseAuth.instance.currentUser;
+    String? name = data!.displayName;
+    String? email = data.email;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,8 +28,11 @@ class _SettingViewState extends State<SettingView> {
         title: Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text(
-              "Tài khoản",
-            style: Theme.of(context).textTheme.headlineSmall!.apply(color: Colors.black),
+            "Tài khoản",
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall!
+                .apply(color: Colors.black),
           ),
         ),
         actions: [
@@ -51,72 +52,87 @@ class _SettingViewState extends State<SettingView> {
               leading: Container(
                 padding: const EdgeInsets.all(0),
                 child: Image.asset(
-                    "assets/images/avatar.png",
+                  "assets/images/avatar.png",
                   fit: BoxFit.cover,
                   width: 50,
                   height: 50,
-                ) ,
+                ),
               ),
               title: Text(
-                name,
+                name!,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               subtitle: Text(
-                email,
+                email!,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               trailing: IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, RoutesName.profile);
                 },
-                icon: const Icon(Iconsax.edit, color: Colors.black,),
+                icon: const Icon(
+                  Iconsax.edit,
+                  color: Colors.black,
+                ),
               ),
             ),
-            const SizedBox(height: 8,),
-
+            const SizedBox(
+              height: 8,
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 20.0, left: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                      'Thiết lập tài khoản',
-                      style: Theme.of(context).textTheme.titleMedium
+                  Text('Thiết lập tài khoản',
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(
+                    height: 12,
                   ),
-                  const SizedBox(height: 12,),
                   ListTileAccountSetting(
-                      text: "Danh sách địa chỉ",
-                      subText: "Thiết lập địa chỉ nhận hàng",
-                      iconsax: const Icon(Iconsax.home),
-                      onTap: () => Navigator.pushNamed(context, RoutesName.address),
+                    text: "Danh sách địa chỉ",
+                    subText: "Thiết lập địa chỉ nhận hàng",
+                    iconsax: const Icon(Iconsax.home),
+                    onTap: () =>
+                        Navigator.pushNamed(context, RoutesName.address),
                   ),
-                  const SizedBox(height: 12,),
+                  const SizedBox(
+                    height: 12,
+                  ),
                   ListTileAccountSetting(
-                      text: "Giỏ hàng",
-                      subText: "Thêm, xóa sản phẩm vào giỏ hàng và đặt hàng",
-                      iconsax: const Icon(Iconsax.shopping_cart),
-                      onTap: () => Navigator.pushNamed(context, RoutesName.cart),
+                    text: "Giỏ hàng",
+                    subText: "Thêm, xóa sản phẩm vào giỏ hàng và đặt hàng",
+                    iconsax: const Icon(Iconsax.shopping_cart),
+                    onTap: () => Navigator.pushNamed(context, RoutesName.cart),
                   ),
-                  const SizedBox(height: 12,),
+                  const SizedBox(
+                    height: 12,
+                  ),
                   const ListTileAccountSetting(
-                      text: "Hóa đơn",
-                      subText: "Danh sách đơn hàng đang thực hiện và đã hoàn thành",
-                      iconsax: Icon(Iconsax.bag_tick),
+                    text: "Hóa đơn",
+                    subText:
+                        "Danh sách đơn hàng đang thực hiện và đã hoàn thành",
+                    iconsax: Icon(Iconsax.bag_tick),
                   ),
-                  const SizedBox(height: 12,),
+                  const SizedBox(
+                    height: 12,
+                  ),
                   const ListTileAccountSetting(
                     text: "Yêu thích",
                     subText: "Lưu các sản phẩm yêu thích",
                     iconsax: Icon(Iconsax.favorite_chart),
                   ),
-                  const SizedBox(height: 12,),
+                  const SizedBox(
+                    height: 12,
+                  ),
                   const ListTileAccountSetting(
                     text: "Điều khoản và chính sách",
                     subText: "Thỏa thuận về điều khoản và chính sách",
                     iconsax: Icon(Iconsax.pen_tool),
                   ),
-                  const SizedBox(height: 12,),
-
+                  const SizedBox(
+                    height: 12,
+                  ),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
@@ -130,7 +146,7 @@ class _SettingViewState extends State<SettingView> {
                         side: const BorderSide(width: 1.0, color: Colors.black),
                       ),
                       child: Text(
-                          'Đăng xuất',
+                        'Đăng xuất',
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
@@ -138,12 +154,9 @@ class _SettingViewState extends State<SettingView> {
                 ],
               ),
             )
-
           ],
         ),
       ),
     );
   }
 }
-
-

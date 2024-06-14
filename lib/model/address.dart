@@ -7,7 +7,7 @@ class Address {
   final String name;
   final String phone;
   final bool isSelected;
-  final int user_id;
+  final String user_id;
   Address({
     required this.id,
     required this.address,
@@ -16,7 +16,6 @@ class Address {
     required this.isSelected,
     required this.user_id,
   });
-  
 
   Address copyWith({
     int? id,
@@ -24,7 +23,7 @@ class Address {
     String? name,
     String? phone,
     bool? isSelected,
-    int? user_id,
+    String? user_id,
   }) {
     return Address(
       id: id ?? this.id,
@@ -42,7 +41,7 @@ class Address {
       'address': address,
       'name': name,
       'phoneNumber': phone,
-      'isSelected': isSelected,
+      'selected': isSelected,
       'user_id': user_id,
     };
   }
@@ -53,14 +52,15 @@ class Address {
       address: map['address'] as String,
       name: map['name'] as String,
       phone: map['phoneNumber'] as String,
-      isSelected: map['isSelected'] as bool,
-      user_id: map['user_id'] as int,
+      isSelected: map['selected'] as bool,
+      user_id: map['user_id'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Address.fromJson(String source) => Address.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Address.fromJson(String source) =>
+      Address.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -70,23 +70,22 @@ class Address {
   @override
   bool operator ==(covariant Address other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.address == address &&
-      other.name == name &&
-      other.phone == phone &&
-      other.isSelected == isSelected &&
-      other.user_id == user_id;
+
+    return other.id == id &&
+        other.address == address &&
+        other.name == name &&
+        other.phone == phone &&
+        other.isSelected == isSelected &&
+        other.user_id == user_id;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      address.hashCode ^
-      name.hashCode ^
-      phone.hashCode ^
-      isSelected.hashCode ^
-      user_id.hashCode;
+        address.hashCode ^
+        name.hashCode ^
+        phone.hashCode ^
+        isSelected.hashCode ^
+        user_id.hashCode;
   }
 }

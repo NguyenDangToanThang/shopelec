@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/utils/utils.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
-import 'package:shopelec/view_model/cart_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 class GridProduct extends StatefulWidget {
@@ -24,8 +24,7 @@ class _GridProductState extends State<GridProduct> {
 
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
-    final authViewModel = Provider.of<AuthViewModel>(context);
+    // final cartViewModel = Provider.of<CartViewModel>(context);
     final productViewModel = Provider.of<ProductViewModel>(context);
     return GridView.builder(
         itemCount: widget.length,
@@ -35,7 +34,7 @@ class _GridProductState extends State<GridProduct> {
           crossAxisCount: 2,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
-          mainAxisExtent: 280,
+          mainAxisExtent: 260,
         ),
         itemBuilder: (context, index) {
           Product product = widget.products[index];
@@ -45,10 +44,19 @@ class _GridProductState extends State<GridProduct> {
                   arguments: product);
             },
             child: Container(
-              height: 280,
+              height: 260,
               decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(10)),
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
               child: Stack(
                 children: [
                   Column(
@@ -72,11 +80,13 @@ class _GridProductState extends State<GridProduct> {
                         height: 16,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           product.name,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -85,7 +95,7 @@ class _GridProductState extends State<GridProduct> {
                         height: 8,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Row(
                           children: [
                             Container(
@@ -120,42 +130,50 @@ class _GridProductState extends State<GridProduct> {
                           ],
                         ),
                       ),
+                    
                       Padding(
-                        padding: const EdgeInsets.only(left: 16, top: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
                         child: Row(
                           children: [
                             Text(
-                              '\$${product.price}',
-                              style: TextStyle(
-                                  color: Colors.grey[500],
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                  decoration: TextDecoration.lineThrough),
+                              NumberFormat.currency(
+                                      locale: 'vi_VN', symbol: '₫')
+                                  .format((product.price -
+                                          product.price *
+                                              product.discount /
+                                              100)
+                                      .toInt()),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Icon(
-                              Icons.discount,
-                              color: Colors.blue,
-                              size: 16,
-                            ),
-                            Text(
-                              '${product.discount}%',
-                              style: TextStyle(color: Colors.grey[600]),
+                            const Spacer(),
+                            // const Icon(
+                            //   Icons.discount,
+                            //   color: Colors.blue,
+                            //   size: 16,
+                            // ),
+
+                            Container(
+                              width: 42,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: Colors.red[100],
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Center(
+                                child: Text(
+                                  '-${product.discount}%',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
                             )
                           ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Text(
-                          '${product.price - product.price * product.discount / 100}',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
                         ),
                       ),
                     ],
@@ -172,7 +190,7 @@ class _GridProductState extends State<GridProduct> {
                               product = product.copyWith(favorite: true);
                               productViewModel
                                   .saveFavorite(
-                                      authViewModel.infoUserCurrent['id'],
+                                      FirebaseAuth.instance.currentUser!.uid,
                                       product.id)
                                   .then((_) => Utils.flushBarSuccessMessage(
                                       "Đã thêm vào yêu thích", context));
@@ -194,32 +212,32 @@ class _GridProductState extends State<GridProduct> {
                           ],
                         ),
                       )),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Material(
-                        color: Colors.black,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16)),
-                        child: InkWell(
-                          onTap: () {
-                            Map<String, dynamic> cart = {
-                              'email': authViewModel.infoUserCurrent['email'],
-                              'product_id': product.id.toString(),
-                              'quantity': '1'
-                            };
-                            logger.i(cart);
-                            cartViewModel.addToCart(cart, context);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ))
+                  // Align(
+                  //     alignment: Alignment.bottomRight,
+                  //     child: Material(
+                  //       color: Colors.black,
+                  //       borderRadius: const BorderRadius.only(
+                  //           topLeft: Radius.circular(16),
+                  //           bottomRight: Radius.circular(16)),
+                  //       child: InkWell(
+                  //         onTap: () {
+                  //           Map<String, dynamic> cart = {
+                  //             'email': FirebaseAuth.instance.currentUser!.email,
+                  //             'product_id': product.id.toString(),
+                  //             'quantity': '1'
+                  //           };
+                  //           logger.i(cart);
+                  //           cartViewModel.addToCart(cart, context);
+                  //         },
+                  //         child: const Padding(
+                  //           padding: EdgeInsets.all(8.0),
+                  //           child: Icon(
+                  //             Icons.add,
+                  //             color: Colors.grey,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ))
                 ],
               ),
             ),
@@ -231,7 +249,6 @@ class _GridProductState extends State<GridProduct> {
       BuildContext context, Product product, int index) {
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -259,7 +276,7 @@ class _GridProductState extends State<GridProduct> {
                   widget.products[index] = product;
                 });
                 productViewModel.deleteFavorite(
-                    authViewModel.infoUserCurrent['id'], product.id);
+                    FirebaseAuth.instance.currentUser!.uid, product.id);
                 Navigator.of(context).pop();
               },
             ),

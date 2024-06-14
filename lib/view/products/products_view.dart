@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/category.dart';
-import 'package:shopelec/res/components/search_bar.dart';
 import 'package:shopelec/view/products/components/category_product.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
@@ -14,7 +14,6 @@ class ProductsView extends StatefulWidget {
 
 class _ProductsViewState extends State<ProductsView>
     with SingleTickerProviderStateMixin {
-
   late TabController _tabController;
   late Future<List<Category>> _categories;
 
@@ -28,7 +27,7 @@ class _ProductsViewState extends State<ProductsView>
     _categories.then((categories) {
       bool checkAll = categories.any((category) => category.id == 0);
       if (!checkAll) {
-        categories.insert(0, Category(id: 0, name: "All"));
+        categories.insert(0, Category(id: 0, name: "Tất cả"));
       }
 
       setState(() {
@@ -56,23 +55,46 @@ class _ProductsViewState extends State<ProductsView>
               title: const Text("Danh sách sản phẩm"),
               centerTitle: true,
               actions: [
+                // IconButton(
+                //   onPressed: () {
+                //     showSearch(
+                //       context: context,
+                //       delegate: CustomSearchDelegate(),
+                //     );
+                //   },
+                //   icon: const Icon(Icons.search),
+                // ),
                 IconButton(
-                  onPressed: () {
-                    showSearch(
-                      context: context,
-                      delegate: CustomSearchDelegate(),
-                    );
-                  },
-                  icon: const Icon(Icons.search),
-                )
+                    onPressed: () {}, icon: const Icon(Iconsax.shopping_cart))
               ],
-              bottom: TabBar(
-                controller: _tabController,
-                tabAlignment: TabAlignment.start,
-                isScrollable: true,
-                tabs: categories
-                    .map((category) => Tab(text: category.name))
-                    .toList(),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(50),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey[200],
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    tabAlignment: TabAlignment.start,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.black,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
+                      color: Colors.pink,
+                    ),
+                    isScrollable: true,
+                    tabs: categories
+                        .map((category) => Container(
+                            height: 50,
+                            padding: const EdgeInsets.all(8),
+                            child: Tab(text: category.name)))
+                        .toList(),
+                  ),
+                ),
               ),
             ),
             body: TabBarView(
@@ -97,4 +119,3 @@ class _ProductsViewState extends State<ProductsView>
     );
   }
 }
-

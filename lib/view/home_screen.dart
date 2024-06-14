@@ -13,14 +13,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   int _currentIndex = 0;
   late PageController _pageController; // Thêm PageController
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _currentIndex, viewportFraction: 0.999);
+    _pageController =
+        PageController(initialPage: _currentIndex, viewportFraction: 0.999);
   }
 
   @override
@@ -29,10 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController.dispose();
   }
 
-  final tabs = [
+  static final tabs = [
     const HomeView(),
     const StoreView(),
-    // const CartView(),
     const FavoriteView(),
     const SettingView()
   ];
@@ -50,44 +49,40 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          unselectedItemColor: Colors.blue[200],
-          selectedItemColor: Colors.blue,
-          items: const [
-            BottomNavigationBarItem(
-                label: "Trang chủ",
-                icon: Icon(Iconsax.home),
-            ),
-            BottomNavigationBarItem(
-                label: "Cửa hàng",
-                icon: Icon(Iconsax.shop),
-            ),
-            // BottomNavigationBarItem(
-            //     label: "Giỏ hàng",
-            //     icon: Icon(Iconsax.shopping_cart),
-            // ),
-            BottomNavigationBarItem(
-                label: "Yêu thích",
-                icon: Icon(Iconsax.favorite_chart),
-            ),
-            BottomNavigationBarItem(
-                label: "Hồ sơ",
-                icon: Icon(Iconsax.profile_2user),
-            ),
-          ],
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-              _pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.easeInOut,
-              );
-            });
-          },
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        unselectedItemColor: Colors.blue,
+        selectedItemColor: Colors.pink,
+        items: const [
+          BottomNavigationBarItem(
+            label: "Trang chủ",
+            icon: Icon(Iconsax.home),
+          ),
+          BottomNavigationBarItem(
+            label: "Cửa hàng",
+            icon: Icon(Iconsax.shop),
+          ),
+          BottomNavigationBarItem(
+            label: "Yêu thích",
+            icon: Icon(Iconsax.favorite_chart),
+          ),
+          BottomNavigationBarItem(
+            label: "Hồ sơ",
+            icon: Icon(Iconsax.profile_2user),
+          ),
+        ],
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.easeInOut,
+            );
+          });
+        },
       ),
     );
   }

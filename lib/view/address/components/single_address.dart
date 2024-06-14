@@ -29,10 +29,9 @@ class SingleAddress extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                right: 5,
-                top: 0,
+                right: 7,
                 child: Icon(
-                  address.isSelected ? Iconsax.tick_circle5 : null,
+                  Iconsax.tick_circle5,
                   color: address.isSelected ? Colors.black : Colors.white,
                 ),
               ),
@@ -43,7 +42,7 @@ class SingleAddress extends StatelessWidget {
                     address.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(
                     height: 4,

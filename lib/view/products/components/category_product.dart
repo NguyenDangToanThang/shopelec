@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
-import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 class CategoryProductsView extends StatefulWidget {
@@ -38,8 +38,7 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
     });
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    int userId = authViewModel.infoUserCurrent['id'];
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     if (widget.categoryId > 0) {
       List<Product> newProducts = await productViewModel.getAllProducts(
         userId: userId,

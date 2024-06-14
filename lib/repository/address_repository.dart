@@ -5,7 +5,7 @@ import 'package:shopelec/res/app_url.dart';
 class AddressRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<dynamic> getAllAddressByUserId(int userId) async {
+  Future<dynamic> getAllAddressByUserId(String userId) async {
     try {
       dynamic response = await _apiServices
           .getGetApiResponse("${AppUrl.addressEndPoint}/$userId");
@@ -15,7 +15,7 @@ class AddressRepository {
     }
   }
 
-  Future<dynamic> getAddressActive(int userId) async {
+  Future<dynamic> getAddressActive(String userId) async {
     try {
       dynamic response = await _apiServices
           .getGetApiResponse("${AppUrl.addressEndPoint}/getActive/$userId");
