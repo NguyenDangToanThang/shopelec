@@ -15,10 +15,28 @@ class CartRepository {
     }
   }
 
+  Future<dynamic> deleteCartById(int id) async {
+    try {
+      String url = '${AppUrl.deleteCartByCartId}?id=$id';
+      await _apiServices.getGetApiResponse(url);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> setQuantityInCarts(int quantity, int id) async {
+    try {
+      String url = '${AppUrl.setQuantityInCart}?id=$id&quantity=$quantity';
+      await _apiServices.getGetApiResponse(url);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> getAllCartByUserId(dynamic id) async {
     try {
-      dynamic response =
-          await _apiServices.getGetApiResponse('${AppUrl.getAllCartByUserId}/$id');
+      dynamic response = await _apiServices
+          .getGetApiResponse('${AppUrl.getAllCartByUserId}/$id');
       return response;
     } catch (e) {
       rethrow;

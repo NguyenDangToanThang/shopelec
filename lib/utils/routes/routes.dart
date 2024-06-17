@@ -10,6 +10,7 @@ import 'package:shopelec/view/home_screen.dart';
 import 'package:shopelec/view/login/forgot_password_view.dart';
 import 'package:shopelec/view/login/login_view.dart';
 import 'package:shopelec/view/login/signup_view.dart';
+import 'package:shopelec/view/order/confirm_order_screen.dart';
 import 'package:shopelec/view/products/products_view.dart';
 import 'package:shopelec/view/profile/profile_view.dart';
 import 'package:shopelec/view/review_product/product_reviews_screen.dart';
@@ -46,6 +47,9 @@ class Routes {
       case RoutesName.cart:
         return MaterialPageRoute(
             builder: (BuildContext context) => const CartView());
+      case RoutesName.confirmOrder:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ConfirmOrderScreen());
       case RoutesName.products:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ProductsView());

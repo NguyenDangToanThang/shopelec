@@ -8,13 +8,22 @@ class AddressViewModel with ChangeNotifier {
   final _myRepo = AddressRepository();
   final logger = Logger();
 
+  late Address _address;
+
+  Address get address => _address;
+
+  setAddress(Address address) {
+    _address = address;
+    notifyListeners();
+  }
+
   Future<List<Address>> getAddressByUserId(String userId) async {
     final jsonList;
     try {
       jsonList = await _myRepo.getAllAddressByUserId(userId);
-      logger.i(jsonList);
+      // logger.i(jsonList);
       List<Address> response = parseAddresses(jsonList);
-      logger.i(response);
+      // logger.i(response);
       return response;
     } catch (e) {
       logger.e(e.toString());
@@ -36,6 +45,7 @@ class AddressViewModel with ChangeNotifier {
               isSelected: item['selected'],
               name: item['name'],
               phone: item['phoneNumber']);
+          setAddress(response);
         }
       }
       return response;

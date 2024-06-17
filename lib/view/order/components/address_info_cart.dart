@@ -14,12 +14,22 @@ class AddressInfoCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 5.0, left: 5.0),
-      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border:
-              Border.fromBorderSide(BorderSide(color: Colors.grey.shade300))),
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+        // border:
+        //     Border.fromBorderSide(BorderSide(color: Colors.grey.shade300))),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,23 +42,33 @@ class AddressInfoCart extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text("Địa chỉ giao hàng",
+                    Text("Địa chỉ nhận hàng",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
                             .copyWith(fontSize: 19)),
-                    const SizedBox(
-                      width: 120,
-                    ),
-                    InkWell(
-                      onTap: () {
+                    const Spacer(),
+                    OutlinedButton(
+                      onPressed: () {
                         Navigator.pushNamed(context, RoutesName.address);
                       },
-                      child: const Text(
-                        "Thay đổi",
-                        style: TextStyle(color: Colors.blueAccent),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.black87,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        // side: const BorderSide(
+                        //     width: 1.0, color: Colors.blueAccent),
+                      ),
+                      child: Text(
+                        'Thay đổi',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: Colors.white),
                       ),
                     ),
+                    const SizedBox(width: 16),
                   ],
                 ),
                 const SizedBox(

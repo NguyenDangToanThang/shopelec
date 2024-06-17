@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:shopelec/model/address.dart';
 import 'package:shopelec/model/cart.dart';
-import 'package:shopelec/view/tabs/cart/components/address_info_cart.dart';
-import 'package:shopelec/view/tabs/cart/components/bag_total_checkout.dart';
+import 'package:shopelec/res/components/bottom_checkout.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/tabs/cart/components/listview_product.dart';
-import 'package:shopelec/view_model/address_view_model.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
 
 class CartView extends StatefulWidget {
@@ -20,71 +19,69 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
   late Future<List<Cart>> _carts;
-  late Future<Address> _address;
   final logger = Logger();
 
   @override
   void initState() {
     super.initState();
     final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
-    final addressViewModel =
-        Provider.of<AddressViewModel>(context, listen: false);
+    // final addressViewModel =
+    //     Provider.of<AddressViewModel>(context, listen: false);
 
     String userId = FirebaseAuth.instance.currentUser!.uid;
-    logger.i(userId);
+    // logger.i(userId);
     _carts = cartViewModel.getAllCartByUserId(userId, context);
-    _address = addressViewModel.getAddressActive(userId);
+    // _address = addressViewModel.getAddressActive(userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Giỏ hàng"),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Iconsax.notification))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            FutureBuilder(
-                future: _address,
-                builder: ((context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.data == null) {
-                      return const Center(
-                          child: Text("Bạn chưa có địa chỉ nhận"));
-                    } else {
-                      Address address = snapshot.data!;
-                      return AddressInfoCart(address: address);
-                    }
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                })),
-            const SizedBox(
-              height: 12,
-            ),
-            FutureBuilder(
-                future: _carts,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<Cart> list = snapshot.data!;
-                    return ListViewProduct(items: list);
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
-            const SizedBox(
-              height: 12,
-            ),
-            const BagTotalCheckout()
-          ],
-        ),
-      ),
-    );
+    final cartViewModel = Provider.of<CartViewModel>(context);
+    return FutureBuilder(
+        future: _carts,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Cart> list = cartViewModel.carts;
+            double totalPayment = 0;
+            for (var cart in list) {
+              totalPayment += (cart.product.price -
+                      cart.product.price * cart.product.discount / 100) *
+                  cart.quantity;
+            }
+            return Scaffold(
+              bottomNavigationBar: BottomCheckout(
+                title: "Mua hàng",
+                totalPayment:
+                    NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                        .format(totalPayment.toInt()),
+                onTap: () {
+                  Navigator.pushNamed(context, RoutesName.confirmOrder);
+                },
+              ),
+              appBar: AppBar(
+                title: const Text("Giỏ hàng"),
+                // centerTitle: true,
+                actions: [
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Iconsax.notification))
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ListViewProduct(items: list),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    // const BagTotalCheckout()
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }

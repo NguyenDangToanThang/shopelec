@@ -237,7 +237,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                         fontWeight: FontWeight.bold,
                         color: Colors.blue),
                     textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87),
                   )
                 ],
               ),
@@ -260,7 +263,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 4,
                   ),
                   ListView.builder(
                     shrinkWrap: true,
@@ -273,7 +276,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Text(
                           "${specification.name} :  ${specification.description}",
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87),
                         ),
                       );
                     },
@@ -296,7 +302,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Product Reviews (99 reviews)",
+                      "Đánh giá (99 đánh giá)",
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!

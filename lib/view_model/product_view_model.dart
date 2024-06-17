@@ -99,7 +99,7 @@ class ProductViewModel with ChangeNotifier {
   Future<List<Product>> getAllFavoriteProductByUserId(String userId) async {
     try {
       final jsonList = await _myRepo.getAllFavoriteByUserId(userId);
-      logger.i(jsonList[0]);
+      // logger.i(jsonList[0]);
       List<Product> productList = [];
       for (var json in jsonList) {
         productList.add(Product.fromMap(json['productResponse']));

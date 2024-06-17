@@ -202,6 +202,8 @@ class _ProfileViewState extends State<ProfileView> {
     });
   }
 
+  bool check = false;
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -547,6 +549,32 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                     const SizedBox(height: 16),
+                    Divider(
+                      color: Colors.grey[300],
+                      thickness: 1,
+                      height: 3,
+                    ),
+                    SwitchListTile(
+                      title: const Text('Ủy quyền sinh trắc học'),
+                      value: authViewModel.isBiometricEnabled,
+                      onChanged: (newValue) async {
+                        // check = newValue;
+                        // authViewModel.toggleBiometric(newValue);
+                        if (newValue == false) {
+                          authViewModel.toggleBiometric(newValue);
+                        } else {
+                          bool authenticated =
+                              await authViewModel.authenticate();
+                          if (authenticated) {
+                            authViewModel.toggleBiometric(newValue);
+                          } else {
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(content: Text('Xác thực thất bại')),
+                            // );
+                          }
+                        }
+                      },
+                    ),
                     Divider(
                       color: Colors.grey[300],
                       thickness: 1,

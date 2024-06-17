@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/address.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
@@ -53,8 +52,8 @@ class _AddressViewState extends State<AddressView> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     List<Address> list = snapshot.data!;
-                    final logger = Logger();
-                    logger.i(list);
+                    // final logger = Logger();
+                    // logger.i(list);
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: list.length,
@@ -78,6 +77,7 @@ class _AddressViewState extends State<AddressView> {
                               for (var i = 0; i < list.length; i++) {
                                 if (i == index) {
                                   list[i] = list[i].copyWith(isSelected: true);
+                                  addressViewModel.setAddress(list[i]);
                                 } else {
                                   list[i] = list[i].copyWith(isSelected: false);
                                 }

@@ -43,6 +43,7 @@ class _HomeViewState extends State<HomeView> {
     // final authViewModel = Provider.of<AuthViewModel>(context);
     final height = MediaQuery.of(context).size.height * 1;
     // String? name = FirebaseAuth.instance.currentUser!.displayName;
+
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(

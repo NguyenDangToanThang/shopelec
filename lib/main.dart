@@ -7,14 +7,12 @@ import 'package:shopelec/utils/routes/routes.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view_model/address_view_model.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Hive.initFlutter();
   runApp(const MyApp());
 }
 

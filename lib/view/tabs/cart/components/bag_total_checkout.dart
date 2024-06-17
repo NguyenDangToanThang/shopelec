@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:shopelec/model/cart.dart';
+import 'package:shopelec/view_model/cart_view_model.dart';
 
 class BagTotalCheckout extends StatelessWidget {
   const BagTotalCheckout({
@@ -7,14 +11,32 @@ class BagTotalCheckout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartViewModel = Provider.of<CartViewModel>(context);
+    double totalOriginal = 0;
+    double totalDiscount = 0;
+    double totalPayment = 0;
+    List<Cart> list = cartViewModel.carts;
+    for (Cart cart in list) {
+      totalOriginal += cart.product.price * cart.quantity;
+      totalDiscount +=
+          cart.product.discount * cart.product.price * cart.quantity / 100;
+    }
+    totalPayment = totalOriginal - totalDiscount;
     return Container(
       padding: const EdgeInsets.only(right: 10, left: 10),
-      margin:
-          const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 5),
+      margin: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.fromBorderSide(
-              BorderSide(color: Colors.grey.shade300))),
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -22,11 +44,9 @@ class BagTotalCheckout extends StatelessWidget {
             height: 12,
           ),
           Text(
-            "Tổng tiền",
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium!
-                .copyWith(fontSize: 19),
+            "Chi tiết thanh toán",
+            style:
+                Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 19),
           ),
           const SizedBox(
             height: 12,
@@ -41,9 +61,10 @@ class BagTotalCheckout extends StatelessWidget {
                     fontWeight: FontWeight.w400),
               ),
               const Spacer(),
-              const Text(
-                "22000.0 VNĐ",
-                style: TextStyle(
+              Text(
+                NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                    .format(totalOriginal.toInt()),
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w500),
@@ -56,16 +77,16 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Tổng tiền giảm giá",
+                "Tổng tiền được giảm",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
               ),
               const Spacer(),
-              const Text(
-                "-" "2200.0 VNĐ",
-                style: TextStyle(
+              Text(
+                "-${NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(totalDiscount.toInt())}",
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w500),
@@ -78,16 +99,17 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Giá bán gốc",
+                "Tổng tiền thanh toán",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
               ),
               const Spacer(),
-              const Text(
-                "\$20000.0",
-                style: TextStyle(
+              Text(
+                NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                    .format(totalPayment.toInt()),
+                style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w500),
@@ -127,51 +149,8 @@ class BagTotalCheckout extends StatelessWidget {
           const SizedBox(
             height: 12,
           ),
-          const Row(
-            children: [
-              Text(
-                "Số tiền phải trả",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400),
-              ),
-              Spacer(),
-              Text(
-                "\$20000.0",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          GestureDetector(
-            onTap: () {
-              
-            },
-            child: Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(5)),
-              child: const Center(
-                  child: Text(
-                "Đặt hàng",
-                style: TextStyle(color: Colors.white),
-              )),
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
         ],
       ),
     );
   }
 }
-

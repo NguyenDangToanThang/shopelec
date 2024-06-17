@@ -1,14 +1,14 @@
-
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:shopelec/res/components/round_button.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -20,6 +20,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
 
+  final logger = Logger();
+
   final _formKey = GlobalKey<FormState>();
 
   bool _rememberMe = false;
@@ -30,25 +32,18 @@ class _LoginViewState extends State<LoginView> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
-  late Box box;
+  bool checkBiometric = false;
 
   @override
   void initState() {
     super.initState();
-    createBox();
-  }
 
-  void createBox() async {
-    box = await Hive.openBox("loginData");
-    getData();
-  }
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
-  void getData() async {
-    if (box.get("email") != null) {
-      _emailController.text = box.get("email");
-    }
-    if (box.get("password") != null) {
-      _passwordController.text = box.get("password");
+    checkBiometric = authViewModel.isBiometricEnabled;
+    logger.i(checkBiometric);
+    if (checkBiometric) {
+      _emailController.text = authViewModel.username.toString();
     }
   }
 
@@ -98,11 +93,13 @@ class _LoginViewState extends State<LoginView> {
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       focusNode: emailFocusNode,
-                      decoration: const InputDecoration(
+                      readOnly: checkBiometric,
+                      enabled: !checkBiometric,
+                      decoration: InputDecoration(
                           hintText: 'E-mail',
-                          labelText: 'E-mail',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.email)),
+                          labelText: checkBiometric ? '' : 'E-mail',
+                          border: const OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.email)),
                       onFieldSubmitted: (value) {
                         Utils.fieldFocusChange(
                             context, emailFocusNode, passwordFocusNode);
@@ -117,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                       },
                     ),
                     SizedBox(
-                      height: height * 0.01,
+                      height: height * 0.02,
                     ),
                     ValueListenableBuilder(
                         valueListenable: _obsecurePassword,
@@ -166,58 +163,114 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         const Text('Lưu đăng nhập'),
                         const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, RoutesName.forgotPassword);
-                          },
-                          child: const Text(
-                            'Quên mật khẩu?',
-                            style:
-                                TextStyle(color: Colors.black54, fontSize: 12),
-                          ),
-                        )
+                        checkBiometric
+                            ? InkWell(
+                                onTap: () {
+                                  authViewModel.toggleBiometric(false);
+                                  Navigator.pushReplacementNamed(
+                                      context, RoutesName.login);
+                                },
+                                child: const Text(
+                                  'Đổi tài khoản',
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 14),
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RoutesName.forgotPassword);
+                                },
+                                child: const Text(
+                                  'Quên mật khẩu?',
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 12),
+                                ),
+                              )
                       ],
                     ),
                   ],
                 ),
               ),
             ),
-            RoundButton(
-                title: "Đăng nhập",
-                loading: authViewModel.loading,
-                onPress: () {
-                  if (_formKey.currentState!.validate()) {
-                    Map data = {
-                      'email': _emailController.text.toString(),
-                      'password': _passwordController.text.toString()
-                    };
-                    authViewModel.loginFirebase(data, context);
-                    if (_rememberMe) {
-                      box.put("email", data['email']);
-                      box.put("password", data['password']);
-                    }
-                  }
-                }),
+            checkBiometric
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          authViewModel.signInWithBiometrics(context);
+                        },
+                        child: Image.asset("assets/images/touch_ID.png",
+                            height: 50, width: 50, fit: BoxFit.cover),
+                      ),
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            Map data = {
+                              'email': _emailController.text.toString(),
+                              'password': _passwordController.text.toString()
+                            };
+                            authViewModel.loginFirebase(data, context);
+                          }
+                        },
+                        child: Container(
+                          height: 60,
+                          width: 240,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                              child: authViewModel.loading
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white)
+                                  : const Text(
+                                      "Đăng nhập",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                        ),
+                      ),
+                    ],
+                  )
+                : RoundButton(
+                    title: "Đăng nhập",
+                    loading: authViewModel.loading,
+                    onPress: () {
+                      if (_formKey.currentState!.validate()) {
+                        Map data = {
+                          'email': _emailController.text.toString(),
+                          'password': _passwordController.text.toString()
+                        };
+                        authViewModel.loginFirebase(data, context);
+                      }
+                    }),
             SizedBox(
               height: height * 0.02,
             ),
-            RichText(
-                text: TextSpan(children: [
-              const TextSpan(
-                  text: "Bạn chưa có tài khoản? ",
-                  style: TextStyle(color: Colors.black)),
-              TextSpan(
-                text: "Đăng ký",
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.pushReplacementNamed(context, RoutesName.signup);
-                  },
-                style: const TextStyle(
-                  color: Colors.blue, // Màu cho liên kết
-                ),
-              ),
-            ])),
+            checkBiometric
+                ? const SizedBox(height: 0)
+                : RichText(
+                    text: TextSpan(children: [
+                    const TextSpan(
+                        text: "Bạn chưa có tài khoản? ",
+                        style: TextStyle(color: Colors.black)),
+                    TextSpan(
+                      text: "Đăng ký",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushReplacementNamed(
+                              context, RoutesName.signup);
+                        },
+                      style: const TextStyle(
+                        color: Colors.blue, // Màu cho liên kết
+                      ),
+                    ),
+                  ])),
+            const SizedBox(height: 20)
           ],
         ),
       ),
