@@ -16,4 +16,5 @@ class AppUrl {
   static var deleteAddressEndpoint = '$baseUrl/address/delete';
   static var favoriteEndpoint = '$baseUrl/favorite';
   static var deleteFavoriteEndPoint = '$baseUrl/favorite/delete';
+  static var couponsEndpoint = '$baseUrl/coupons';
 }

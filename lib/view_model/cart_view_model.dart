@@ -8,6 +8,7 @@ class CartViewModel with ChangeNotifier {
   final _myRepo = CartRepository();
   final logger = Logger();
 
+
   List<Cart> _carts = List.empty();
   List<Cart> get carts => _carts;
 
@@ -20,6 +21,8 @@ class CartViewModel with ChangeNotifier {
     _carts[index] = cart;
     notifyListeners();
   }
+
+  
 
   Future<dynamic> setQuantityInCart(int quantity, int id) async {
     try {
@@ -72,4 +75,6 @@ class CartViewModel with ChangeNotifier {
         .map((json) => Cart.fromMap(json as Map<String, dynamic>))
         .toList();
   }
+
+  
 }

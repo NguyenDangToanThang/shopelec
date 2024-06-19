@@ -39,10 +39,9 @@ class _LoginViewState extends State<LoginView> {
     super.initState();
 
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-
     checkBiometric = authViewModel.isBiometricEnabled;
     logger.i(checkBiometric);
-    if (checkBiometric) {
+    if (checkBiometric == true) {
       _emailController.text = authViewModel.username.toString();
     }
   }
@@ -63,6 +62,14 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final height = MediaQuery.of(context).size.height * 1;
+
+    // setState(() {
+    //   checkBiometric = authViewModel.isBiometricEnabled;
+    //   // logger.i(checkBiometric);
+    //   if (checkBiometric) {
+    //     _emailController.text = authViewModel.username.toString();
+    //   }
+    // });
 
     return Scaffold(
         body: SafeArea(
@@ -165,9 +172,14 @@ class _LoginViewState extends State<LoginView> {
                         const Spacer(),
                         checkBiometric
                             ? InkWell(
-                                onTap: () {
-                                  authViewModel.toggleBiometric(false);
-                                  Navigator.pushReplacementNamed(
+                                onTap: () async {
+                                  await authViewModel.toggleBiometric(false);
+                                  setState(() {
+                                    checkBiometric = false;
+                                  });
+
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(
                                       context, RoutesName.login);
                                 },
                                 child: const Text(

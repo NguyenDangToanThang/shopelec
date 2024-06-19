@@ -56,6 +56,7 @@ class AuthViewModel with ChangeNotifier {
   Future<void> toggleBiometric(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('biometric_auth', value);
+
     _isBiometricEnabled = value;
     notifyListeners();
   }

@@ -8,6 +8,7 @@ import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view_model/address_view_model.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
+import 'package:shopelec/view_model/coupons_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
 void main() async {
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => CartViewModel()),
-        ChangeNotifierProvider(create: (_) => AddressViewModel())
+        ChangeNotifierProvider(create: (_) => AddressViewModel()),
+        ChangeNotifierProvider(create: (_) => CouponsViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

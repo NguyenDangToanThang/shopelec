@@ -5,10 +5,8 @@ import 'package:shopelec/model/cart.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
 
 class BagTotalCheckout extends StatelessWidget {
-  const BagTotalCheckout({
-    super.key,
-  });
-
+  const BagTotalCheckout({super.key, required this.coupon});
+  final double coupon;
   @override
   Widget build(BuildContext context) {
     final cartViewModel = Provider.of<CartViewModel>(context);
@@ -22,6 +20,8 @@ class BagTotalCheckout extends StatelessWidget {
           cart.product.discount * cart.product.price * cart.quantity / 100;
     }
     totalPayment = totalOriginal - totalDiscount;
+    double total = totalPayment;
+    double discount = coupon;
     return Container(
       padding: const EdgeInsets.only(right: 10, left: 10),
       margin: const EdgeInsets.all(6),
@@ -77,7 +77,7 @@ class BagTotalCheckout extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Tổng tiền được giảm",
+                "Tổng tiền giảm",
                 style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 15,
@@ -86,6 +86,28 @@ class BagTotalCheckout extends StatelessWidget {
               const Spacer(),
               Text(
                 "-${NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(totalDiscount.toInt())}",
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              Text(
+                "Mã giảm giá",
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              ),
+              const Spacer(),
+              Text(
+                "-${NumberFormat.currency(locale: 'vi_VN', symbol: '₫').format(discount.toInt())}",
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
@@ -108,7 +130,7 @@ class BagTotalCheckout extends StatelessWidget {
               const Spacer(),
               Text(
                 NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
-                    .format(totalPayment.toInt()),
+                    .format((total - discount).toInt()),
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
