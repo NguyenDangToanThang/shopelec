@@ -9,7 +9,8 @@ class Coupons {
   String expiredDate;
   double discountLimit;
   int quantity;
-  String status;
+  String? status;
+
   Coupons({
     required this.id,
     required this.code,
@@ -65,13 +66,14 @@ class Coupons {
       expiredDate: map['expiredDate'] as String,
       discountLimit: map['discountLimit'] as double,
       quantity: map['quantity'] as int,
-      status: map['status'] as String,
+      status: map['status'] as String?,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Coupons.fromJson(String source) => Coupons.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Coupons.fromJson(String source) =>
+      Coupons.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -81,27 +83,26 @@ class Coupons {
   @override
   bool operator ==(covariant Coupons other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.code == code &&
-      other.description == description &&
-      other.discount == discount &&
-      other.expiredDate == expiredDate &&
-      other.discountLimit == discountLimit &&
-      other.quantity == quantity &&
-      other.status == status;
+
+    return other.id == id &&
+        other.code == code &&
+        other.description == description &&
+        other.discount == discount &&
+        other.expiredDate == expiredDate &&
+        other.discountLimit == discountLimit &&
+        other.quantity == quantity &&
+        other.status == status;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      code.hashCode ^
-      description.hashCode ^
-      discount.hashCode ^
-      expiredDate.hashCode ^
-      discountLimit.hashCode ^
-      quantity.hashCode ^
-      status.hashCode;
+        code.hashCode ^
+        description.hashCode ^
+        discount.hashCode ^
+        expiredDate.hashCode ^
+        discountLimit.hashCode ^
+        quantity.hashCode ^
+        status.hashCode;
   }
 }

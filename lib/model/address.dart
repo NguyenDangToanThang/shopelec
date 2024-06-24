@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class Address {
-  final int id;
+  final int? id;
   final String address;
   final String name;
   final String phone;

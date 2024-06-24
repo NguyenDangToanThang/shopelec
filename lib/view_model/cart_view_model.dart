@@ -22,8 +22,6 @@ class CartViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  
-
   Future<dynamic> setQuantityInCart(int quantity, int id) async {
     try {
       await _myRepo.setQuantityInCarts(quantity, id);

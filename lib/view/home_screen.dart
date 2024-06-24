@@ -14,19 +14,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  late PageController _pageController; // Thêm PageController
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController =
-        PageController(initialPage: _currentIndex, viewportFraction: 0.999);
-  }
 
   @override
   void dispose() {
     super.dispose();
-    _pageController.dispose();
   }
 
   static final tabs = [
@@ -39,19 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: tabs,
-        onPageChanged: (newIndex) {
-          setState(() {
-            _currentIndex = newIndex;
-          });
-        },
-      ),
+      body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
-        showUnselectedLabels: false,
+        showUnselectedLabels: true,
         unselectedItemColor: Colors.blue,
         selectedItemColor: Colors.pink,
         items: const [
@@ -76,11 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) {
           setState(() {
             _currentIndex = index;
-            _pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.easeInOut,
-            );
           });
         },
       ),

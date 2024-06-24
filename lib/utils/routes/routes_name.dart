@@ -11,4 +11,5 @@ class RoutesName {
   static const String products = 'products_view';
   static const String cart = 'cart_view';
   static const String confirmOrder = 'confirm_order_screen';
+  static const String orders = 'order_screen';
 }

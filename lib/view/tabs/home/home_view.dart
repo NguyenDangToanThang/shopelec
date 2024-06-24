@@ -32,33 +32,16 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    // final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     String userId = FirebaseAuth.instance.currentUser!.uid;
-    // print(userId);
     _products = productViewModel.getAllProducts(userId: userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final authViewModel = Provider.of<AuthViewModel>(context);
     final height = MediaQuery.of(context).size.height * 1;
-    // String? name = FirebaseAuth.instance.currentUser!.displayName;
 
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text(name!),
-        //   automaticallyImplyLeading: false,
-        //   centerTitle: true,
-        //   actions: [
-        //     IconButton(
-        //       icon: const Icon(Iconsax.notification),
-        //       onPressed: () {
-        //         // Handle cart button tap
-        //       },
-        //     ),
-        //   ],
-        // ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

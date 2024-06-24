@@ -84,7 +84,7 @@ class _SettingViewState extends State<SettingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Thiết lập tài khoản',
+                  Text('Quản lý tài khoản',
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(
                     height: 12,
@@ -108,20 +108,19 @@ class _SettingViewState extends State<SettingView> {
                   const SizedBox(
                     height: 12,
                   ),
-                  const ListTileAccountSetting(
-                    text: "Hóa đơn",
+                  ListTileAccountSetting(
+                    text: "Đơn hàng",
                     subText:
                         "Danh sách đơn hàng đang thực hiện và đã hoàn thành",
-                    iconsax: Icon(Iconsax.bag_tick),
+                    iconsax: const Icon(Iconsax.bag_tick),
+                    onTap: () =>
+                        Navigator.pushNamed(context, RoutesName.orders),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  const ListTileAccountSetting(
-                    text: "Yêu thích",
-                    subText: "Lưu các sản phẩm yêu thích",
-                    iconsax: Icon(Iconsax.favorite_chart),
-                  ),
+                  Text('Thông tin ứng dụng',
+                      style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(
                     height: 12,
                   ),
@@ -129,6 +128,22 @@ class _SettingViewState extends State<SettingView> {
                     text: "Điều khoản và chính sách",
                     subText: "Thỏa thuận về điều khoản và chính sách",
                     iconsax: Icon(Iconsax.pen_tool),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const ListTileAccountSetting(
+                    text: "Phiên bản và nhà phát hành",
+                    subText: "Hiển thị thông tin về phiên bản và nhà phát hành",
+                    iconsax: Icon(Iconsax.information),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const ListTileAccountSetting(
+                    text: "Liên hệ",
+                    subText: "Một số phương thức liên hệ với quản trị viên",
+                    iconsax: Icon(Iconsax.link),
                   ),
                   const SizedBox(
                     height: 12,

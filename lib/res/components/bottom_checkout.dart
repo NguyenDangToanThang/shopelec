@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class BottomCheckout extends StatefulWidget {
   const BottomCheckout(
       {super.key, required this.totalPayment, this.onTap, required this.title});

@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:shopelec/model/address.dart';
 import 'package:shopelec/model/cart.dart';
 import 'package:shopelec/model/coupons.dart';
+import 'package:shopelec/model/order_detail.dart';
 import 'package:shopelec/res/components/bottom_checkout.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/utils/utils.dart';
 import 'package:shopelec/view/order/components/address_info_cart.dart';
 import 'package:shopelec/view/order/components/item_confirm_order.dart';
@@ -15,6 +17,7 @@ import 'package:shopelec/view/tabs/cart/components/bag_total_checkout.dart';
 import 'package:shopelec/view_model/address_view_model.dart';
 import 'package:shopelec/view_model/cart_view_model.dart';
 import 'package:shopelec/view_model/coupons_view_model.dart';
+import 'package:shopelec/view_model/order_view_model.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {
   const ConfirmOrderScreen({super.key});
@@ -36,8 +39,6 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   double coupon = 0.0;
 
   String couponText = "Chọn hoặc nhập mã";
-
-  late Coupons coupons2;
 
   @override
   void initState() {
@@ -70,12 +71,54 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   Widget build(BuildContext context) {
     final addressViewModel = Provider.of<AddressViewModel>(context);
     final cartViewModel = Provider.of<CartViewModel>(context);
+    final couponsViewModel = Provider.of<CouponsViewModel>(context);
+    final orderViewModel = Provider.of<OrderViewModel>(context);
     return Scaffold(
       bottomNavigationBar: BottomCheckout(
         totalPayment: NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
             .format((total - coupon).toInt()),
         title: "Đặt hàng",
-        onTap: () {},
+        onTap: () async {
+          List<dynamic> orderDetails = [];
+          for (Cart cart in list) {
+            OrderDetail orderDetail = OrderDetail(
+                product_id: cart.product.id,
+                quantity: cart.quantity,
+                order_id: -1);
+            orderDetails.add(orderDetail.toMap());
+          }
+          DateTime now = DateTime.now();
+
+          DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+          String formattedDate = formatter.format(now);
+          Map data = {
+            "orderDate": formattedDate,
+            "totalPrice": (total - coupon),
+            "status": "Chờ duyệt",
+            "coupons_id": couponsViewModel.couponCheck.id,
+            "user_id": FirebaseAuth.instance.currentUser!.uid,
+            "address_id": addressViewModel.address.id,
+            "orderDetailRequests": orderDetails
+          };
+
+          await orderViewModel.saveOrder(data).then((value) {
+            if (value) {
+              Utils.flushBarSuccessMessage("Đặt hàng thành công", context);
+              cartViewModel.setCart(List.empty());
+              couponsViewModel.updateCouponCheck(Coupons(
+                  id: -1,
+                  code: "",
+                  description: "",
+                  discount: 0,
+                  expiredDate: "",
+                  discountLimit: 0,
+                  quantity: 0,
+                  status: ""));
+              Navigator.pushReplacementNamed(context, RoutesName.cart);
+            }
+          });
+        },
       ),
       appBar: AppBar(
         title: const Text('Xác nhận đặt hàng'),
@@ -178,139 +221,181 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         final couponsViewModel = Provider.of<CouponsViewModel>(context);
         return FractionallySizedBox(
           heightFactor: 0.8,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Shop Electronics Voucher',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Divider(),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
+                padding: const EdgeInsets.only(
+                    bottom: 70.0), // Adjust the bottom padding
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        flex: 4,
-                        child: TextField(
-                          controller: _couponsController,
-                          decoration: const InputDecoration(
-                              labelText: 'Nhập mã voucher của Shop',
-                              border: OutlineInputBorder()),
-                          onSubmitted: (value) {
-                            couponsViewModel
-                                .checkCoupons(
-                                    totalPayment, value.trim(), context)
-                                .then((value) {
-                              Coupons coupons = value;
-                              if (coupons.status == "Đủ điều kiện") {
-                          
-
-                                setState(() {
-                                  coupon = coupons.discount;
-                                  couponText = coupons.code;
-                                  coupons2 = coupons;
-                                });
-                                Navigator.pop(context);
-                              }
-                            });
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          'Shop Electronics Voucher',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const Divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: TextField(
+                                controller: _couponsController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Nhập mã voucher của Shop',
+                                  border: OutlineInputBorder(),
+                                ),
+                                onSubmitted: (value) {
+                                  couponsViewModel
+                                      .checkCoupons(
+                                          totalPayment, value.trim(), context)
+                                      .then((value) {
+                                    Coupons coupons = value;
+                                    if (coupons.status == "Đủ điều kiện") {
+                                      setState(() {
+                                        coupon = coupons.discount;
+                                        couponText = coupons.code;
+                                      });
+                                      Navigator.pop(context);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: GestureDetector(
+                                onTap: () {
+                                  couponsViewModel
+                                      .checkCoupons(
+                                          totalPayment,
+                                          _couponsController.text.trim(),
+                                          context)
+                                      .then((value) {
+                                    Coupons coupons = value;
+                                    if (coupons.status == "Đủ điều kiện") {
+                                      setState(() {
+                                        coupon = coupons.discount;
+                                        couponText = coupons.code;
+                                      });
+                                      Navigator.pop(context);
+                                    } else {
+                                      Utils.flushBarErrorMessage(
+                                          "Mã ${coupons.status}", context);
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 10),
+                                  height: 65,
+                                  decoration: BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Center(child: Text("Áp dụng")),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 330,
+                        child: FutureBuilder(
+                          future: coupons0,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.hasData) {
+                              List<Coupons>? list = snapshot.data;
+                              return ListView.builder(
+                                itemCount: list!.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  Coupons coupons = list[index];
+                                  return ItemCoupons(
+                                    coupon: coupons,
+                                    couponCheck: couponsViewModel.couponCheck,
+                                    onTap: () {
+                                      setState(() {
+                                        if (coupons.status == "Đủ điều kiện") {
+                                          couponsViewModel
+                                              .updateCouponCheck(coupons);
+                                        }
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return const Expanded(
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.local_offer,
+                                          size: 50, color: Colors.grey),
+                                      SizedBox(height: 16.0),
+                                      Text(
+                                        'Chưa có mã giảm giá nào của Shop',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      SizedBox(height: 8.0),
+                                      Text(
+                                        'Nhập mã giảm giá có thể sử dụng vào thanh bên trên',
+                                        style: TextStyle(color: Colors.grey),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
                           },
                         ),
                       ),
-                      Expanded(
-                          flex: 2,
-                          child: GestureDetector(
-                            onTap: () {
-                              couponsViewModel
-                                  .checkCoupons(totalPayment,
-                                      _couponsController.text.trim(), context)
-                                  .then((value) {
-                                Coupons coupons = value;
-                                if (coupons.status == "Đủ điều kiện") {
-                                  
-
-                                  setState(() {
-                                    coupon = coupons.discount;
-                                    couponText = coupons.code;
-                                    coupons2 = coupons;
-                                  });
-                                  Navigator.pop(context);
-                                } else {
-                                  Utils.flushBarErrorMessage(
-                                      "Mã ${coupons.status}", context);
-                                }
-                              });
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              height: 65,
-                              decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: const Center(child: Text("Áp dụng")),
-                            ),
-                          ))
                     ],
-                  )),
-              FutureBuilder(
-                  future: coupons0,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData) {
-                      List<Coupons>? list = snapshot.data;
-                      return ListView.builder(
-                          itemCount: list!.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            Coupons coupons = list[index];
-                            return ItemCoupons(
-                              coupon: coupons,
-                              onTap: () {},
-                            );
-                          });
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.done) {
-                      return const Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.local_offer,
-                                  size: 50, color: Colors.grey),
-                              SizedBox(height: 16.0),
-                              Text(
-                                'Chưa có mã giảm giá nào của Shop',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                'Nhập mã giảm giá có thể sử dụng vào thanh bên trên',
-                                style: TextStyle(color: Colors.grey),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
+                  ),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Center(
-                    child: Text(
-                      'Đồng ý',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                padding: const EdgeInsets.only(
+                    bottom: 10.0, left: 10.0, right: 10.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (couponsViewModel.couponCheck.code != "") {
+                        setState(() {
+                          coupon = couponsViewModel.couponCheck.discount;
+                          couponText = couponsViewModel.couponCheck.code;
+                        });
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Đồng ý',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
                     ),
                   ),
                 ),

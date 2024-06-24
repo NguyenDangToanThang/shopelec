@@ -11,6 +11,7 @@ import 'package:shopelec/view/login/forgot_password_view.dart';
 import 'package:shopelec/view/login/login_view.dart';
 import 'package:shopelec/view/login/signup_view.dart';
 import 'package:shopelec/view/order/confirm_order_screen.dart';
+import 'package:shopelec/view/order/order_screen.dart';
 import 'package:shopelec/view/products/products_view.dart';
 import 'package:shopelec/view/profile/profile_view.dart';
 import 'package:shopelec/view/review_product/product_reviews_screen.dart';
@@ -53,6 +54,9 @@ class Routes {
       case RoutesName.products:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ProductsView());
+      case RoutesName.orders:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const OrderScreen());
       case RoutesName.detailProduct:
         Product product = arg is Product
             ? arg

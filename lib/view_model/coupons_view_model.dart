@@ -8,6 +8,35 @@ class CouponsViewModel with ChangeNotifier {
   final _couponsRepo = CouponsRepository();
   final logger = Logger();
 
+  CouponsViewModel() {
+    _couponCheck = Coupons(
+        id: -1,
+        code: "",
+        description: "",
+        discount: 0,
+        expiredDate: "",
+        discountLimit: 0,
+        quantity: 0,
+        status: "");
+    notifyListeners();
+  }
+
+  Coupons _couponCheck = Coupons(
+      id: -1,
+      code: "",
+      description: "",
+      discount: 0,
+      expiredDate: "",
+      discountLimit: 0,
+      quantity: 0,
+      status: "");
+
+  Coupons get couponCheck => _couponCheck;
+
+  void updateCouponCheck(Coupons coupons) {
+    _couponCheck = coupons;
+    notifyListeners();
+  }
 
   Future<dynamic> getAllCoupons(double total) async {
     try {

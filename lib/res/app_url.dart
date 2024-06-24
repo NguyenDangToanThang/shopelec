@@ -1,4 +1,6 @@
 class AppUrl {
+  //for deploy
+  // static var baseUrl = 'https://backend-2-9bjq.onrender.com/v1/api';
   static var baseUrl = 'http://10.0.2.2:8080/v1/api';
 
   static var registerApiEndPoint = '$baseUrl/register';
@@ -17,4 +19,7 @@ class AppUrl {
   static var favoriteEndpoint = '$baseUrl/favorite';
   static var deleteFavoriteEndPoint = '$baseUrl/favorite/delete';
   static var couponsEndpoint = '$baseUrl/coupons';
+  static var orderEndpoint = '$baseUrl/order';
+  static var orderUpdateStatusEndpoint = '$baseUrl/order/updateStatus';
+  static var saveOrUpdateTokenFCMEndpoint = '$baseUrl/tokens/update';
 }
