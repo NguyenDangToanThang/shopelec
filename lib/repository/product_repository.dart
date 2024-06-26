@@ -17,7 +17,8 @@ class ProductRespository {
 
   Future<dynamic> deleteFavorite(String userId, int productId) async {
     try {
-      String url = "${AppUrl.deleteFavoriteEndPoint}?user_id=$userId&product_id=$productId";
+      String url =
+          "${AppUrl.deleteFavoriteEndPoint}?user_id=$userId&product_id=$productId";
       dynamic response = await _apiServices.getGetApiResponse(url);
       return response;
     } catch (e) {
@@ -27,7 +28,8 @@ class ProductRespository {
 
   Future<dynamic> saveFavorite(dynamic data) async {
     try {
-      dynamic response = await _apiServices.getPostApiResponse(AppUrl.favoriteEndpoint, data);
+      dynamic response =
+          await _apiServices.getPostApiResponse(AppUrl.favoriteEndpoint, data);
       return response;
     } catch (e) {
       rethrow;
@@ -40,11 +42,15 @@ class ProductRespository {
       int? brandId,
       int? page,
       int? size,
-      List<String>? sort}) async {
+      List<String>? sort,
+      String? query}) async {
     try {
       String url = "${AppUrl.getAllProductEndPoint}?";
       if (userId != null) {
         url += "&user_id=$userId";
+      }
+      if (query != null || query != "") {
+        url += "&query=$query";
       }
       if (page != null) {
         url += "&page=$page";

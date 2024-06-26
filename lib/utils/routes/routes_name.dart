@@ -12,4 +12,8 @@ class RoutesName {
   static const String cart = 'cart_view';
   static const String confirmOrder = 'confirm_order_screen';
   static const String orders = 'order_screen';
+  static const String policy = 'policy_screen';
+  static const String detailApp = 'detail_app_screen';
+  static const String contact = 'contact_screen';
+  static const String rate = 'rate_product_screen';
 }

@@ -39,14 +39,12 @@ class _OrderScreenState extends State<OrderScreen>
           ),
         ],
         bottom: TabBar(
-          tabAlignment: TabAlignment.start,
-          isScrollable: true,
           controller: _tabController,
           labelColor: Colors.orange,
           unselectedLabelColor: Colors.grey,
           tabs: const [
             Tab(text: 'Chờ duyệt'),
-            Tab(text: 'Chờ giao hàng'),
+            Tab(text: 'Chờ giao'),
             Tab(text: 'Đã giao'),
             Tab(text: 'Đã hủy'),
           ],
@@ -55,8 +53,9 @@ class _OrderScreenState extends State<OrderScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          OrderTabContent(status: 'Chờ duyệt',tabController: _tabController),
-          OrderTabContent(status: 'Chờ giao hàng', tabController: _tabController),
+          OrderTabContent(status: 'Chờ duyệt', tabController: _tabController),
+          OrderTabContent(
+              status: 'Chờ giao hàng', tabController: _tabController),
           OrderTabContent(status: 'Đã giao', tabController: _tabController),
           OrderTabContent(status: 'Đã hủy', tabController: _tabController),
         ],
@@ -99,7 +98,10 @@ class OrderTabContent extends StatelessWidget {
                           itemCount: snapshot.data!.length,
                           itemBuilder: ((context, index) {
                             final order = snapshot.data![index];
-                            return OrderCard(order: order, tabController: tabController,);
+                            return OrderCard(
+                              order: order,
+                              tabController: tabController,
+                            );
                           })),
                     );
                   }

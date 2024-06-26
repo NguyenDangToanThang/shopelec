@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/order.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view_model/order_view_model.dart';
 
 class OrderCard extends StatelessWidget {
@@ -127,7 +128,7 @@ class OrderCard extends StatelessWidget {
                         ;
                       }
                     } else if (order.status == "Đã giao") {
-                      //tới trang chi tiết sản phẩm - có đánh giá riêng cho từng sản phẩm
+                      Navigator.pushNamed(context, RoutesName.rate,arguments: order);
                     } else {
                       bool? confirmed = await showConfirmationDialog(context,
                           "Bạn có chắc chắn muốn đặt lại đơn hàng này không?");
@@ -136,7 +137,7 @@ class OrderCard extends StatelessWidget {
                             .updateStatusOrder(order.id, "Chờ duyệt")
                             .whenComplete(() => tabController
                                 .animateTo(tabController.index - 3));
-                        ;
+                        
                       }
                     }
                   },

@@ -39,9 +39,17 @@ class _GridProductState extends State<GridProduct> {
         itemBuilder: (context, index) {
           Product product = widget.products[index];
           return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, RoutesName.detailProduct,
+            onTap: () async {
+              final result = await Navigator.pushNamed(
+                  context, RoutesName.detailProduct,
                   arguments: product);
+
+              if (result != null && result is bool) {
+                setState(() {
+                  widget.products[index] =
+                      widget.products[index].copyWith(favorite: result);
+                });
+              }
             },
             child: Container(
               height: 260,
@@ -102,21 +110,26 @@ class _GridProductState extends State<GridProduct> {
                               decoration: BoxDecoration(
                                   color: Colors.black,
                                   borderRadius: BorderRadius.circular(4)),
-                              child: const Padding(
-                                padding: EdgeInsets.only(right: 5, left: 5),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 5, left: 5),
                                 child: Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.star,
                                       color: Colors.amber,
                                       size: 18,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 4,
                                     ),
                                     Text(
-                                      '4.9',
-                                      style: TextStyle(color: Colors.white),
+                                      Provider.of<ProductViewModel>(context,
+                                              listen: false)
+                                          .averageRating(product)
+                                          .toString(),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     )
                                   ],
                                 ),
@@ -130,7 +143,6 @@ class _GridProductState extends State<GridProduct> {
                           ],
                         ),
                       ),
-                    
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 8),
@@ -151,12 +163,6 @@ class _GridProductState extends State<GridProduct> {
                               ),
                             ),
                             const Spacer(),
-                            // const Icon(
-                            //   Icons.discount,
-                            //   color: Colors.blue,
-                            //   size: 16,
-                            // ),
-
                             Container(
                               width: 42,
                               height: 20,

@@ -35,4 +35,14 @@ class OrderRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> getAllOrderDetailByOrderId(int orderId) async {
+    try {
+      String url = "${AppUrl.orderEndpoint}/getOrderDetails?orderId=$orderId";
+      dynamic response = await _apiServices.getGetApiResponse(url);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -45,7 +45,7 @@ class Order {
       'totalPrice': totalPrice,
       'status': status,
       'addressResponse': address.toMap(),
-      'coupons': coupons.toMap(),
+      'coupons': coupons.toMap()
     };
   }
 

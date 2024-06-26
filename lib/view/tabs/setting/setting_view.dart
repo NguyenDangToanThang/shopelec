@@ -22,154 +22,144 @@ class _SettingViewState extends State<SettingView> {
     String? name = data!.displayName;
     String? email = data.email;
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Text(
-            "Tài khoản",
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .apply(color: Colors.black),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Iconsax.notification),
-            onPressed: () {
-              // Handle cart button tap
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(0),
-                child: Image.asset(
-                  "assets/images/avatar.png",
-                  fit: BoxFit.cover,
-                  width: 50,
-                  height: 50,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(0),
+                  child: Image.asset(
+                    "assets/images/avatar.png",
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
+                  ),
+                ),
+                title: Text(
+                  name!,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                subtitle: Text(
+                  email!,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, RoutesName.profile);
+                  },
+                  icon: const Icon(
+                    Iconsax.edit,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-              title: Text(
-                name!,
-                style: Theme.of(context).textTheme.titleSmall,
+              const SizedBox(
+                height: 8,
               ),
-              subtitle: Text(
-                email!,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              trailing: IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, RoutesName.profile);
-                },
-                icon: const Icon(
-                  Iconsax.edit,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Quản lý tài khoản',
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListTileAccountSetting(
-                    text: "Danh sách địa chỉ",
-                    subText: "Thiết lập địa chỉ nhận hàng",
-                    iconsax: const Icon(Iconsax.home),
-                    onTap: () =>
-                        Navigator.pushNamed(context, RoutesName.address),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListTileAccountSetting(
-                    text: "Giỏ hàng",
-                    subText: "Thêm, xóa sản phẩm vào giỏ hàng và đặt hàng",
-                    iconsax: const Icon(Iconsax.shopping_cart),
-                    onTap: () => Navigator.pushNamed(context, RoutesName.cart),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListTileAccountSetting(
-                    text: "Đơn hàng",
-                    subText:
-                        "Danh sách đơn hàng đang thực hiện và đã hoàn thành",
-                    iconsax: const Icon(Iconsax.bag_tick),
-                    onTap: () =>
-                        Navigator.pushNamed(context, RoutesName.orders),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Text('Thông tin ứng dụng',
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const ListTileAccountSetting(
-                    text: "Điều khoản và chính sách",
-                    subText: "Thỏa thuận về điều khoản và chính sách",
-                    iconsax: Icon(Iconsax.pen_tool),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const ListTileAccountSetting(
-                    text: "Phiên bản và nhà phát hành",
-                    subText: "Hiển thị thông tin về phiên bản và nhà phát hành",
-                    iconsax: Icon(Iconsax.information),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const ListTileAccountSetting(
-                    text: "Liên hệ",
-                    subText: "Một số phương thức liên hệ với quản trị viên",
-                    iconsax: Icon(Iconsax.link),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () async {
-                        await authViewModel.logout(context);
-                      },
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        side: const BorderSide(width: 1.0, color: Colors.black),
-                      ),
-                      child: Text(
-                        'Đăng xuất',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Quản lý tài khoản',
+                        style: Theme.of(context).textTheme.titleMedium),
+                    const SizedBox(
+                      height: 12,
                     ),
-                  )
-                ],
-              ),
-            )
-          ],
+                    ListTileAccountSetting(
+                      text: "Danh sách địa chỉ",
+                      subText: "Thiết lập địa chỉ nhận hàng",
+                      iconsax: const Icon(Iconsax.home),
+                      onTap: () =>
+                          Navigator.pushNamed(context, RoutesName.address),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ListTileAccountSetting(
+                      text: "Giỏ hàng",
+                      subText: "Thêm, xóa sản phẩm vào giỏ hàng và đặt hàng",
+                      iconsax: const Icon(Iconsax.shopping_cart),
+                      onTap: () =>
+                          Navigator.pushNamed(context, RoutesName.cart),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ListTileAccountSetting(
+                      text: "Đơn hàng",
+                      subText:
+                          "Danh sách đơn hàng đang thực hiện và đã hoàn thành",
+                      iconsax: const Icon(Iconsax.bag_tick),
+                      onTap: () =>
+                          Navigator.pushNamed(context, RoutesName.orders),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Text('Thông tin ứng dụng',
+                        style: Theme.of(context).textTheme.titleMedium),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ListTileAccountSetting(
+                      text: "Điều khoản và chính sách",
+                      subText: "Thỏa thuận về điều khoản và chính sách",
+                      iconsax: const Icon(Iconsax.pen_tool),
+                      onTap: () =>
+                          Navigator.pushNamed(context, RoutesName.policy),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ListTileAccountSetting(
+                      text: "Thông tin ứng đụng và nhà phát triển",
+                      subText:
+                          "Hiển thị thông tin về phiên bản và nhà phát triển",
+                      iconsax: const Icon(Iconsax.information),
+                      onTap: () =>
+                          Navigator.pushNamed(context, RoutesName.detailApp),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    ListTileAccountSetting(
+                      text: "Liên hệ",
+                      subText: "Một số phương thức liên hệ với quản trị viên",
+                      iconsax: const Icon(Iconsax.link),
+                      onTap: () =>
+                          Navigator.pushNamed(context, RoutesName.contact),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          await authViewModel.logout(context);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          side:
+                              const BorderSide(width: 1.0, color: Colors.black),
+                        ),
+                        child: Text(
+                          'Đăng xuất',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

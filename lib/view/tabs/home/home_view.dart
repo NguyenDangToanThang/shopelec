@@ -17,12 +17,27 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   List<Map<String, dynamic>> categories = [
-    {'title': 'Laptop', 'image': 'assets/images/categories/laptop.png'},
-    {'title': 'Điện thoại', 'image': 'assets/images/categories/iphone.png'},
-    {'title': 'Tai nghe', 'image': 'assets/images/categories/headphones.png'},
-    {'title': 'Máy ảnh', 'image': 'assets/images/categories/camera.png'},
-    {'title': 'Bàn phím', 'image': 'assets/images/categories/keyboard.png'},
-    {'title': 'Chuột', 'image': 'assets/images/categories/mouse.png'},
+    {
+      'title': 'Laptop',
+      'image': 'assets/images/categories/icons8-laptop-96.png'
+    },
+    {
+      'title': 'Điện thoại',
+      'image': 'assets/images/categories/icons8-smartphone-96.png'
+    },
+    {
+      'title': 'Tai nghe',
+      'image': 'assets/images/categories/icons8-headphone-96.png'
+    },
+    {
+      'title': 'Máy ảnh',
+      'image': 'assets/images/categories/icons8-camera-80.png'
+    },
+    {
+      'title': 'Bàn phím',
+      'image': 'assets/images/categories/icons8-keyboard-80.png'
+    },
+    {'title': 'Chuột', 'image': 'assets/images/categories/icons8-mouse-80.png'},
   ];
 
   late Future<List<Product>> _products;

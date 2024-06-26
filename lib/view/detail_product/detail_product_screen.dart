@@ -20,23 +20,28 @@ class DetailProductScreen extends StatefulWidget {
 
 class _DetailProductScreenState extends State<DetailProductScreen> {
   bool favorite = false;
+  late Product product;
 
   @override
   void initState() {
     super.initState();
 
     favorite = widget.product.favorite;
+    product = widget.product;
   }
 
   @override
   Widget build(BuildContext context) {
     final productViewModel = Provider.of<ProductViewModel>(context);
-    // bool favorite = widget.product.favorite;
     return Scaffold(
       bottomNavigationBar: BottomAddToCart(product: widget.product),
       appBar: AppBar(
         title: const Text("Chi tiết sản phẩm"),
-        centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context, product.favorite);
+            },
+            icon: const Icon(Icons.arrow_back)),
         actions: [
           IconButton(
             icon: const Icon(Iconsax.notification),
@@ -75,31 +80,33 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(4.0),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min, // Constrain width
                       children: [
-                        SizedBox(width: 2.0),
-                        Icon(
+                        const SizedBox(width: 2.0),
+                        const Icon(
                           Icons.star,
                           color: Colors.white,
                           size: 16.0, // Adjust icon size as needed
                         ),
-                        SizedBox(width: 4.0),
+                        const SizedBox(width: 4.0),
                         Text(
-                          '4.9',
-                          style: TextStyle(
+                          Provider.of<ProductViewModel>(context, listen: false)
+                              .averageRating(widget.product)
+                              .toString(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12.0, // Adjust font size as needed
                           ),
                         ),
-                        SizedBox(width: 2.0),
+                        const SizedBox(width: 2.0),
                       ],
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  const Text(
-                    '(90 đánh giá)',
-                    style: TextStyle(
+                  Text(
+                    '(${widget.product.reviews.length} đánh giá)',
+                    style: const TextStyle(
                       fontSize: 12.0, // Adjust font size as needed
                       color: Colors.grey,
                     ),
@@ -166,29 +173,34 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (favorite) {
-                          _dialogBuilder(context);
-                        } else {
-                          productViewModel
-                              .saveFavorite(
-                                  FirebaseAuth.instance.currentUser!.uid,
-                                  widget.product.id)
-                              .then((_) {
-                            Utils.flushBarSuccessMessage(
-                                "Đã thêm vào yêu thích", context);
-                          });
-                        }
-                        favorite = !favorite;
-                      });
+                    onTap: () async {
+                      if (product.favorite) {
+                        _dialogBuilder(context).then((value) {
+                          if (value!) {
+                            setState(() {
+                              product =
+                                  product.copyWith(favorite: !product.favorite);
+                            });
+                          }
+                        });
+                      } else {
+                        productViewModel.saveFavorite(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.product.id);
+                        setState(() {
+                          product =
+                              product.copyWith(favorite: !product.favorite);
+                        });
+                        Utils.flushBarSuccessMessage(
+                            "Đã thêm vào yêu thích", context);
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(30)),
-                      child: favorite
+                      child: product.favorite
                           ? const Icon(
                               Icons.favorite_outlined,
                               color: Colors.redAccent,
@@ -302,7 +314,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Đánh giá (99 đánh giá)",
+                      "Đánh giá (${widget.product.reviews.length} đánh giá)",
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!
@@ -312,7 +324,8 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                     IconButton(
                       icon: const Icon(Icons.keyboard_arrow_right_outlined),
                       onPressed: () {
-                        Navigator.pushNamed(context, RoutesName.productReviews);
+                        Navigator.pushNamed(context, RoutesName.productReviews,
+                            arguments: widget.product);
                       },
                     )
                   ],
@@ -325,10 +338,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context) {
+  Future<bool?> _dialogBuilder(BuildContext context) {
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
-    return showDialog<void>(
+    return showDialog<bool?>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -341,7 +354,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               ),
               child: const Text('Hủy'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(false);
               },
             ),
             TextButton(
@@ -352,8 +365,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               onPressed: () {
                 productViewModel.deleteFavorite(
                     FirebaseAuth.instance.currentUser!.uid, widget.product.id);
-                // print(authViewModel.infoUserCurrent['id']);
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(true);
               },
             ),
           ],

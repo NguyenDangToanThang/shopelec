@@ -37,22 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
         showUnselectedLabels: true,
         unselectedItemColor: Colors.blue,
         selectedItemColor: Colors.pink,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             label: "Trang chủ",
-            icon: Icon(Iconsax.home),
+            icon: _buildIcon(Iconsax.home, 0),
           ),
           BottomNavigationBarItem(
             label: "Cửa hàng",
-            icon: Icon(Iconsax.shop),
+            icon: _buildIcon(Iconsax.shop, 1),
           ),
           BottomNavigationBarItem(
             label: "Yêu thích",
-            icon: Icon(Iconsax.favorite_chart),
+            icon: _buildIcon(Iconsax.favorite_chart, 2),
           ),
           BottomNavigationBarItem(
             label: "Hồ sơ",
-            icon: Icon(Iconsax.profile_2user),
+            icon: _buildIcon(Iconsax.profile_2user, 3),
           ),
         ],
         currentIndex: _currentIndex,
@@ -61,6 +61,21 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
+      ),
+    );
+  }
+
+  Widget _buildIcon(IconData iconData, int index) {
+    return Container(
+      decoration: BoxDecoration(
+        color: _currentIndex == index
+            ? Colors.pink.withOpacity(0.2)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Icon(
+        iconData,
       ),
     );
   }

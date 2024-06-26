@@ -20,6 +20,8 @@ class AppUrl {
   static var deleteFavoriteEndPoint = '$baseUrl/favorite/delete';
   static var couponsEndpoint = '$baseUrl/coupons';
   static var orderEndpoint = '$baseUrl/order';
+  static var saveStatusDetailEndpoint = '$baseUrl/order/detail/updateStatus';
   static var orderUpdateStatusEndpoint = '$baseUrl/order/updateStatus';
   static var saveOrUpdateTokenFCMEndpoint = '$baseUrl/tokens/update';
+  static var saveRateEndpoint = '$baseUrl/review/save';
 }

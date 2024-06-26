@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopelec/firebase_options.dart';
@@ -14,10 +15,12 @@ import 'package:shopelec/view_model/cart_view_model.dart';
 import 'package:shopelec/view_model/coupons_view_model.dart';
 import 'package:shopelec/view_model/order_view_model.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
+import 'package:shopelec/view_model/rate_view_model.dart';
 import 'package:shopelec/view_model/store_view_model.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
@@ -50,6 +53,8 @@ class _MyAppState extends State<MyApp> {
       tokenRepo.sendTokenToServer(newToken);
     });
     _subscribeToTopic();
+
+    FlutterNativeSplash.remove();
   }
 
   void _subscribeToTopic() async {
@@ -73,6 +78,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CouponsViewModel()),
         ChangeNotifierProvider(create: (_) => OrderViewModel()),
         ChangeNotifierProvider(create: (_) => StoreViewModel()),
+        ChangeNotifierProvider(create: (_) => RateViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
