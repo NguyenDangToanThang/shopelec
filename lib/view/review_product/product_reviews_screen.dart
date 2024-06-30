@@ -111,7 +111,9 @@ class _ProductReviewsScreenState extends State<ProductReviewsScreen> {
                             name: widget.product.reviews[index].name,
                             rating: widget.product.reviews[index].rate,
                             review: widget.product.reviews[index].comment,
-                            date: widget.product.reviews[index].dateCreated);
+                            date: widget.product.reviews[index].dateCreated,
+                            image: widget.product.reviews[index].image,
+                            );
                       })
             ],
           ),

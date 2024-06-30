@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +30,7 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
     return FutureBuilder(
         future: _carts,
         builder: (context, snapshot) {
@@ -50,12 +49,6 @@ class _CartViewState extends State<CartView> {
                   ),
                   appBar: AppBar(
                     title: const Text("Giỏ hàng"),
-                    // centerTitle: true,
-                    actions: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Iconsax.notification))
-                    ],
                   ),
                   body: const Center(
                       child: Text(
@@ -80,21 +73,15 @@ class _CartViewState extends State<CartView> {
                       NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
                           .format(totalPayment.toInt()),
                   onTap: () {
-                    Navigator.pushNamed(context, RoutesName.confirmOrder);
+                    Navigator.pushReplacementNamed(
+                        context, RoutesName.confirmOrder);
                   },
                 ),
                 appBar: AppBar(
                   title: const Text("Giỏ hàng"),
-                  // centerTitle: true,
-                  actions: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Iconsax.notification))
-                  ],
                 ),
                 body: SingleChildScrollView(
                   child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       ListViewProduct(items: list),
                       const SizedBox(
@@ -110,12 +97,6 @@ class _CartViewState extends State<CartView> {
             return Scaffold(
                 appBar: AppBar(
                   title: const Text("Giỏ hàng"),
-                  // centerTitle: true,
-                  actions: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Iconsax.notification))
-                  ],
                 ),
                 body: const Center(child: CircularProgressIndicator()));
           }

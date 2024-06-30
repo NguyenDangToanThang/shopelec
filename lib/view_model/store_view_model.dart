@@ -12,15 +12,14 @@ class StoreViewModel with ChangeNotifier {
 
   StoreViewModel() {
     initData().whenComplete((){
-      bool checkAllCategories =
-        categories.any((category) => category.id == 0);
-    if (!checkAllCategories) {
-      categories.insert(0, Category(id: 0, name: "Tất cả"));
-    }
-    bool checkAllBrands = brands.any((item) => item.id == 0);
-    if (!checkAllBrands) {
-      brands.insert(0, const Brand(id: 0, name: "Tất cả"));
-    }
+      bool checkAllCategories = categories.any((category) => category.id == 0);
+      if (!checkAllCategories) {
+        categories.insert(0, Category(id: 0, name: "Tất cả"));
+      }
+      bool checkAllBrands = brands.any((item) => item.id == 0);
+      if (!checkAllBrands) {
+        brands.insert(0, const Brand(id: 0, name: "Tất cả"));
+      }
     });
   }
 

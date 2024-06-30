@@ -57,7 +57,7 @@ class BagTotalCheckout extends StatelessWidget {
                 "Tổng tiền gốc",
                 style: TextStyle(
                     color: Colors.grey[600],
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400),
               ),
               const Spacer(),
@@ -80,7 +80,7 @@ class BagTotalCheckout extends StatelessWidget {
                 "Tổng tiền giảm",
                 style: TextStyle(
                     color: Colors.grey[600],
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400),
               ),
               const Spacer(),
@@ -102,7 +102,7 @@ class BagTotalCheckout extends StatelessWidget {
                 "Mã giảm giá",
                 style: TextStyle(
                     color: Colors.grey[600],
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400),
               ),
               const Spacer(),
@@ -111,6 +111,28 @@ class BagTotalCheckout extends StatelessWidget {
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              Text(
+                "Phí vận chuyển",
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+              const Spacer(),
+              const Text(
+                "Miễn phí",
+                style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500),
               ),
             ],
@@ -134,28 +156,6 @@ class BagTotalCheckout extends StatelessWidget {
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 15,
-                    fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              Text(
-                "Phí vận chuyển",
-                style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400),
-              ),
-              const Spacer(),
-              const Text(
-                "Miễn phí",
-                style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 16,
                     fontWeight: FontWeight.w500),
               ),
             ],

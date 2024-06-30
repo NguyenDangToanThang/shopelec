@@ -43,7 +43,7 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
       List<Product> newProducts = await productViewModel.getAllProducts(
         userId: userId,
         categoryId: widget.categoryId,
-        size: 20,
+        size: 12,
         page: page,
       );
       setState(() {
@@ -55,7 +55,7 @@ class _CategoryProductsViewState extends State<CategoryProductsView> {
       List<Product> newProducts =
           await productViewModel.getAllProducts(
             userId: userId,
-            size: 20, 
+            size: 12, 
             page: page);
       setState(() {
         products.addAll(newProducts);

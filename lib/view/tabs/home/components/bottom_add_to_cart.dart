@@ -16,7 +16,7 @@ class BottomAddToCart extends StatefulWidget {
 class _BottomAddToCartState extends State<BottomAddToCart> {
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -25,20 +25,6 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: const Center(
-                  child: Text(
-                    'Mua ngay',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )),
-          ),
           Expanded(
             flex: 1,
             child: GestureDetector(
@@ -53,7 +39,7 @@ class _BottomAddToCartState extends State<BottomAddToCart> {
               child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.redAccent,
                   ),
                   child: const Center(
                     child: Text(

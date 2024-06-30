@@ -12,18 +12,31 @@ class AddressViewModel with ChangeNotifier {
 
   Address get address => _address;
 
+  List<Address> _addresses = [];
+
+  List<Address> get addresses => _addresses;
+
   setAddress(Address address) {
     _address = address;
     notifyListeners();
+  }
+
+  Future<dynamic> removeFromAddress(int id) async {
+    try {
+      _addresses.removeWhere((address) => address.id == id);
+      notifyListeners();
+      await _myRepo.deleteAddressById(id);
+    } catch (e) {
+      logger.e(e.toString());
+    }
   }
 
   Future<List<Address>> getAddressByUserId(String userId) async {
     final jsonList;
     try {
       jsonList = await _myRepo.getAllAddressByUserId(userId);
-      // logger.i(jsonList);
       List<Address> response = parseAddresses(jsonList);
-      // logger.i(response);
+      _addresses = response;
       return response;
     } catch (e) {
       logger.e(e.toString());

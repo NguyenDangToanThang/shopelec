@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 import 'package:shopelec/view_model/store_view_model.dart';
@@ -47,7 +49,7 @@ class _StoreViewState extends State<StoreView> {
       userId: userId,
       brandId: selectedBrand,
       categoryId: selectedCategory,
-      size: 20,
+      size: 12,
       query: query,
       page: page,
     );
@@ -123,6 +125,14 @@ class _StoreViewState extends State<StoreView> {
               });
             },
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Iconsax.shopping_cart),
+              onPressed: () {
+                Navigator.pushNamed(context, RoutesName.cart);
+              },
+            )
+          ],
         ),
         body: SingleChildScrollView(
           controller: _scrollController,
@@ -202,7 +212,7 @@ class _StoreViewState extends State<StoreView> {
                   },
                 ),
               ),
-              if (products.isEmpty)
+              if (products.isEmpty && !isLoading)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Center(child: Text("Không có sản phẩm nào")),

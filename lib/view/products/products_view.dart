@@ -55,15 +55,7 @@ class _ProductsViewState extends State<ProductsView>
               title: const Text("Danh sách sản phẩm"),
               centerTitle: true,
               actions: [
-                // IconButton(
-                //   onPressed: () {
-                //     showSearch(
-                //       context: context,
-                //       delegate: CustomSearchDelegate(),
-                //     );
-                //   },
-                //   icon: const Icon(Icons.search),
-                // ),
+                
                 IconButton(
                     onPressed: () {}, icon: const Icon(Iconsax.shopping_cart))
               ],

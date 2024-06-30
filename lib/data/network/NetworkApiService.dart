@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart';
 import 'package:shopelec/data/app_exeptions.dart';
 import 'package:shopelec/data/network/BaseApiServices.dart';
@@ -37,6 +38,28 @@ class NetworkApiService extends BaseApiServices {
       throw FetchDataException("Mất kết nối");
     }
     return responseJson;
+  }
+
+  @override
+  Future getMultipartApiResponse(String url, File image) async {
+    // dynamic responseJson;
+    try {
+      var request = MultipartRequest('POST', Uri.parse(url));
+      request.fields['id'] = FirebaseAuth.instance.currentUser!.uid;
+      request.files.add(await MultipartFile.fromPath(
+        'avatar',
+        image.path,
+      ));
+      final response = await request.send();
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully.');
+      } else {
+        print('Image upload failed with status: ${response.statusCode}');
+      }
+    } on SocketException {
+      throw FetchDataException("Mất kết nối");
+    }
+    // return responseJson;
   }
 
   dynamic returnResponse(Response response) {

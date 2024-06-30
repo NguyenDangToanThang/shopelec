@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/tabs/home/components/item_categories.dart';
 
 class ListViewCategories extends StatelessWidget {
@@ -19,16 +20,18 @@ class ListViewCategories extends StatelessWidget {
           shrinkWrap: true,
           itemCount: categories.length,
           scrollDirection: Axis.horizontal,
-          itemBuilder: (context,index) {
+          itemBuilder: (context, index) {
             final category = categories[index];
             return ItemCategories(
               height: height,
               title: category['title'] as String,
               image: category['image'] as String,
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, RoutesName.productCategory,
+                    arguments: category['title'] as String);
+              },
             );
-          }
-      ),
+          }),
     );
   }
 }

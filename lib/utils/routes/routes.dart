@@ -8,6 +8,8 @@ import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/address/address_add_new.dart';
 import 'package:shopelec/view/address/address_view.dart';
+import 'package:shopelec/view/change_password/change_password_biometric.screen.dart';
+import 'package:shopelec/view/change_password/change_password_screen.dart';
 import 'package:shopelec/view/contact/contact_screen.dart';
 import 'package:shopelec/view/detail_app/detail_app_screen.dart';
 import 'package:shopelec/view/detail_product/detail_product_screen.dart';
@@ -16,6 +18,7 @@ import 'package:shopelec/view/login/forgot_password_view.dart';
 import 'package:shopelec/view/login/login_view.dart';
 import 'package:shopelec/view/login/signup_view.dart';
 import 'package:shopelec/view/order/confirm_order_screen.dart';
+import 'package:shopelec/view/order/detail_order_screen.dart';
 import 'package:shopelec/view/order/order_screen.dart';
 import 'package:shopelec/view/policy/term_policy_screen.dart';
 import 'package:shopelec/view/products/products_view.dart';
@@ -23,6 +26,7 @@ import 'package:shopelec/view/profile/profile_view.dart';
 import 'package:shopelec/view/rate/rate_product_screen.dart';
 import 'package:shopelec/view/review_product/product_reviews_screen.dart';
 import 'package:shopelec/view/tabs/cart/cart_view.dart';
+import 'package:shopelec/view/tabs/home/components/product_category_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -40,6 +44,14 @@ class Routes {
       case RoutesName.forgotPassword:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ForgotPasswordView());
+      case RoutesName.changePasswordBiometric:
+        return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                const ChangePasswordBiometricScreen());
+      case RoutesName.productCategory:
+        String name = arg as String;
+        return MaterialPageRoute(
+            builder: (BuildContext context) => ProductCategoryScreen(name: name));
       case RoutesName.productReviews:
         Product product = arg is Product
             ? arg
@@ -90,6 +102,35 @@ class Routes {
       case RoutesName.contact:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ContactScreen());
+      case RoutesName.changePassword:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ChangePasswordScreen());
+      case RoutesName.detailOrder:
+        Order order = arg is Order
+            ? arg
+            : Order(
+                id: 0,
+                address: Address(
+                    id: 0,
+                    address: "",
+                    isSelected: false,
+                    name: "",
+                    phone: "",
+                    user_id: ""),
+                coupons: Coupons(
+                    id: -1,
+                    code: "",
+                    description: "",
+                    discount: 0,
+                    discountLimit: 0,
+                    expiredDate: "",
+                    quantity: 0,
+                    status: ""),
+                orderDate: DateTime.now(),
+                status: "",
+                totalPrice: 0);
+        return MaterialPageRoute(
+            builder: (BuildContext context) => OrderDetailsPage(order: order));
       case RoutesName.rate:
         Order order = arg is Order
             ? arg

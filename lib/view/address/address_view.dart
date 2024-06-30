@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/address.dart';
@@ -51,39 +52,69 @@ class _AddressViewState extends State<AddressView> {
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    List<Address> list = snapshot.data!;
-                    // final logger = Logger();
-                    // logger.i(list);
+                    List<Address> list = addressViewModel.addresses;
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: list.length,
                       itemBuilder: (context, index) {
                         Address address = list[index];
-                        return SingleAddress(
-                          address: address,
-                          onTap: () {
-                            setState(() {
-                              Map<String, dynamic> data = {
-                                "id": address.id.toString(),
-                                "name": address.name.toString(),
-                                "phoneNumber": address.phone.toString(),
-                                "address": address.address.toString(),
-                                "selected": true,
-                                "user_id": FirebaseAuth
-                                    .instance.currentUser!.uid
-                                    .toString()
-                              };
-                              addressViewModel.setActiveAddress(data);
-                              for (var i = 0; i < list.length; i++) {
-                                if (i == index) {
-                                  list[i] = list[i].copyWith(isSelected: true);
-                                  addressViewModel.setAddress(list[i]);
-                                } else {
-                                  list[i] = list[i].copyWith(isSelected: false);
-                                }
-                              }
-                            });
-                          },
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 8.0),
+                          decoration: BoxDecoration(
+                              color: address.isSelected
+                                  ? Colors.blue.withOpacity(0.5)
+                                  : Colors.transparent,
+                              border: Border.all(
+                                  color: address.isSelected
+                                      ? Colors.transparent
+                                      : Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Slidable(
+                            key: ValueKey(address.id),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    addressViewModel
+                                        .removeFromAddress(address.id!);
+                                  },
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Xóa',
+                                )
+                              ],
+                            ),
+                            child: SingleAddress(
+                              address: address,
+                              onTap: () {
+                                setState(() {
+                                  Map<String, dynamic> data = {
+                                    "id": address.id.toString(),
+                                    "name": address.name.toString(),
+                                    "phoneNumber": address.phone.toString(),
+                                    "address": address.address.toString(),
+                                    "selected": true,
+                                    "user_id": FirebaseAuth
+                                        .instance.currentUser!.uid
+                                        .toString()
+                                  };
+                                  addressViewModel.setActiveAddress(data);
+                                  for (var i = 0; i < list.length; i++) {
+                                    if (i == index) {
+                                      list[i] =
+                                          list[i].copyWith(isSelected: true);
+                                      addressViewModel.setAddress(list[i]);
+                                    } else {
+                                      list[i] =
+                                          list[i].copyWith(isSelected: false);
+                                    }
+                                  }
+                                });
+                              },
+                            ),
+                          ),
                         );
                       },
                     );

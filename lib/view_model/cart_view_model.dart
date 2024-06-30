@@ -8,7 +8,6 @@ class CartViewModel with ChangeNotifier {
   final _myRepo = CartRepository();
   final logger = Logger();
 
-
   List<Cart> _carts = List.empty();
   List<Cart> get carts => _carts;
 
@@ -26,7 +25,6 @@ class CartViewModel with ChangeNotifier {
     try {
       await _myRepo.setQuantityInCarts(quantity, id);
     } catch (e) {
-      // Utils.flushBarErrorMessage(e.toString(), context);
       logger.e(e.toString());
     }
   }
@@ -56,9 +54,7 @@ class CartViewModel with ChangeNotifier {
     final json;
     try {
       json = await _myRepo.getAllCartByUserId(id);
-      // logger.i(json);
       List<Cart> carts = parseCarts(json);
-      // logger.i(carts);
       setCart(carts);
       return carts;
     } catch (e) {
@@ -73,6 +69,4 @@ class CartViewModel with ChangeNotifier {
         .map((json) => Cart.fromMap(json as Map<String, dynamic>))
         .toList();
   }
-
-  
 }

@@ -31,6 +31,7 @@ class OrderViewModel with ChangeNotifier {
       dynamic json = await _myRepo.getOrderByStatusAndUserId(
           FirebaseAuth.instance.currentUser!.uid, status);
       List<Order> orders = parseOrders(json);
+
       return orders;
     } catch (e) {
       logger.e(e);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
@@ -17,7 +18,7 @@ class ContactScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: _sendEmail,
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -34,7 +35,7 @@ class ContactScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: _makePhoneCall,
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
@@ -48,25 +49,34 @@ class ContactScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  side: const BorderSide(width: 1.0, color: Colors.black),
-                ),
-                child: Text(
-                  'Liên hệ qua nhắn tin',
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _makePhoneCall() async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: "0387185045",
+    );
+    await launchUrl(launchUri);
+  }
+
+  
+  Future<void> _sendEmail() async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: "nvbb802@gmail.com",
+      queryParameters: {
+        'subject': "",
+        'body': "",
+      },
+    );
+    if (await canLaunchUrl(emailLaunchUri)) {
+      await launchUrl(emailLaunchUri);
+    } else {
+      throw 'Không thể gửi email';
+    }
   }
 }

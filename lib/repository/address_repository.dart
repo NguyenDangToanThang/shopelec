@@ -43,4 +43,13 @@ class AddressRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> deleteAddressById(int id) async {
+    try {
+      await _apiServices.getGetApiResponse(
+          "${AppUrl.deleteAddressEndpoint}/$id");
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

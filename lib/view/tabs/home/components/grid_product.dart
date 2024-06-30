@@ -24,8 +24,7 @@ class _GridProductState extends State<GridProduct> {
 
   @override
   Widget build(BuildContext context) {
-    // final cartViewModel = Provider.of<CartViewModel>(context);
-    final productViewModel = Provider.of<ProductViewModel>(context);
+    final productViewModel = Provider.of<ProductViewModel>(context, listen: false);
     return GridView.builder(
         itemCount: widget.length,
         shrinkWrap: true,
@@ -218,32 +217,6 @@ class _GridProductState extends State<GridProduct> {
                           ],
                         ),
                       )),
-                  // Align(
-                  //     alignment: Alignment.bottomRight,
-                  //     child: Material(
-                  //       color: Colors.black,
-                  //       borderRadius: const BorderRadius.only(
-                  //           topLeft: Radius.circular(16),
-                  //           bottomRight: Radius.circular(16)),
-                  //       child: InkWell(
-                  //         onTap: () {
-                  //           Map<String, dynamic> cart = {
-                  //             'email': FirebaseAuth.instance.currentUser!.email,
-                  //             'product_id': product.id.toString(),
-                  //             'quantity': '1'
-                  //           };
-                  //           logger.i(cart);
-                  //           cartViewModel.addToCart(cart, context);
-                  //         },
-                  //         child: const Padding(
-                  //           padding: EdgeInsets.all(8.0),
-                  //           child: Icon(
-                  //             Icons.add,
-                  //             color: Colors.grey,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ))
                 ],
               ),
             ),

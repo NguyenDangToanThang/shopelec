@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:shopelec/data/network/BaseApiServices.dart';
 import 'package:shopelec/data/network/NetworkApiService.dart';
 import 'package:shopelec/res/app_url.dart';
@@ -17,8 +19,8 @@ class AuthRepository {
 
   Future<dynamic> getMyInfoApi(String id) async {
     try {
-      dynamic response =
-          await _apiServices.getGetApiResponse("${AppUrl.getMyInfoEndPoint}?id=$id");
+      dynamic response = await _apiServices
+          .getGetApiResponse("${AppUrl.getMyInfoEndPoint}?id=$id");
       return response;
     } catch (e) {
       rethrow;
@@ -30,6 +32,14 @@ class AuthRepository {
       dynamic response = await _apiServices.getPostApiResponse(
           AppUrl.updateUserEndPoint, data);
       return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> uploadAvatar(File file) async {
+    try {
+      await _apiServices.getMultipartApiResponse(AppUrl.uploadAvatarEndpoint, file);
     } catch (e) {
       rethrow;
     }

@@ -16,4 +16,9 @@ class RoutesName {
   static const String detailApp = 'detail_app_screen';
   static const String contact = 'contact_screen';
   static const String rate = 'rate_product_screen';
+  static const String detailOrder = 'detail_order_screen';
+  static const String changePassword = 'change_password_screen';
+  static const String productCategory = 'product_category_screen';
+  static const String changePasswordBiometric =
+      'change_password_biometric_screen';
 }

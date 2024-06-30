@@ -108,7 +108,7 @@ class AuthViewModel with ChangeNotifier {
         options: const AuthenticationOptions(biometricOnly: true),
       );
     } catch (e) {
-      print(e);
+      // print(e);
       return false;
     }
   }
@@ -126,7 +126,6 @@ class AuthViewModel with ChangeNotifier {
     final json = _myRepo
         .getMyInfoApi(id!)
         .onError((error, stackTrace) => logger.e(error));
-    // logger.i(json);
     return json;
   }
 
@@ -137,6 +136,25 @@ class AuthViewModel with ChangeNotifier {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       Utils.flushBarErrorMessage(e.toString(), context);
+    }
+  }
+
+  Future<void> changePassword(String newPassword, BuildContext context) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      String? oldPassword = await getOldPassword();
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user!.email!,
+        password: oldPassword ?? "",
+      );
+      await user.reauthenticateWithCredential(credential);
+      await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+      await _secureStorage.write(key: 'password', value: newPassword);
+      notifyListeners();
+      Utils.flushBarSuccessMessage("Đổi mật khẩu thành công", context);
+    } on FirebaseAuthException catch (e) {
+      Utils.flushBarErrorMessage("Lỗi: $e", context);
+      logger.e(e);
     }
   }
 
@@ -204,5 +222,9 @@ class AuthViewModel with ChangeNotifier {
         .signOut()
         .onError((error, stackTrace) => logger.e(error));
     Navigator.pushReplacementNamed(context, RoutesName.login);
+  }
+
+  Future<String?> getOldPassword() async {
+    return await _secureStorage.read(key: 'password');
   }
 }

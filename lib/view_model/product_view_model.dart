@@ -75,7 +75,6 @@ class ProductViewModel with ChangeNotifier {
             size: size,
             sort: ["id", "desc"],
             categoryId: categoryId);
-        logger.i("Json: $jsonList");
       } else if (brandId != null) {
         jsonList = await _myRepo.getAllProduct(
             userId: userId,
@@ -87,17 +86,15 @@ class ProductViewModel with ChangeNotifier {
       } else {
         jsonList = await _myRepo.getAllProduct(
             query: query,
-            userId: userId, page: page, size: size, sort: ["id", "desc"]);
+            userId: userId,
+            page: page,
+            size: size,
+            sort: ["id", "desc"]);
       }
       List<Product> products = parseProducts(jsonList['products']);
 
-      // logger.i("Total products: ${jsonList['totalItems']}");
-      // logger.i("Total pages: ${jsonList['totalPages']}");
-      // logger.i("Current page: ${jsonList['currentPage']}");
-
       return products;
     } catch (e) {
-      logger.e(e);
       throw Exception("Failed to fetch products: $e");
     }
   }
@@ -105,12 +102,10 @@ class ProductViewModel with ChangeNotifier {
   Future<List<Product>> getAllFavoriteProductByUserId(String userId) async {
     try {
       final jsonList = await _myRepo.getAllFavoriteByUserId(userId);
-      // logger.i(jsonList[0]);
       List<Product> productList = [];
       for (var json in jsonList) {
         productList.add(Product.fromMap(json['productResponse']));
       }
-      // logger.i(productList);
       return productList;
     } catch (e) {
       rethrow;
@@ -126,7 +121,6 @@ class ProductViewModel with ChangeNotifier {
       }
       return brands;
     } catch (e) {
-      logger.e(e);
       throw Exception("Failed to fetch brands: $e");
     }
   }
@@ -140,13 +134,13 @@ class ProductViewModel with ChangeNotifier {
       }
       return categories;
     } catch (e) {
-      logger.e(e);
       throw Exception("Failed to fetch categories: $e");
     }
   }
 
   double averageRatingWithStar(Product product, double star) {
-    List<Review> reviews = product.reviews.where((review) => review.rate == star).toList();
+    List<Review> reviews =
+        product.reviews.where((review) => review.rate == star).toList();
     double total = 0.0;
     for (Review review in reviews) {
       total += review.rate;

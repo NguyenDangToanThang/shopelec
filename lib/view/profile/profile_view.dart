@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/utils/utils.dart';
 import 'package:shopelec/view_model/auth_view_model.dart';
 import 'package:intl/intl.dart';
@@ -581,39 +584,89 @@ class _ProfileViewState extends State<ProfileView> {
                       height: 3,
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: const Center(
-                        child: Text(
-                          "Đổi mật khẩu",
-                          style: TextStyle(color: Colors.white),
+                    GestureDetector(
+                      onTap: () async {
+                        if (authViewModel.isBiometricEnabled) {
+                          String? result = await _showMyBottomSheet(context)
+                              .onError((error, stackTrace) => "");
+                          if (result == "normal") {
+                            Navigator.of(context)
+                                .pushNamed(RoutesName.changePassword);
+                          } else if (result == "biometric") {
+                            bool check = await authViewModel.authenticate();
+                            if (check) {
+                              Navigator.of(context).pushNamed(
+                                  RoutesName.changePasswordBiometric);
+                            }
+                          }
+                        } else {
+                          Navigator.of(context)
+                              .pushNamed(RoutesName.changePassword);
+                        }
+                      },
+                      child: Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: const Center(
+                          child: Text(
+                            "Đổi mật khẩu",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.redAccent),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: const Center(
-                        child: Text(
-                          "Khóa tài khoản",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
             );
           }),
+    );
+  }
+
+  Future<String> _showMyBottomSheet(BuildContext context) async {
+    return await showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          height: 200,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Chọn phương thức đổi mật khẩu',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: const Icon(Icons.lock_outline),
+                title: const Text('Sử dụng mật khẩu cũ'),
+                onTap: () {
+                  Navigator.pop(context, 'normal');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.fingerprint),
+                title: const Text('Sử dụng sinh trắc học'),
+                onTap: () {
+                  Navigator.pop(context, 'biometric');
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

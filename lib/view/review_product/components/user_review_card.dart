@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
 import 'package:shopelec/view/detail_product/components/rating_bar_star_indicator.dart';
 
 class UserReviewCard extends StatefulWidget {
@@ -8,12 +7,14 @@ class UserReviewCard extends StatefulWidget {
       required this.name,
       required this.rating,
       required this.review,
-      required this.date});
+      required this.date,
+      required this.image});
 
   final String name;
   final double rating;
   final String review;
   final String date;
+  final String image;
 
   @override
   State<UserReviewCard> createState() => _UserReviewCardState();
@@ -30,9 +31,11 @@ class _UserReviewCardState extends State<UserReviewCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const CircleAvatar(
-                  // backgroundImage: NetworkImage("")
-                    backgroundImage: AssetImage("assets/images/avatar.png")),
+                CircleAvatar(
+                    // backgroundImage: NetworkImage("")
+                    backgroundImage: widget.image == ""
+                        ? const AssetImage("assets/images/avatar.png")
+                        : NetworkImage(widget.image) as ImageProvider),
                 const SizedBox(
                   width: 4,
                 ),
@@ -71,23 +74,10 @@ class _UserReviewCardState extends State<UserReviewCard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: ReadMoreText(
-                widget.review,
-                trimLines: 1,
-                trimMode: TrimMode.Line,
-                trimExpandedText: ' Rút gọn',
-                trimCollapsedText: 'Thêm',
-                moreStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue),
-                lessStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue),
-                textAlign: TextAlign.left,
-              ),
-            ),
+                child: Text(
+              widget.review,
+              textAlign: TextAlign.left,
+            )),
           ],
         )
       ],

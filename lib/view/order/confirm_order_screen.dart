@@ -78,7 +78,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         totalPayment: NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
             .format((total - coupon).toInt()),
         title: "Đặt hàng",
-        onTap: () async {
+        onTap: () {
           List<dynamic> orderDetails = [];
           for (Cart cart in list) {
             OrderDetail orderDetail = OrderDetail(
@@ -102,7 +102,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             "orderDetailRequests": orderDetails
           };
 
-          await orderViewModel.saveOrder(data).then((value) {
+          orderViewModel.saveOrder(data).then((value) {
             if (value) {
               Utils.flushBarSuccessMessage("Đặt hàng thành công", context);
               cartViewModel.setCart(List.empty());
@@ -115,13 +115,17 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   discountLimit: 0,
                   quantity: 0,
                   status: ""));
-              Navigator.pushReplacementNamed(context, RoutesName.cart);
             }
           });
+          Navigator.pushReplacementNamed(context, RoutesName.orders);
         },
       ),
       appBar: AppBar(
         title: const Text('Xác nhận đặt hàng'),
+        leading: InkWell(
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, RoutesName.cart),
+            child: const Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -13,7 +13,6 @@ class SingleAddress extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 8.0),
         width: double.infinity,
         decoration: BoxDecoration(
             color: address.isSelected

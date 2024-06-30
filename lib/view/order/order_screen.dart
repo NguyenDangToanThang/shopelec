@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/order.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/order/components/card_order.dart';
 import 'package:shopelec/view_model/order_view_model.dart';
 
@@ -32,10 +34,13 @@ class _OrderScreenState extends State<OrderScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Đơn mua'),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.chat_bubble_outline),
-            onPressed: () {},
+            icon: const Icon(Iconsax.shopping_cart),
+            onPressed: () {
+              Navigator.pushNamed(context, RoutesName.cart);
+            },
           ),
         ],
         bottom: TabBar(
@@ -98,9 +103,16 @@ class OrderTabContent extends StatelessWidget {
                           itemCount: snapshot.data!.length,
                           itemBuilder: ((context, index) {
                             final order = snapshot.data![index];
-                            return OrderCard(
-                              order: order,
-                              tabController: tabController,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RoutesName.detailOrder,
+                                    arguments: order);
+                              },
+                              child: OrderCard(
+                                order: order,
+                                tabController: tabController,
+                              ),
                             );
                           })),
                     );

@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
+import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/tabs/home/components/grid_product.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
@@ -32,6 +34,14 @@ class _FavoriteViewState extends State<FavoriteView> {
         title: const Text('Sản phẩm yêu thích'),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Iconsax.shopping_cart),
+            onPressed: () {
+              Navigator.pushNamed(context, RoutesName.cart);
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: FutureBuilder(
@@ -41,7 +51,8 @@ class _FavoriteViewState extends State<FavoriteView> {
                   snapshot.hasData) {
                 List<Product> list = snapshot.data!;
                 return GridProduct(products: list, length: list.length);
-              } else if (snapshot.data == null) {
+              } else if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.data == null) {
                 return const Center(
                   child: Text("Không có sản phẩm yêu thích nào"),
                 );
