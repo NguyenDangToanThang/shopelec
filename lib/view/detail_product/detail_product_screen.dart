@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shopelec/model/product.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
-import 'package:shopelec/utils/utils.dart';
 import 'package:shopelec/view/tabs/home/components/bottom_add_to_cart.dart';
 import 'package:shopelec/view_model/product_view_model.dart';
 
@@ -114,7 +113,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                 Provider.of<ProductViewModel>(context,
                                         listen: false)
                                     .averageRating(widget.product)
-                                    .toString(),
+                                    .toStringAsFixed(1),
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.0, // Adjust font size as needed
@@ -174,8 +173,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                           ),
                         ),
                         const SizedBox(
-                          width: 20,
+                          width: 8,
                         ),
+                        const Spacer(),
+
                         Container(
                           width: 42,
                           height: 20,
@@ -192,46 +193,45 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                             ),
                           ),
                         ),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () async {
-                            if (product.favorite) {
-                              _dialogBuilder(context).then((value) {
-                                if (value!) {
-                                  setState(() {
-                                    product = product.copyWith(
-                                        favorite: !product.favorite);
-                                  });
-                                }
-                              });
-                            } else {
-                              productViewModel.saveFavorite(
-                                  FirebaseAuth.instance.currentUser!.uid,
-                                  widget.product.id);
-                              setState(() {
-                                product = product.copyWith(
-                                    favorite: !product.favorite);
-                              });
-                              Utils.flushBarSuccessMessage(
-                                  "Đã thêm vào yêu thích", context);
-                            }
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(30)),
-                            child: product.favorite
-                                ? const Icon(
-                                    Icons.favorite_outlined,
-                                    color: Colors.redAccent,
-                                  )
-                                : const Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.black,
-                                  ),
-                          ),
-                        )
+                        // GestureDetector(
+                        //   onTap: () async {
+                        //     if (product.favorite) {
+                        //       _dialogBuilder(context).then((value) {
+                        //         if (value!) {
+                        //           setState(() {
+                        //             product = product.copyWith(
+                        //                 favorite: !product.favorite);
+                        //           });
+                        //         }
+                        //       });
+                        //     } else {
+                        //       productViewModel.saveFavorite(
+                        //           FirebaseAuth.instance.currentUser!.uid,
+                        //           widget.product.id);
+                        //       setState(() {
+                        //         product = product.copyWith(
+                        //             favorite: !product.favorite);
+                        //       });
+                        //       Utils.flushBarSuccessMessage(
+                        //           "Đã thêm vào yêu thích", context);
+                        //     }
+                        //   },
+                        //   child: Container(
+                        //     padding: const EdgeInsets.all(4),
+                        //     decoration: BoxDecoration(
+                        //         color: Colors.grey[200],
+                        //         borderRadius: BorderRadius.circular(30)),
+                        //     child: product.favorite
+                        //         ? const Icon(
+                        //             Icons.favorite_outlined,
+                        //             color: Colors.redAccent,
+                        //           )
+                        //         : const Icon(
+                        //             Icons.favorite_border,
+                        //             color: Colors.black,
+                        //           ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ],

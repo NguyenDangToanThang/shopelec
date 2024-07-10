@@ -36,6 +36,16 @@ class ProductRespository {
     }
   }
 
+  Future<dynamic> getTopProduct(String? userId) async {
+    try {
+      dynamic response =
+          await _apiServices.getGetApiResponse(AppUrl.getTopProductEndpoint + "?user_id=$userId");
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> getAllProduct(
       {String? userId,
       int? categoryId,

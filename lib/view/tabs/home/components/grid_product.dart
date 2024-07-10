@@ -125,8 +125,7 @@ class _GridProductState extends State<GridProduct> {
                                     Text(
                                       Provider.of<ProductViewModel>(context,
                                               listen: false)
-                                          .averageRating(product)
-                                          .toString(),
+                                          .averageRating(product).toStringAsFixed(1),
                                       style:
                                           const TextStyle(color: Colors.white),
                                     )

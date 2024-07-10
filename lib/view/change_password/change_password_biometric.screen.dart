@@ -6,11 +6,15 @@ class ChangePasswordBiometricScreen extends StatefulWidget {
   const ChangePasswordBiometricScreen({super.key});
 
   @override
-  State<ChangePasswordBiometricScreen> createState() => _ChangePasswordBiometricScreenState();
+  State<ChangePasswordBiometricScreen> createState() =>
+      _ChangePasswordBiometricScreenState();
 }
 
-class _ChangePasswordBiometricScreenState extends State<ChangePasswordBiometricScreen> {
+class _ChangePasswordBiometricScreenState
+    extends State<ChangePasswordBiometricScreen> {
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final bool _isLoading = false;
   String? _errorMessage;
@@ -48,6 +52,29 @@ class _ChangePasswordBiometricScreenState extends State<ChangePasswordBiometricS
                   }
                   if (value.length < 6) {
                     return 'Mật khẩu phải có ít nhất 6 ký tự';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: const InputDecoration(
+                  hintText: 'Xác nhận mật khẩu mới',
+                  labelText: 'Xác nhận mật khẩu mới',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.confirmation_num),
+                ),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu mới';
+                  }
+                  if (value.length < 6) {
+                    return 'Mật khẩu phải có ít nhất 6 ký tự';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Mật khẩu không trùng khớp';
                   }
                   return null;
                 },

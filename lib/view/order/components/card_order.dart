@@ -128,7 +128,8 @@ class OrderCard extends StatelessWidget {
                         ;
                       }
                     } else if (order.status == "Đã giao") {
-                      Navigator.pushNamed(context, RoutesName.rate,arguments: order);
+                      Navigator.pushNamed(context, RoutesName.rate,
+                          arguments: order);
                     } else {
                       bool? confirmed = await showConfirmationDialog(context,
                           "Bạn có chắc chắn muốn đặt lại đơn hàng này không?");
@@ -137,7 +138,6 @@ class OrderCard extends StatelessWidget {
                             .updateStatusOrder(order.id, "Chờ duyệt")
                             .whenComplete(() => tabController
                                 .animateTo(tabController.index - 3));
-                        
                       }
                     }
                   },

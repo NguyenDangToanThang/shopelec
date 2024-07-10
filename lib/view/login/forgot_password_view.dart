@@ -1,4 +1,3 @@
-
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,15 +12,16 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _loading = false;
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
@@ -39,12 +39,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Đừng lo lắng đôi khi mọi người có thể quên, hãy nhập email của bạn " 
+              "Đừng lo lắng đôi khi mọi người có thể quên, hãy nhập email của bạn "
               "và chúng tôi sẽ gửi cho bạn liên kết đặt lại mật khẩu.",
               style: Theme.of(context).textTheme.labelLarge,
             ),
             SizedBox(height: height * 0.03),
-
             Form(
               key: _formKey,
               child: TextFormField(
@@ -54,12 +53,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     hintText: 'E-mail',
                     labelText: 'E-mail',
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email)
-                ),
+                    prefixIcon: Icon(Icons.email)),
                 validator: (value) {
-                  if(value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Hãy nhập E-mail";
-                  } else if(!EmailValidator.validate(value)) {
+                  } else if (!EmailValidator.validate(value)) {
                     return "E-mail không hợp lệ";
                   }
                   return null;
@@ -67,38 +65,25 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               ),
             ),
             SizedBox(height: height * 0.02),
-            RoundButton(
-                title: 'Gửi',
-                onPress: () {
-                  if(_formKey.currentState!.validate()) {
-                    Map data = {
-                      'email' : _emailController.text.toString()
-                    };
-                    authViewModel.forgotPasswordFirebase(data, context);
-                  }
-                }
-            ),
-            SizedBox(height: height * 0.02),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                InkWell(
-                  onTap: () {
-                    if(_formKey.currentState!.validate()) {
-                      Map data = {
-                        'email' : _emailController.text.toString()
-                      };
-                      authViewModel.forgotPasswordFirebase(data, context);
-                    }
-                  },
-                  child: const Text(
-                    'Gửi lại',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14
-                    ),
-                  ),
-                ),
+                RoundButton(
+                    loading: _loading,
+                    title: 'Gửi',
+                    onPress: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _loading = true;
+                        });
+                        Map data = {'email': _emailController.text.toString()};
+                        await authViewModel.forgotPasswordFirebase(
+                            data, context);
+                        setState(() {
+                          _loading = false;
+                        });
+                      }
+                    }),
               ],
             ),
           ],

@@ -103,10 +103,17 @@ class AuthViewModel with ChangeNotifier {
 
   Future<bool> authenticate() async {
     try {
-      return await _localAuth.authenticate(
+      return await _localAuth
+          .authenticate(
         localizedReason: 'Ủy quyền xác thực vân tay',
         options: const AuthenticationOptions(biometricOnly: true),
-      );
+      )
+          .then((value) {
+        if (value) {
+          username = FirebaseAuth.instance.currentUser?.email!;
+        }
+        return value;
+      });
     } catch (e) {
       // print(e);
       return false;
@@ -134,6 +141,8 @@ class AuthViewModel with ChangeNotifier {
     try {
       final String email = data['email'];
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      Utils.flushBarSuccessMessage(
+          "Gửi email thành công , kiểm tra email", context);
     } on FirebaseAuthException catch (e) {
       Utils.flushBarErrorMessage(e.toString(), context);
     }
@@ -154,7 +163,7 @@ class AuthViewModel with ChangeNotifier {
       Utils.flushBarSuccessMessage("Đổi mật khẩu thành công", context);
     } on FirebaseAuthException catch (e) {
       Utils.flushBarErrorMessage("Lỗi: $e", context);
-      logger.e(e);
+      // logger.e(e);
     }
   }
 
@@ -165,12 +174,9 @@ class AuthViewModel with ChangeNotifier {
       final String password = data['password'];
 
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        setUser(FirebaseAuth.instance);
-        storeUserCredentials(email, password);
-      });
-
+          .signInWithEmailAndPassword(email: email, password: password);
+      setUser(FirebaseAuth.instance);
+      await storeUserCredentials(email, password);
       // logger.i(FirebaseAuth.instance.currentUser?.displayName);
       Navigator.pushReplacementNamed(context, RoutesName.home);
       setLoading(false);
@@ -226,5 +232,9 @@ class AuthViewModel with ChangeNotifier {
 
   Future<String?> getOldPassword() async {
     return await _secureStorage.read(key: 'password');
+  }
+
+  Future<String?> getUsername() async {
+    return await _secureStorage.read(key: 'username');
   }
 }

@@ -12,6 +12,8 @@ class ChangePasswordScreen extends StatefulWidget {
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String? _errorMessage;
@@ -25,6 +27,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Future<void> _loadOldPassword() async {
     _oldPassword = await context.read<AuthViewModel>().getOldPassword();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _oldPasswordController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _oldPassword = null;
   }
 
   @override
@@ -74,6 +86,29 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   }
                   if (value.length < 6) {
                     return 'Mật khẩu phải có ít nhất 6 ký tự';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: const InputDecoration(
+                  hintText: 'Xác nhận mật khẩu mới',
+                  labelText: 'Xác nhận mật khẩu mới',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.confirmation_num),
+                ),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu mới';
+                  }
+                  if (value.length < 6) {
+                    return 'Mật khẩu phải có ít nhất 6 ký tự';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Mật khẩu không trùng khớp';
                   }
                   return null;
                 },

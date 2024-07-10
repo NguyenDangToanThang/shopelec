@@ -23,64 +23,67 @@ class UserReviewCard extends StatefulWidget {
 class _UserReviewCardState extends State<UserReviewCard> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CircleAvatar(
-                    // backgroundImage: NetworkImage("")
-                    backgroundImage: widget.image == ""
-                        ? const AssetImage("assets/images/avatar.png")
-                        : NetworkImage(widget.image) as ImageProvider),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  widget.name,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text("-", style: TextStyle(fontSize: 20)),
-                const SizedBox(
-                  width: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: Text(
-                    widget.date,
-                    style: const TextStyle(fontSize: 14),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CircleAvatar(
+                      // backgroundImage: NetworkImage("")
+                      backgroundImage: widget.image == ""
+                          ? const AssetImage("assets/images/avatar.png")
+                          : NetworkImage(widget.image) as ImageProvider),
+                  const SizedBox(
+                    width: 4,
                   ),
-                )
-              ],
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RatingBarStarIndicator(rating: widget.rating),
-          ],
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-                child: Text(
-              widget.review,
-              textAlign: TextAlign.left,
-            )),
-          ],
-        )
-      ],
+                  Text(
+                    widget.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text("-", style: TextStyle(fontSize: 20)),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Text(
+                      widget.date,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RatingBarStarIndicator(rating: widget.rating),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Text(
+                widget.review,
+                textAlign: TextAlign.left,
+              )),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

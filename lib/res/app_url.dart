@@ -25,4 +25,5 @@ class AppUrl {
   static var saveOrUpdateTokenFCMEndpoint = '$baseUrl/tokens/update';
   static var saveRateEndpoint = '$baseUrl/review/save';
   static var uploadAvatarEndpoint = '$baseUrl/avatar';
+  static var getTopProductEndpoint = '$baseUrl/product/top';
 }

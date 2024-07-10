@@ -19,6 +19,7 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   late Future<List<Cart>> _carts;
   final logger = Logger();
+  double totalPayment = 0;
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
+    final cartViewModel = Provider.of<CartViewModel>(context);
     return FutureBuilder(
         future: _carts,
         builder: (context, snapshot) {
@@ -59,13 +60,13 @@ class _CartViewState extends State<CartView> {
                         fontSize: 16),
                   )));
             } else {
-              List<Cart> list = cartViewModel.carts;
-              double totalPayment = 0;
-              for (var cart in list) {
-                totalPayment += (cart.product.price -
+              double total = 0.0;
+              for (var cart in cartViewModel.carts) {
+                total += (cart.product.price -
                         cart.product.price * cart.product.discount / 100) *
                     cart.quantity;
               }
+              totalPayment = total;
               return Scaffold(
                 bottomNavigationBar: BottomCheckout(
                   title: "Mua hàng",
@@ -83,7 +84,7 @@ class _CartViewState extends State<CartView> {
                 body: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      ListViewProduct(items: list),
+                      ListViewProduct(items: cartViewModel.carts),
                       const SizedBox(
                         height: 12,
                       ),

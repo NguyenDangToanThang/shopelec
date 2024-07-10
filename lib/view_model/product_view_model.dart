@@ -47,6 +47,17 @@ class ProductViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Product>> getTopProduct(String userId) async {
+    try {
+      final jsonList = await _myRepo.getTopProduct(userId);
+      List<Product> products = parseProducts(jsonList['products']);
+
+      return products;
+    } catch (e) {
+      throw Exception("Failed to fetch products: $e");
+    }
+  }
+
   Future<List<Product>> getAllProducts(
       {int? categoryId,
       String? userId,

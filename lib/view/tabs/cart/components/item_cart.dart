@@ -20,7 +20,7 @@ class ItemCart extends StatefulWidget {
 class _ItemCartState extends State<ItemCart> {
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
 
     String priceDiscount = NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
         .format((widget.cart.product.price -

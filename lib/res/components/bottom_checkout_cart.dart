@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:shopelec/model/cart.dart';
+import 'package:shopelec/view_model/cart_view_model.dart';
 
-class BottomCheckout extends StatefulWidget {
-  const BottomCheckout(
+class BottomCheckoutCart extends StatefulWidget {
+  const BottomCheckoutCart(
       {super.key, required this.totalPayment, this.onTap, required this.title});
 
   final String totalPayment;
@@ -9,10 +13,32 @@ class BottomCheckout extends StatefulWidget {
   final void Function()? onTap;
 
   @override
-  State<BottomCheckout> createState() => _BottomCheckoutState();
+  State<BottomCheckoutCart> createState() => _BottomCheckoutCartState();
 }
 
-class _BottomCheckoutState extends State<BottomCheckout> {
+class _BottomCheckoutCartState extends State<BottomCheckoutCart> {
+  List<Cart> carts = List.empty();
+  double total = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
+    carts = cartViewModel.carts;
+    for (var cart in carts) {
+      total += (cart.product.price -
+              cart.product.price * cart.product.discount / 100) *
+          cart.quantity;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    total = 0.0;
+    carts = List.empty();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +61,10 @@ class _BottomCheckoutState extends State<BottomCheckout> {
                       style: TextStyle(fontSize: 16, color: Colors.black),
                     ),
                     TextSpan(
-                      text: widget.totalPayment,
+                      text: carts.isEmpty
+                          ? widget.totalPayment
+                          : NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
+                              .format(total.toInt()),
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.red,

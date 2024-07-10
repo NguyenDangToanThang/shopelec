@@ -51,7 +51,8 @@ class Routes {
       case RoutesName.productCategory:
         String name = arg as String;
         return MaterialPageRoute(
-            builder: (BuildContext context) => ProductCategoryScreen(name: name));
+            builder: (BuildContext context) =>
+                ProductCategoryScreen(name: name));
       case RoutesName.productReviews:
         Product product = arg is Product
             ? arg
@@ -109,6 +110,7 @@ class Routes {
         Order order = arg is Order
             ? arg
             : Order(
+                modifiedDate: DateTime.now(),
                 id: 0,
                 address: Address(
                     id: 0,
@@ -135,6 +137,7 @@ class Routes {
         Order order = arg is Order
             ? arg
             : Order(
+                modifiedDate: DateTime.now(),
                 id: 0,
                 address: Address(
                     id: 0,

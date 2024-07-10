@@ -22,11 +22,18 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext context) {
     final rateViewModel = Provider.of<RateViewModel>(context, listen: false);
-    return AlertDialog(
-      title: const Text('Đánh giá sản phẩm'),
-      content: SingleChildScrollView(
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            const Text('Đánh giá sản phẩm', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8.0),
             RatingBar.builder(
               initialRating: 5,
               minRating: 1,
@@ -53,33 +60,37 @@ class _RatingDialogState extends State<RatingDialog> {
               maxLines: 3,
             ),
             const SizedBox(height: 8.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: const Text('Hủy'),
+                ),
+                const SizedBox(width: 8.0),
+                ElevatedButton(
+                  onPressed: () {
+                    double rate = _rating;
+                    String comment = _commentController.text;
+                    Map data = {
+                      "rate": rate,
+                      "comment": comment,
+                      "productId": widget.detail.productId,
+                      "userId": FirebaseAuth.instance.currentUser!.uid,
+                      "orderId": widget.orderId
+                    };
+                    rateViewModel.saveRate(data);
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Gửi'),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(false);
-          },
-          child: const Text('Hủy'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            double rate = _rating;
-            String comment = _commentController.text;
-            Map data = {
-              "rate": rate,
-              "comment": comment,
-              "productId": widget.detail.productId,
-              "userId": FirebaseAuth.instance.currentUser!.uid,
-              "orderId": widget.orderId
-            };
-            rateViewModel.saveRate(data);
-            Navigator.of(context).pop(true);
-          },
-          child: const Text('Gửi'),
-        ),
-      ],
     );
   }
 }

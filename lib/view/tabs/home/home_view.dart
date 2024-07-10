@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
     final productViewModel =
         Provider.of<ProductViewModel>(context, listen: false);
     String userId = FirebaseAuth.instance.currentUser!.uid;
-    _products = productViewModel.getAllProducts(userId: userId);
+    _products = productViewModel.getTopProduct(userId);
   }
 
   @override

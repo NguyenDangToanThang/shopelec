@@ -8,6 +8,7 @@ class Order {
   final int id;
   final DateTime orderDate;
   final double totalPrice;
+  final DateTime modifiedDate;
   final String status;
   final Address address;
   final Coupons coupons;
@@ -18,6 +19,7 @@ class Order {
     required this.status,
     required this.address,
     required this.coupons,
+    required this.modifiedDate
   });
 
   Order copyWith({
@@ -27,6 +29,7 @@ class Order {
     String? status,
     Address? address,
     Coupons? coupons,
+    DateTime? modifiedDate,
   }) {
     return Order(
       id: id ?? this.id,
@@ -35,6 +38,7 @@ class Order {
       status: status ?? this.status,
       address: address ?? this.address,
       coupons: coupons ?? this.coupons,
+      modifiedDate: modifiedDate ?? this.modifiedDate
     );
   }
 
@@ -42,6 +46,7 @@ class Order {
     return <String, dynamic>{
       'id': id,
       'orderDate': orderDate.millisecondsSinceEpoch,
+      'modifiedDate': orderDate.millisecondsSinceEpoch,
       'totalPrice': totalPrice,
       'status': status,
       'addressResponse': address.toMap(),
@@ -57,6 +62,9 @@ class Order {
           : DateTime.parse(map['orderDate']),
       totalPrice: map['totalPrice'] as double,
       status: map['status'] as String,
+      modifiedDate: map['modifiedDate'] is int
+          ? DateTime.fromMillisecondsSinceEpoch(map['modifiedDate'])
+          : DateTime.parse(map['modifiedDate']),
       address: Address.fromMap(map['addressResponse'] as Map<String, dynamic>),
       coupons: Coupons.fromMap(map['coupons'] as Map<String, dynamic>),
     );

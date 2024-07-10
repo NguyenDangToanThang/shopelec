@@ -18,7 +18,7 @@ class _ListViewProductState extends State<ListViewProduct>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
+    final cartViewModel = Provider.of<CartViewModel>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.only(right: 5.0, left: 5.0),
       child: Container(

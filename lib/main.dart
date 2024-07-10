@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopelec/firebase_options.dart';
-import 'package:shopelec/repository/token_fcm_repository.dart';
 import 'package:shopelec/utils/routes/routes.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
 import 'package:shopelec/view/tabs/setting/components/upload_avatar_provider.dart';
@@ -51,60 +49,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late FirebaseMessaging _firebaseMessaging;
 
   @override
   void initState() {
     super.initState();
-    _firebaseMessaging = FirebaseMessaging.instance;
-
-    final tokenRepo = TokenFCMRepository();
-
-    _firebaseMessaging.getToken().then((String? token) {
-      assert(token != null);
-      tokenRepo.saveToken(token!);
-      tokenRepo.sendTokenToServer(token);
-    });
-
-    FirebaseMessaging.instance.onTokenRefresh.listen((String newToken) {
-      tokenRepo.saveToken(newToken);
-      tokenRepo.sendTokenToServer(newToken);
-    });
-    _subscribeToTopic();
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
-      if (message.notification != null) {
-        _showNotification(message.notification);
-      }
-    });
 
     FlutterNativeSplash.remove();
   }
 
-  void _subscribeToTopic() async {
-    await FirebaseMessaging.instance.subscribeToTopic('all_users');
-  }
-
-  Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('device_token', token);
-  }
-
-  Future<void> _showNotification(RemoteNotification? notification) async {
-    if (notification == null) return;
-
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-            'normal_importance_channel', 
-            'Normal Importance Notifications');
-
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-
-    await flutterLocalNotificationsPlugin.show(
-        0, notification.title, notification.body, platformChannelSpecifics);
-  }
 
   @override
   Widget build(BuildContext context) {

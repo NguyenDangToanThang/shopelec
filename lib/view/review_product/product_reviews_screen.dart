@@ -48,7 +48,7 @@ class _ProductReviewsScreenState extends State<ProductReviewsScreen> {
                             Text(
                               Provider.of<ProductViewModel>(context)
                                   .averageRating(widget.product)
-                                  .toString(),
+                                  .toStringAsFixed(1),
                               style: Theme.of(context).textTheme.displayLarge,
                             ),
                             RatingBarStarIndicator(

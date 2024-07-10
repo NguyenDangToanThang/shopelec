@@ -63,7 +63,6 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
     }
     totalPayment = totalOriginal - totalDiscount;
     total = totalPayment;
-    // couponsViewModel.setTotalPayment(totalPayment);
     coupons0 = couponsViewModel.getAllCoupons(total);
   }
 
@@ -78,7 +77,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         totalPayment: NumberFormat.currency(locale: 'vi_VN', symbol: '₫')
             .format((total - coupon).toInt()),
         title: "Đặt hàng",
-        onTap: () {
+        onTap: () async {
           List<dynamic> orderDetails = [];
           for (Cart cart in list) {
             OrderDetail orderDetail = OrderDetail(
@@ -115,9 +114,10 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   discountLimit: 0,
                   quantity: 0,
                   status: ""));
+              Navigator.pushReplacementNamed(context, RoutesName.orders);
             }
           });
-          Navigator.pushReplacementNamed(context, RoutesName.orders);
+          Navigator.pop(context);
         },
       ),
       appBar: AppBar(
