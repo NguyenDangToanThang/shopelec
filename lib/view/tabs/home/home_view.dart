@@ -58,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Chào mừng đến với ShopElec"),
+          title: const Text("Shop Electronics"),
           actions: [
             IconButton(
               icon: const Icon(Iconsax.shopping_cart),

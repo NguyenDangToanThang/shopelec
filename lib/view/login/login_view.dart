@@ -1,8 +1,6 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:shopelec/res/components/round_button.dart';
 import 'package:shopelec/utils/routes/routes_name.dart';
@@ -83,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
               height: height * 0.02,
             ),
             const Text(
-              "Welcome",
+              "Xin Chào",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(

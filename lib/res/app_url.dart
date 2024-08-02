@@ -1,7 +1,7 @@
 class AppUrl {
   //for deploy
-  // static var baseUrl = 'https://backend-2-9bjq.onrender.com/v1/api';
-  static var baseUrl = 'http://10.0.2.2:8080/v1/api';
+  static var baseUrl = 'https://backend-2-9bjq.onrender.com/v1/api';
+  // static var baseUrl = 'http://10.0.2.2:8080/v1/api';
 
   static var registerApiEndPoint = '$baseUrl/register';
   static var getMyInfoEndPoint = '$baseUrl/getInfo';
